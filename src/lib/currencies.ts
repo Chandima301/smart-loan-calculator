@@ -23,4 +23,4 @@ export const CURRENCIES: Currency[] = [
   { code: 'BDT', name: 'Bangladeshi Taka',  symbol: '৳'   },
 ];
 
-export const DEFAULT_CURRENCY = 'LKR';
+export const DEFAULT_CURRENCY = 'USD';
