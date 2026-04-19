@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import LoanInputPanel from './LoanInputPanel';
@@ -26,8 +25,6 @@ interface Props {
 }
 
 export default function LoanCalculatorShell({ defaultParams }: Props) {
-  const router = useRouter();
-
   const [loanParams, setLoanParams] = useState<LoanParams>({
     ...LOAN_DEFAULTS,
     ...defaultParams,
@@ -52,16 +49,15 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
     setLoanParams((prev) => ({ ...prev, ...params }));
   }, []);
 
-  // Sync loan params → URL on every change
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Sync loan params → URL without triggering a Next.js navigation
   useEffect(() => {
     const sp = new URLSearchParams({
       p: String(loanParams.principal),
       r: String(loanParams.annualRate),
       t: String(loanParams.tenureMonths),
     });
-    router.replace(`?${sp.toString()}`, { scroll: false });
-  }, [loanParams]); // router intentionally omitted — stable ref from useRouter()
+    window.history.replaceState(null, '', `?${sp.toString()}`);
+  }, [loanParams]);
 
   const loanResult = useMemo(() => calculateEMI(loanParams), [loanParams]);
 
