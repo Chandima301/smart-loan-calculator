@@ -53,6 +53,7 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
   }, []);
 
   // Sync loan params → URL on every change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const sp = new URLSearchParams({
       p: String(loanParams.principal),
@@ -60,7 +61,7 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
       t: String(loanParams.tenureMonths),
     });
     router.replace(`?${sp.toString()}`, { scroll: false });
-  }, [loanParams, router]);
+  }, [loanParams]); // router intentionally omitted — stable ref from useRouter()
 
   const loanResult = useMemo(() => calculateEMI(loanParams), [loanParams]);
 
