@@ -63,12 +63,9 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           className="w-full"
         />
         <Input
-          type="number"
+          type="text"
           inputMode="numeric"
           value={principalDraft ?? params.principal}
-          min={LOAN_LIMITS.principal.min}
-          max={LOAN_LIMITS.principal.max}
-          step={LOAN_LIMITS.principal.step}
           onChange={(e) => setPrincipalDraft(e.target.value)}
           onBlur={() => {
             const v = Number(principalDraft);
@@ -96,12 +93,9 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           className="w-full"
         />
         <Input
-          type="number"
+          type="text"
           inputMode="decimal"
           value={rateDraft ?? params.annualRate}
-          min={LOAN_LIMITS.annualRate.min}
-          max={LOAN_LIMITS.annualRate.max}
-          step={LOAN_LIMITS.annualRate.step}
           onChange={(e) => setRateDraft(e.target.value)}
           onBlur={() => {
             const v = Number(rateDraft);
@@ -149,12 +143,9 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           className="w-full"
         />
         <Input
-          type="number"
+          type="text"
           inputMode="numeric"
           value={tenureDraft ?? tenureDisplay}
-          min={tenureMin}
-          max={tenureMax}
-          step={tenureStep}
           onChange={(e) => setTenureDraft(e.target.value)}
           onBlur={() => {
             const v = Number(tenureDraft);
