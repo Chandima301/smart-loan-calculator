@@ -12,6 +12,8 @@ import { formatCurrency, formatMonths } from '@/lib/formatters';
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
 
+const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
+
 interface Props {
   params: LoanParams;
   onChange: (params: LoanParams) => void;
@@ -20,22 +22,32 @@ interface Props {
 export default function LoanInputPanel({ params, onChange }: Props) {
   const [tenureUnit, setTenureUnit] = useState<'months' | 'years'>('years');
 
-  const update = (key: keyof LoanParams, value: number) => {
+  // Draft strings while the user is actively typing — null means not editing
+  const [principalDraft, setPrincipalDraft] = useState<string | null>(null);
+  const [rateDraft,      setRateDraft]      = useState<string | null>(null);
+  const [tenureDraft,    setTenureDraft]    = useState<string | null>(null);
+
+  const update = (key: keyof LoanParams, value: number) =>
     onChange({ ...params, [key]: value });
-  };
 
   const tenureDisplay = tenureUnit === 'years' ? params.tenureMonths / 12 : params.tenureMonths;
-  const tenureMin = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.min / 12 : LOAN_LIMITS.tenureMonths.min;
-  const tenureMax = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.max / 12 : LOAN_LIMITS.tenureMonths.max;
-  const tenureStep = tenureUnit === 'years' ? 0.5 : LOAN_LIMITS.tenureMonths.step;
+  const tenureMin     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.min / 12 : LOAN_LIMITS.tenureMonths.min;
+  const tenureMax     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.max / 12 : LOAN_LIMITS.tenureMonths.max;
+  const tenureStep    = tenureUnit === 'years' ? 0.5 : LOAN_LIMITS.tenureMonths.step;
 
   const handleTenureChange = (val: number) => {
     const months = tenureUnit === 'years' ? Math.round(val * 12) : val;
     update('tenureMonths', months);
   };
 
+  const handleTenureUnitChange = (unit: 'months' | 'years') => {
+    setTenureDraft(null); // reset draft when switching unit
+    setTenureUnit(unit);
+  };
+
   return (
     <div className="space-y-6">
+
       {/* Loan Amount */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
@@ -47,18 +59,23 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           max={LOAN_LIMITS.principal.max}
           step={LOAN_LIMITS.principal.step}
           value={[params.principal]}
-          onValueChange={(val) => update('principal', sv(val))}
+          onValueChange={(val) => { setPrincipalDraft(null); update('principal', sv(val)); }}
           className="w-full"
         />
         <Input
           type="number"
-          value={params.principal}
+          inputMode="numeric"
+          value={principalDraft ?? params.principal}
           min={LOAN_LIMITS.principal.min}
           max={LOAN_LIMITS.principal.max}
           step={LOAN_LIMITS.principal.step}
-          onChange={(e) => {
-            const v = Number(e.target.value);
-            if (v >= LOAN_LIMITS.principal.min && v <= LOAN_LIMITS.principal.max) update('principal', v);
+          onChange={(e) => setPrincipalDraft(e.target.value)}
+          onBlur={() => {
+            const v = Number(principalDraft);
+            if (principalDraft !== null && Number.isFinite(v) && v > 0) {
+              update('principal', clamp(v, LOAN_LIMITS.principal.min, LOAN_LIMITS.principal.max));
+            }
+            setPrincipalDraft(null);
           }}
           className="h-11"
         />
@@ -75,18 +92,23 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           max={LOAN_LIMITS.annualRate.max}
           step={LOAN_LIMITS.annualRate.step}
           value={[params.annualRate]}
-          onValueChange={(val) => update('annualRate', sv(val))}
+          onValueChange={(val) => { setRateDraft(null); update('annualRate', sv(val)); }}
           className="w-full"
         />
         <Input
           type="number"
-          value={params.annualRate}
+          inputMode="decimal"
+          value={rateDraft ?? params.annualRate}
           min={LOAN_LIMITS.annualRate.min}
           max={LOAN_LIMITS.annualRate.max}
           step={LOAN_LIMITS.annualRate.step}
-          onChange={(e) => {
-            const v = Number(e.target.value);
-            if (v >= LOAN_LIMITS.annualRate.min && v <= LOAN_LIMITS.annualRate.max) update('annualRate', v);
+          onChange={(e) => setRateDraft(e.target.value)}
+          onBlur={() => {
+            const v = Number(rateDraft);
+            if (rateDraft !== null && Number.isFinite(v) && v > 0) {
+              update('annualRate', clamp(v, LOAN_LIMITS.annualRate.min, LOAN_LIMITS.annualRate.max));
+            }
+            setRateDraft(null);
           }}
           className="h-11"
         />
@@ -103,7 +125,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
                 variant={tenureUnit === 'years' ? 'default' : 'ghost'}
                 size="sm"
                 className="h-6 rounded-none px-2 text-xs"
-                onClick={() => setTenureUnit('years')}
+                onClick={() => handleTenureUnitChange('years')}
               >
                 Yrs
               </Button>
@@ -111,7 +133,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
                 variant={tenureUnit === 'months' ? 'default' : 'ghost'}
                 size="sm"
                 className="h-6 rounded-none px-2 text-xs"
-                onClick={() => setTenureUnit('months')}
+                onClick={() => handleTenureUnitChange('months')}
               >
                 Mo
               </Button>
@@ -123,22 +145,28 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           max={tenureMax}
           step={tenureStep}
           value={[tenureDisplay]}
-          onValueChange={(val) => handleTenureChange(sv(val))}
+          onValueChange={(val) => { setTenureDraft(null); handleTenureChange(sv(val)); }}
           className="w-full"
         />
         <Input
           type="number"
-          value={tenureDisplay}
+          inputMode="numeric"
+          value={tenureDraft ?? tenureDisplay}
           min={tenureMin}
           max={tenureMax}
           step={tenureStep}
-          onChange={(e) => {
-            const v = Number(e.target.value);
-            if (v >= tenureMin && v <= tenureMax) handleTenureChange(v);
+          onChange={(e) => setTenureDraft(e.target.value)}
+          onBlur={() => {
+            const v = Number(tenureDraft);
+            if (tenureDraft !== null && Number.isFinite(v) && v > 0) {
+              handleTenureChange(clamp(v, tenureMin, tenureMax));
+            }
+            setTenureDraft(null);
           }}
           className="h-11"
         />
       </div>
+
     </div>
   );
 }
