@@ -76,6 +76,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Footer />
         </TooltipProvider>
         <Analytics />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8973602955210703"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         {GA_ID && (
           <>
             <Script
