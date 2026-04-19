@@ -49,14 +49,17 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
     setLoanParams((prev) => ({ ...prev, ...params }));
   }, []);
 
-  // Sync loan params → URL without triggering a Next.js navigation
+  // Sync loan params → URL (debounced — browsers throttle replaceState calls)
   useEffect(() => {
-    const sp = new URLSearchParams({
-      p: String(loanParams.principal),
-      r: String(loanParams.annualRate),
-      t: String(loanParams.tenureMonths),
-    });
-    window.history.replaceState(null, '', `?${sp.toString()}`);
+    const id = setTimeout(() => {
+      const sp = new URLSearchParams({
+        p: String(loanParams.principal),
+        r: String(loanParams.annualRate),
+        t: String(loanParams.tenureMonths),
+      });
+      window.history.replaceState(null, '', `?${sp.toString()}`);
+    }, 300);
+    return () => clearTimeout(id);
   }, [loanParams]);
 
   const loanResult = useMemo(() => calculateEMI(loanParams), [loanParams]);

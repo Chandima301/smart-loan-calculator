@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,7 +22,24 @@ interface Props {
 export default function LoanInputPanel({ params, onChange }: Props) {
   const [tenureUnit, setTenureUnit] = useState<'months' | 'years'>('years');
 
-  // Draft strings while the user is actively typing — null means not editing
+  // Local slider state — moves the thumb live during drag without triggering
+  // expensive parent recalculations on every pixel
+  const [principalSlider, setPrincipalSlider] = useState(params.principal);
+  const [rateSlider,      setRateSlider]      = useState(params.annualRate);
+
+  const tenureDisplay = tenureUnit === 'years' ? params.tenureMonths / 12 : params.tenureMonths;
+  const tenureMin     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.min / 12 : LOAN_LIMITS.tenureMonths.min;
+  const tenureMax     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.max / 12 : LOAN_LIMITS.tenureMonths.max;
+  const tenureStep    = tenureUnit === 'years' ? 0.5 : LOAN_LIMITS.tenureMonths.step;
+
+  const [tenureSlider, setTenureSlider] = useState(tenureDisplay);
+
+  // Sync slider local state when params change externally (e.g. URL params on mount)
+  useEffect(() => { setPrincipalSlider(params.principal); }, [params.principal]);
+  useEffect(() => { setRateSlider(params.annualRate);     }, [params.annualRate]);
+  useEffect(() => { setTenureSlider(tenureDisplay);       }, [tenureDisplay]);
+
+  // Draft strings while the user is actively typing in the text input
   const [principalDraft, setPrincipalDraft] = useState<string | null>(null);
   const [rateDraft,      setRateDraft]      = useState<string | null>(null);
   const [tenureDraft,    setTenureDraft]    = useState<string | null>(null);
@@ -30,18 +47,13 @@ export default function LoanInputPanel({ params, onChange }: Props) {
   const update = (key: keyof LoanParams, value: number) =>
     onChange({ ...params, [key]: value });
 
-  const tenureDisplay = tenureUnit === 'years' ? params.tenureMonths / 12 : params.tenureMonths;
-  const tenureMin     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.min / 12 : LOAN_LIMITS.tenureMonths.min;
-  const tenureMax     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.max / 12 : LOAN_LIMITS.tenureMonths.max;
-  const tenureStep    = tenureUnit === 'years' ? 0.5 : LOAN_LIMITS.tenureMonths.step;
-
-  const handleTenureChange = (val: number) => {
+  const handleTenureCommit = (val: number) => {
     const months = tenureUnit === 'years' ? Math.round(val * 12) : val;
     update('tenureMonths', months);
   };
 
   const handleTenureUnitChange = (unit: 'months' | 'years') => {
-    setTenureDraft(null); // reset draft when switching unit
+    setTenureDraft(null);
     setTenureUnit(unit);
   };
 
@@ -58,8 +70,9 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           min={LOAN_LIMITS.principal.min}
           max={LOAN_LIMITS.principal.max}
           step={LOAN_LIMITS.principal.step}
-          value={[params.principal]}
-          onValueChange={(val) => { setPrincipalDraft(null); update('principal', sv(val)); }}
+          value={[principalSlider]}
+          onValueChange={(val) => setPrincipalSlider(sv(val))}
+          onValueCommitted={(val) => { setPrincipalDraft(null); update('principal', sv(val)); }}
           className="w-full"
         />
         <Input
@@ -88,8 +101,9 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           min={LOAN_LIMITS.annualRate.min}
           max={LOAN_LIMITS.annualRate.max}
           step={LOAN_LIMITS.annualRate.step}
-          value={[params.annualRate]}
-          onValueChange={(val) => { setRateDraft(null); update('annualRate', sv(val)); }}
+          value={[rateSlider]}
+          onValueChange={(val) => setRateSlider(sv(val))}
+          onValueCommitted={(val) => { setRateDraft(null); update('annualRate', sv(val)); }}
           className="w-full"
         />
         <Input
@@ -138,8 +152,9 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           min={tenureMin}
           max={tenureMax}
           step={tenureStep}
-          value={[tenureDisplay]}
-          onValueChange={(val) => { setTenureDraft(null); handleTenureChange(sv(val)); }}
+          value={[tenureSlider]}
+          onValueChange={(val) => setTenureSlider(sv(val))}
+          onValueCommitted={(val) => { setTenureDraft(null); handleTenureCommit(sv(val)); }}
           className="w-full"
         />
         <Input
@@ -150,7 +165,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           onBlur={() => {
             const v = Number(tenureDraft);
             if (tenureDraft !== null && Number.isFinite(v) && v > 0) {
-              handleTenureChange(clamp(v, tenureMin, tenureMax));
+              handleTenureCommit(clamp(v, tenureMin, tenureMax));
             }
             setTenureDraft(null);
           }}
