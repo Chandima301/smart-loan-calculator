@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Calculator } from 'lucide-react';
+import Logo from './Logo';
 import { useSettingsStore } from '@/store/settingsStore';
 import { CURRENCIES } from '@/lib/currencies';
 
@@ -12,7 +12,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold text-lg">
-          <Calculator className="h-5 w-5 text-primary" />
+          <Logo className="h-5 w-5 text-primary" />
           <span>Smart Loan Analyzer</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-muted-foreground">
