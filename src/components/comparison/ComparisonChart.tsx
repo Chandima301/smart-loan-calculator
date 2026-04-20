@@ -4,13 +4,14 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid,
 } from 'recharts';
 import type { LoanScenario } from '@/types/loan';
-import { formatCurrency } from '@/lib/formatters';
+import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 
 interface Props {
   scenarios: LoanScenario[];
 }
 
 function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; fill: string }>; label?: string }) {
+  const fmt = useCurrencyFormat();
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-background p-3 shadow-sm text-sm space-y-1">
@@ -19,7 +20,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
         <div key={p.name} className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full" style={{ background: p.fill }} />
           <span className="text-muted-foreground">{p.name}:</span>
-          <span className="font-medium">{formatCurrency(p.value)}</span>
+          <span className="font-medium">{fmt(p.value)}</span>
         </div>
       ))}
     </div>

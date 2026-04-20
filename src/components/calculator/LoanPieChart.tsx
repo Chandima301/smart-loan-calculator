@@ -1,7 +1,7 @@
 'use client';
 
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { formatCurrency } from '@/lib/formatters';
+import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 
 const COLORS = { principal: '#3b82f6', interest: '#f97316' };
 
@@ -11,11 +11,12 @@ interface Props {
 }
 
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ name: string; value: number }> }) {
+  const fmt = useCurrencyFormat();
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-background p-2 shadow-sm text-sm">
       <p className="font-medium">{payload[0].name}</p>
-      <p className="text-muted-foreground">{formatCurrency(payload[0].value)}</p>
+      <p className="text-muted-foreground">{fmt(payload[0].value)}</p>
     </div>
   );
 }

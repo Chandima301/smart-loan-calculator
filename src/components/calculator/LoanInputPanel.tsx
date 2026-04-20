@@ -7,7 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import type { LoanParams } from '@/types/loan';
 import { LOAN_LIMITS } from '@/lib/constants';
-import { formatCurrency, formatMonths } from '@/lib/formatters';
+import { formatMonths } from '@/lib/formatters';
+import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function LoanInputPanel({ params, onChange }: Props) {
+  const fmt = useCurrencyFormat();
   const [tenureUnit, setTenureUnit] = useState<'months' | 'years'>('years');
 
   // Local slider state — moves the thumb live during drag without triggering
@@ -64,7 +66,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-sm font-medium">Loan Amount</Label>
-          <span className="text-sm font-semibold text-primary">{formatCurrency(params.principal)}</span>
+          <span className="text-sm font-semibold text-primary">{fmt(params.principal)}</span>
         </div>
         <Slider
           min={LOAN_LIMITS.principal.min}

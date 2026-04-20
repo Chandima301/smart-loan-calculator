@@ -1,4 +1,4 @@
-export function formatCurrency(value: number, currencyCode = 'LKR'): string {
+export function formatCurrency(value: number, currencyCode = 'USD'): string {
   try {
     return new Intl.NumberFormat(undefined, {
       style: 'currency',
