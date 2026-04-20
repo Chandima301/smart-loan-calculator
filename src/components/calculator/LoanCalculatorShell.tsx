@@ -1,21 +1,24 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import LoanInputPanel from './LoanInputPanel';
 import SummaryCards from './SummaryCards';
-import LoanPieChart from './LoanPieChart';
-import BalanceChart from './BalanceChart';
-import AmortizationTable from './AmortizationTable';
-import PrepaymentSimulator from './PrepaymentSimulator';
-import RateSensitivity from './RateSensitivity';
-import LoanInsights from './LoanInsights';
 import ShareButton from './ShareButton';
 import LoanParamsFromUrl from './LoanParamsFromUrl';
-import ComparisonPanel from '@/components/comparison/ComparisonPanel';
-import AffordabilityChecker from '@/components/affordability/AffordabilityChecker';
-import LoanRestructure from './LoanRestructure';
+
+// Lazy load heavy components — keeps initial bundle small and FCP fast
+const LoanPieChart       = dynamic(() => import('./LoanPieChart'),       { ssr: false });
+const BalanceChart       = dynamic(() => import('./BalanceChart'),       { ssr: false });
+const AmortizationTable  = dynamic(() => import('./AmortizationTable'),  { ssr: false });
+const PrepaymentSimulator= dynamic(() => import('./PrepaymentSimulator'),{ ssr: false });
+const RateSensitivity    = dynamic(() => import('./RateSensitivity'),    { ssr: false });
+const LoanInsights       = dynamic(() => import('./LoanInsights'),       { ssr: false });
+const ComparisonPanel    = dynamic(() => import('@/components/comparison/ComparisonPanel'),   { ssr: false });
+const AffordabilityChecker = dynamic(() => import('@/components/affordability/AffordabilityChecker'), { ssr: false });
+const LoanRestructure    = dynamic(() => import('./LoanRestructure'),    { ssr: false });
 import { calculateEMI, generateAmortizationSchedule, simulatePrepayment } from '@/lib/loanCalculations';
 import { LOAN_DEFAULTS } from '@/lib/constants';
 import type { LoanParams, PrepaymentParams } from '@/types/loan';

@@ -65,14 +65,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${jakartaSans.variable} ${jetbrainsMono.variable} h-full antialiased`}>
-      <head>
-        {/* AdSense — placed in <head> so Google's crawler detects it reliably */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8973602955210703"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script
           type="application/ld+json"
@@ -84,6 +76,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Footer />
         </TooltipProvider>
         <Analytics />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8973602955210703"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
         {GA_ID && (
           <>
             <Script
