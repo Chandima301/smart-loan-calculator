@@ -10,7 +10,7 @@ export const LOAN_LIMITS = {
   tenureMonths: { min: 6, max: 360, step: 6 },
   extraPayment: { min: 0, max: 500_000, step: 1_000 },
   lumpSum: { min: 0, max: 50_000_000, step: 50_000 },
-  monthlyIncome: { min: 10_000, max: 5_000_000, step: 5_000 },
+  monthlyIncome: { min: 500, max: 5_000_000, step: 500 },
 };
 
 export const EMI_TO_INCOME_RATIO = 0.40;
