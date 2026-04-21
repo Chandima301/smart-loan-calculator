@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,8 +20,10 @@ interface Props {
   onChange: (params: LoanParams) => void;
 }
 
-// Self-contained numeric input that is completely isolated from external
-// state changes while the user is typing
+// Fully uncontrolled numeric input.
+// React literally cannot overwrite the DOM value while the user is focused —
+// we only re-sync from props when the user is NOT focused, and we use a
+// remounting key so the new value is picked up via defaultValue.
 function NumericField({
   value,
   inputMode,
@@ -35,28 +37,39 @@ function NumericField({
   max: number;
   onCommit: (v: number) => void;
 }) {
-  const [editing, setEditing] = useState(false);
-  const [editValue, setEditValue] = useState('');
+  const [syncedValue, setSyncedValue] = useState(value);
+  const focusedRef = useRef(false);
+
+  // Only pull in external updates when the user is not currently typing.
+  // While focused, the DOM input keeps whatever the user has typed —
+  // nothing React does can wipe it out.
+  useEffect(() => {
+    if (!focusedRef.current && value !== syncedValue) {
+      setSyncedValue(value);
+    }
+  }, [value, syncedValue]);
 
   return (
     <Input
+      key={syncedValue}
       type="text"
       inputMode={inputMode}
-      // When editing: show what the user types
-      // When not editing: always reflect the external value
-      value={editing ? editValue : String(value)}
+      defaultValue={String(syncedValue)}
       onFocus={() => {
-        setEditing(true);
-        setEditValue(String(value));
+        focusedRef.current = true;
       }}
-      onChange={(e) => setEditValue(e.target.value)}
-      onBlur={() => {
-        setEditing(false);
-        const v = Number(editValue);
+      onBlur={(e) => {
+        focusedRef.current = false;
+        const raw = e.currentTarget.value;
+        const v = Number(raw);
         if (Number.isFinite(v) && v > 0) {
-          onCommit(clamp(v, min, max));
+          const clamped = clamp(v, min, max);
+          setSyncedValue(clamped);
+          onCommit(clamped);
+        } else {
+          // invalid entry — snap back to the current committed value
+          setSyncedValue(value);
         }
-        // if invalid just leave params unchanged — display resets to value via controlled prop
       }}
       className="h-11"
     />
