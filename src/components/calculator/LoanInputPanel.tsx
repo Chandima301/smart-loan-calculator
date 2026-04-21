@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Slider } from '@/components/ui/slider';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import type { LoanParams } from '@/types/loan';
@@ -20,10 +19,10 @@ interface Props {
   onChange: (params: LoanParams) => void;
 }
 
-// Fully uncontrolled numeric input.
-// React literally cannot overwrite the DOM value while the user is focused —
-// we only re-sync from props when the user is NOT focused, and we use a
-// remounting key so the new value is picked up via defaultValue.
+// Fully uncontrolled numeric input using a native <input> element.
+// We avoid base-ui's Input wrapper here because its focus/blur handling
+// interacted badly with controlled-value sync on mobile. A plain native
+// input with a ref is the most reliable path.
 function NumericField({
   value,
   inputMode,
@@ -37,41 +36,48 @@ function NumericField({
   max: number;
   onCommit: (v: number) => void;
 }) {
-  const [syncedValue, setSyncedValue] = useState(value);
+  const inputRef = useRef<HTMLInputElement>(null);
   const focusedRef = useRef(false);
 
-  // Only pull in external updates when the user is not currently typing.
-  // While focused, the DOM input keeps whatever the user has typed —
-  // nothing React does can wipe it out.
+  // When the external value changes AND the user is not currently editing,
+  // push the new value into the DOM directly. This is the only code path
+  // that writes to the input's DOM value — and it only runs when unfocused.
   useEffect(() => {
-    if (!focusedRef.current && value !== syncedValue) {
-      setSyncedValue(value);
+    if (!focusedRef.current && inputRef.current) {
+      inputRef.current.value = String(value);
     }
-  }, [value, syncedValue]);
+  }, [value]);
+
+  const commit = () => {
+    focusedRef.current = false;
+    const raw = inputRef.current?.value ?? '';
+    const v = Number(raw);
+    if (Number.isFinite(v) && v > 0) {
+      const clamped = clamp(v, min, max);
+      if (inputRef.current) inputRef.current.value = String(clamped);
+      onCommit(clamped);
+    } else {
+      // invalid — snap back to current committed value
+      if (inputRef.current) inputRef.current.value = String(value);
+    }
+  };
 
   return (
-    <Input
-      key={syncedValue}
+    <input
+      ref={inputRef}
       type="text"
       inputMode={inputMode}
-      defaultValue={String(syncedValue)}
+      defaultValue={String(value)}
       onFocus={() => {
         focusedRef.current = true;
       }}
-      onBlur={(e) => {
-        focusedRef.current = false;
-        const raw = e.currentTarget.value;
-        const v = Number(raw);
-        if (Number.isFinite(v) && v > 0) {
-          const clamped = clamp(v, min, max);
-          setSyncedValue(clamped);
-          onCommit(clamped);
-        } else {
-          // invalid entry — snap back to the current committed value
-          setSyncedValue(value);
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.currentTarget.blur();
         }
       }}
-      className="h-11"
+      className="h-11 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
     />
   );
 }
