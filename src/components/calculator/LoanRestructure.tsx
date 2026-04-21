@@ -2,9 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
+import { NumericField } from '@/components/ui/numeric-field';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { TrendingDown, TrendingUp, AlertTriangle, CheckCircle, Clock, Info } from 'lucide-react';
@@ -115,16 +115,12 @@ export default function LoanRestructure({ initialParams }: Props) {
                 value={[principal]}
                 onValueChange={(val) => setPrincipal(sv(val))}
               />
-              <Input
-                type="number"
+              <NumericField
                 value={principal}
                 min={LOAN_LIMITS.principal.min}
                 max={LOAN_LIMITS.principal.max}
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  if (v >= LOAN_LIMITS.principal.min && v <= LOAN_LIMITS.principal.max) setPrincipal(v);
-                }}
-                className="h-11"
+                inputMode="numeric"
+                onCommit={setPrincipal}
               />
             </div>
 
@@ -180,16 +176,12 @@ export default function LoanRestructure({ initialParams }: Props) {
                 value={[safeMonthsPaid]}
                 onValueChange={(val) => setMonthsPaid(sv(val))}
               />
-              <Input
-                type="number"
+              <NumericField
                 value={safeMonthsPaid}
                 min={1}
                 max={maxMonthsPaid}
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  if (v >= 1 && v <= maxMonthsPaid) setMonthsPaid(v);
-                }}
-                className="h-11"
+                inputMode="numeric"
+                onCommit={setMonthsPaid}
               />
               <p className="text-xs text-muted-foreground">
                 Remaining balance:{' '}
@@ -226,16 +218,12 @@ export default function LoanRestructure({ initialParams }: Props) {
                 <Label className="text-sm font-medium">Fixed Fees</Label>
                 <span className="text-xs text-muted-foreground">documents, insurance, etc.</span>
               </div>
-              <Input
-                type="number"
+              <NumericField
                 value={fixedFee}
                 min={0}
+                inputMode="numeric"
                 placeholder="0"
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  if (v >= 0) setFixedFee(v);
-                }}
-                className="h-11"
+                onCommit={setFixedFee}
               />
               {fixedFee > 0 && (
                 <p className="text-xs text-muted-foreground">
@@ -274,15 +262,11 @@ export default function LoanRestructure({ initialParams }: Props) {
                   </button>
                 )}
               </div>
-              <Input
-                type="number"
+              <NumericField
                 value={effectiveNewLoan}
                 min={1}
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  if (v > 0) setNewLoanOverride(v);
-                }}
-                className="h-11"
+                inputMode="numeric"
+                onCommit={setNewLoanOverride}
               />
               {result.capitalPayment > 0 && (
                 <p className="text-xs text-blue-600 flex items-center gap-1">

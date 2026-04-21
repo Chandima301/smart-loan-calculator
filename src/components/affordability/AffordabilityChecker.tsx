@@ -2,11 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { NumericField } from '@/components/ui/numeric-field';
 import { checkAffordability } from '@/lib/loanCalculations';
 import { LOAN_DEFAULTS, LOAN_LIMITS } from '@/lib/constants';
 import { formatMonths } from '@/lib/formatters';
@@ -66,38 +66,35 @@ export default function AffordabilityChecker({ onApplyToCalculator }: Props) {
           value={[monthlyIncome]}
           onValueChange={(val) => setMonthlyIncome(sv(val))}
         />
-        <Input
-          type="number"
+        <NumericField
           value={monthlyIncome}
           min={LOAN_LIMITS.monthlyIncome.min}
-          onChange={(e) => setMonthlyIncome(Math.max(LOAN_LIMITS.monthlyIncome.min, Number(e.target.value)))}
-          className="h-11"
+          max={LOAN_LIMITS.monthlyIncome.max}
+          inputMode="numeric"
+          onCommit={setMonthlyIncome}
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-sm font-medium">Interest Rate</Label>
-          <Input
-            type="number"
+          <NumericField
             value={annualRate}
             min={LOAN_LIMITS.annualRate.min}
             max={LOAN_LIMITS.annualRate.max}
-            step={0.1}
-            onChange={(e) => setAnnualRate(Number(e.target.value))}
-            className="h-11"
+            inputMode="decimal"
+            onCommit={setAnnualRate}
           />
         </div>
         <div className="space-y-2">
           <Label className="text-sm font-medium">Tenure</Label>
           <div className="flex gap-2">
-            <Input
-              type="number"
+            <NumericField
               value={Math.round(tenureMonths / 12)}
               min={1}
               max={30}
-              onChange={(e) => setTenureMonths(Number(e.target.value) * 12)}
-              className="h-11"
+              inputMode="numeric"
+              onCommit={(v) => setTenureMonths(v * 12)}
             />
             <span className="flex items-center text-sm text-muted-foreground whitespace-nowrap">years</span>
           </div>
