@@ -19,10 +19,11 @@ interface Props {
   onChange: (params: LoanParams) => void;
 }
 
-// Fully uncontrolled numeric input using a native <input> element.
-// We avoid base-ui's Input wrapper here because its focus/blur handling
-// interacted badly with controlled-value sync on mobile. A plain native
-// input with a ref is the most reliable path.
+// Controlled input with a "draft" state that shadows the prop while editing.
+// - draft === null: not editing, display reflects the prop (value from parent)
+// - draft !== null: editing, display reflects draft (whatever user has typed)
+// Because draft is set on focus and cleared on blur, any prop change coming
+// from the slider while the user is typing is cleanly ignored by the display.
 function NumericField({
   value,
   inputMode,
@@ -36,46 +37,27 @@ function NumericField({
   max: number;
   onCommit: (v: number) => void;
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const focusedRef = useRef(false);
+  const [draft, setDraft] = useState<string | null>(null);
 
-  // When the external value changes AND the user is not currently editing,
-  // push the new value into the DOM directly. This is the only code path
-  // that writes to the input's DOM value — and it only runs when unfocused.
-  useEffect(() => {
-    if (!focusedRef.current && inputRef.current) {
-      inputRef.current.value = String(value);
-    }
-  }, [value]);
-
-  const commit = () => {
-    focusedRef.current = false;
-    const raw = inputRef.current?.value ?? '';
-    const v = Number(raw);
-    if (Number.isFinite(v) && v > 0) {
-      const clamped = clamp(v, min, max);
-      if (inputRef.current) inputRef.current.value = String(clamped);
-      onCommit(clamped);
-    } else {
-      // invalid — snap back to current committed value
-      if (inputRef.current) inputRef.current.value = String(value);
-    }
-  };
+  const display = draft !== null ? draft : String(value);
 
   return (
     <input
-      ref={inputRef}
       type="text"
       inputMode={inputMode}
-      defaultValue={String(value)}
-      onFocus={() => {
-        focusedRef.current = true;
-      }}
-      onBlur={commit}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          e.currentTarget.blur();
+      value={display}
+      onFocus={() => setDraft(String(value))}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={() => {
+        if (draft === null) return;
+        const v = Number(draft);
+        if (Number.isFinite(v) && v > 0) {
+          onCommit(clamp(v, min, max));
         }
+        setDraft(null);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
       }}
       className="h-11 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
     />
