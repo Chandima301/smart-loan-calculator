@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -70,7 +70,6 @@ export default function LoanInputPanel({ params, onChange }: Props) {
 
   // Local slider state — moves thumb live during drag without parent recalculations
   const [principalSlider, setPrincipalSlider] = useState(params.principal);
-  const [rateSlider,      setRateSlider]      = useState(params.annualRate);
 
   const tenureDisplay = tenureUnit === 'years' ? params.tenureMonths / 12 : params.tenureMonths;
   const tenureMin     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.min / 12 : LOAN_LIMITS.tenureMonths.min;
@@ -80,7 +79,6 @@ export default function LoanInputPanel({ params, onChange }: Props) {
 
   // Keep sliders in sync when params change externally
   useEffect(() => { setPrincipalSlider(params.principal); }, [params.principal]);
-  useEffect(() => { setRateSlider(params.annualRate);     }, [params.annualRate]);
   useEffect(() => { setTenureSlider(tenureDisplay);       }, [tenureDisplay]);
 
   const update = (key: keyof LoanParams, value: number) =>
@@ -128,9 +126,8 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           min={LOAN_LIMITS.annualRate.min}
           max={LOAN_LIMITS.annualRate.max}
           step={LOAN_LIMITS.annualRate.step}
-          value={[rateSlider]}
-          onValueChange={(val) => setRateSlider(sv(val))}
-          onValueCommitted={(val) => update('annualRate', sv(val))}
+          value={[params.annualRate]}
+          onValueChange={(val) => update('annualRate', sv(val))}
           className="w-full"
         />
         <NumericField

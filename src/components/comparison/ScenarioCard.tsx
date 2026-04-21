@@ -16,6 +16,45 @@ import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
 
+const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
+
+// Draft-state numeric input for manual entry
+function PrincipalInput({
+  value,
+  min,
+  max,
+  onCommit,
+}: {
+  value: number;
+  min: number;
+  max: number;
+  onCommit: (v: number) => void;
+}) {
+  const [draft, setDraft] = useState<string | null>(null);
+  const display = draft !== null ? draft : String(value);
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      value={display}
+      onFocus={() => setDraft(String(value))}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={() => {
+        if (draft === null) return;
+        const v = Number(draft);
+        if (Number.isFinite(v) && v > 0) {
+          onCommit(clamp(v, min, max));
+        }
+        setDraft(null);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+      }}
+      className="h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50"
+    />
+  );
+}
+
 interface Props {
   scenario: LoanScenario;
   onUpdate: (id: string, params: Partial<{ principal: number; annualRate: number; tenureMonths: number }>) => void;
@@ -89,6 +128,12 @@ export default function ScenarioCard({ scenario, onUpdate, onUpdateLabel, onRemo
             step={LOAN_LIMITS.principal.step}
             value={[params.principal]}
             onValueChange={(val) => onUpdate(scenario.id, { principal: sv(val) })}
+          />
+          <PrincipalInput
+            value={params.principal}
+            min={LOAN_LIMITS.principal.min}
+            max={LOAN_LIMITS.principal.max}
+            onCommit={(v) => onUpdate(scenario.id, { principal: v })}
           />
         </div>
 
