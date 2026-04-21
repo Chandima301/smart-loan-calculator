@@ -74,7 +74,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           step={LOAN_LIMITS.principal.step}
           value={[principalSlider]}
           onValueChange={(val) => setPrincipalSlider(sv(val))}
-          onValueCommitted={(val) => { setPrincipalDraft(null); update('principal', sv(val)); }}
+          onValueCommitted={(val) => update('principal', sv(val))}
           className="w-full"
         />
         <Input
@@ -105,7 +105,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           step={LOAN_LIMITS.annualRate.step}
           value={[rateSlider]}
           onValueChange={(val) => setRateSlider(sv(val))}
-          onValueCommitted={(val) => { setRateDraft(null); update('annualRate', sv(val)); }}
+          onValueCommitted={(val) => update('annualRate', sv(val))}
           className="w-full"
         />
         <Input
@@ -156,7 +156,7 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           step={tenureStep}
           value={[tenureSlider]}
           onValueChange={(val) => setTenureSlider(sv(val))}
-          onValueCommitted={(val) => { setTenureDraft(null); handleTenureCommit(sv(val)); }}
+          onValueCommitted={(val) => handleTenureCommit(sv(val))}
           className="w-full"
         />
         <Input
