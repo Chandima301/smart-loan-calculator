@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -68,18 +68,10 @@ export default function LoanInputPanel({ params, onChange }: Props) {
   const fmt = useCurrencyFormat();
   const [tenureUnit, setTenureUnit] = useState<'months' | 'years'>('years');
 
-  // Local slider state — moves thumb live during drag without parent recalculations
-  const [principalSlider, setPrincipalSlider] = useState(params.principal);
-
   const tenureDisplay = tenureUnit === 'years' ? params.tenureMonths / 12 : params.tenureMonths;
   const tenureMin     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.min / 12 : LOAN_LIMITS.tenureMonths.min;
   const tenureMax     = tenureUnit === 'years' ? LOAN_LIMITS.tenureMonths.max / 12 : LOAN_LIMITS.tenureMonths.max;
   const tenureStep    = tenureUnit === 'years' ? 0.5 : LOAN_LIMITS.tenureMonths.step;
-  const [tenureSlider, setTenureSlider] = useState(tenureDisplay);
-
-  // Keep sliders in sync when params change externally
-  useEffect(() => { setPrincipalSlider(params.principal); }, [params.principal]);
-  useEffect(() => { setTenureSlider(tenureDisplay);       }, [tenureDisplay]);
 
   const update = (key: keyof LoanParams, value: number) =>
     onChange({ ...params, [key]: value });
@@ -102,9 +94,8 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           min={LOAN_LIMITS.principal.min}
           max={LOAN_LIMITS.principal.max}
           step={LOAN_LIMITS.principal.step}
-          value={[principalSlider]}
-          onValueChange={(val) => setPrincipalSlider(sv(val))}
-          onValueCommitted={(val) => update('principal', sv(val))}
+          value={[params.principal]}
+          onValueChange={(val) => update('principal', sv(val))}
           className="w-full"
         />
         <NumericField
@@ -169,9 +160,8 @@ export default function LoanInputPanel({ params, onChange }: Props) {
           min={tenureMin}
           max={tenureMax}
           step={tenureStep}
-          value={[tenureSlider]}
-          onValueChange={(val) => setTenureSlider(sv(val))}
-          onValueCommitted={(val) => handleTenureCommit(sv(val))}
+          value={[tenureDisplay]}
+          onValueChange={(val) => handleTenureCommit(sv(val))}
           className="w-full"
         />
         <NumericField
