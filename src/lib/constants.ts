@@ -1,7 +1,7 @@
 export const LOAN_DEFAULTS = {
-  principal: 1_000_000,
-  annualRate: 12,
-  tenureMonths: 60,
+  principal: 100_000,
+  annualRate: 7.5,
+  tenureMonths: 240,
 };
 
 export const LOAN_LIMITS = {

@@ -1,13 +1,32 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
 import { SITE_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Smart Loan Analyzer — Free EMI Calculator',
+  title: 'Free Loan Calculator — EMI, Comparison, Prepayment & Affordability',
   description:
-    'Calculate EMI, total interest, and repayment for any loan instantly. Compare multiple scenarios, simulate prepayments, and check affordability.',
+    'Calculate monthly payments, total interest, and full amortization for any loan. Compare offers, simulate prepayments, and check affordability — free, no signup.',
   alternates: { canonical: SITE_URL },
 };
+
+const CALCULATOR_LINKS = [
+  { href: '/home-loan-calculator',     label: 'Home Loan',     desc: 'Monthly payment & mortgage estimator' },
+  { href: '/mortgage-calculator',      label: 'Mortgage',      desc: '15 vs 30-year fixed-rate payments' },
+  { href: '/personal-loan-calculator', label: 'Personal Loan', desc: 'Unsecured loan EMI calculator' },
+  { href: '/car-loan-calculator',      label: 'Car Loan',      desc: 'Auto finance payment estimator' },
+  { href: '/auto-loan-calculator',     label: 'Auto Loan',     desc: 'US auto loan interest & amortization' },
+  { href: '/student-loan-calculator',  label: 'Student Loan',  desc: 'Monthly payment & payoff timeline' },
+  { href: '/refinance-calculator',     label: 'Refinance',     desc: 'Break-even & lifetime savings' },
+];
+
+const FEATURES = [
+  { Icon: Calculator,  label: 'Calculator',    desc: 'Instant EMI, total interest, and full amortization schedule.' },
+  { Icon: BarChart2,   label: 'Compare',       desc: 'Put up to 3 loan offers side by side to find the cheapest.' },
+  { Icon: Wallet,      label: 'Affordability', desc: 'Find the maximum loan size you can comfortably borrow.' },
+  { Icon: RefreshCw,   label: 'Restructure',   desc: 'Calculate refinance break-even and total lifetime savings.' },
+];
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -77,8 +96,61 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <h1 className="sr-only">Smart Loan Analyzer — Free EMI Calculator</h1>
+
+      {/* Hero banner */}
+      <div className="border-b bg-muted/40">
+        <div className="container mx-auto max-w-5xl px-4 py-8">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Free Loan Calculator
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
+            Calculate monthly payments, total interest, and full amortization for any loan — home, mortgage, auto, student, or personal.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+            Compare up to three offers side by side, simulate prepayments, check affordability, and model refinancing — all in one free tool, no signup required. Works with any currency.
+          </p>
+        </div>
+      </div>
+
+      {/* Feature cards */}
+      <div className="container mx-auto max-w-5xl px-4 py-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {FEATURES.map(({ Icon, label, desc }) => (
+            <div key={label} className="rounded-lg border p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <Icon className="h-4 w-4 text-primary shrink-0" />
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  {label}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Calculator */}
       <LoanCalculatorShell />
+
+      {/* Calculator library */}
+      <div className="container mx-auto max-w-5xl px-4 py-12 border-t">
+        <h2 className="text-xl font-semibold mb-2">Specialized Loan Calculators</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Jump to a calculator pre-configured for your loan type with typical market rates and terms.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {CALCULATOR_LINKS.map(({ href, label, desc }) => (
+            <Link
+              key={href}
+              href={href}
+              className="rounded-lg border p-4 hover:border-primary hover:bg-muted/50 transition-colors"
+            >
+              <p className="font-semibold text-sm">{label}</p>
+              <p className="text-xs text-muted-foreground mt-1">{desc}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
