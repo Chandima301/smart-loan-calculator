@@ -12,13 +12,24 @@ const CALCULATOR_LINKS = [
   { href: '/refinance-calculator',      label: 'Refinance'           },
 ];
 
+const COMPANY_LINKS = [
+  { href: '/about',           label: 'About'           },
+  { href: '/contact',         label: 'Contact'         },
+];
+
+const LEGAL_LINKS = [
+  { href: '/privacy-policy',  label: 'Privacy Policy'  },
+  { href: '/terms',           label: 'Terms of Service'},
+  { href: '/disclaimer',      label: 'Disclaimer'      },
+];
+
 export default function Footer() {
   return (
     <footer className="border-t mt-16">
       <div className="container mx-auto max-w-5xl px-4 py-10 text-sm text-muted-foreground">
-        {/* Two-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
-          {/* Left — brand */}
+        {/* Multi-column grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          {/* Brand */}
           <div>
             <p className="font-semibold text-foreground mb-1">Smart Loan Analyzer</p>
             <p className="text-xs leading-relaxed max-w-xs">
@@ -27,11 +38,43 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Right — calculators */}
+          {/* Calculators */}
           <div>
             <p className="font-semibold text-foreground mb-3">Calculators</p>
             <nav className="flex flex-col gap-2">
               {CALCULATOR_LINKS.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="text-xs hover:text-foreground transition-colors w-fit"
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Company */}
+          <div>
+            <p className="font-semibold text-foreground mb-3">Company</p>
+            <nav className="flex flex-col gap-2">
+              {COMPANY_LINKS.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="text-xs hover:text-foreground transition-colors w-fit"
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <p className="font-semibold text-foreground mb-3">Legal</p>
+            <nav className="flex flex-col gap-2">
+              {LEGAL_LINKS.map(({ href, label }) => (
                 <Link
                   key={href}
                   href={href}
@@ -50,7 +93,9 @@ export default function Footer() {
         </div>
         <p className="mt-3 text-xs">
           Disclaimer: Calculations are for informational purposes only. Actual loan terms may vary
-          by lender. Always consult a financial advisor before taking a loan.
+          by lender. Always consult a financial advisor before taking a loan. See our{' '}
+          <Link href="/disclaimer" className="underline hover:text-foreground">full disclaimer</Link>{' '}
+          for details.
         </p>
       </div>
     </footer>
