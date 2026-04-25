@@ -11,9 +11,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-lg">
-          <Logo className="h-5 w-5 text-primary" />
-          <span>Smart Loan Analyzer</span>
+        <Link href="/" className="flex items-center gap-2 font-semibold text-base sm:text-lg whitespace-nowrap min-w-0">
+          <Logo className="h-5 w-5 text-primary shrink-0" />
+          <span className="truncate">Smart Loan Analyzer</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-muted-foreground">
           <select

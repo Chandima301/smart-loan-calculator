@@ -66,7 +66,7 @@ export default function CookieConsent() {
       className="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 sm:px-4 sm:pb-4 pointer-events-none"
     >
       <div className="container mx-auto max-w-3xl pointer-events-auto rounded-xl border bg-background/95 backdrop-blur shadow-lg">
-        <div className="flex flex-col gap-4 p-4 sm:p-5 sm:flex-row sm:items-start">
+        <div className="relative flex flex-col gap-4 p-4 sm:p-5 sm:flex-row sm:items-start">
           <div className="flex items-start gap-3 flex-1">
             <div className="rounded-md bg-primary/10 p-2 shrink-0">
               <Cookie className="h-4 w-4 text-primary" />

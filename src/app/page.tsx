@@ -118,9 +118,9 @@ export default function HomePage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {FEATURES.map(({ Icon, label, desc }) => (
             <div key={label} className="rounded-lg border p-4 space-y-2">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 min-w-0">
                 <Icon className="h-4 w-4 text-primary shrink-0" />
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                <span className="text-xs font-semibold text-muted-foreground uppercase truncate">
                   {label}
                 </span>
               </div>
