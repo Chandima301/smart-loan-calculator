@@ -6,6 +6,7 @@ const CALCULATOR_LINKS = [
   { href: '/personal-loan-calculator',  label: 'Personal Loan'       },
   { href: '/car-loan-calculator',       label: 'Car Loan'            },
   { href: '/mortgage-calculator',       label: 'Mortgage'            },
+  { href: '/biweekly-mortgage-calculator', label: 'Biweekly Mortgage' },
   { href: '/student-loan-calculator',   label: 'Student Loan'        },
   { href: '/auto-loan-calculator',      label: 'Auto Loan'           },
   { href: '/refinance-calculator',      label: 'Refinance'           },

@@ -1,0 +1,115 @@
+import type { Metadata } from 'next';
+import BiweeklyMortgageCalculator from '@/components/biweekly/BiweeklyMortgageCalculator';
+import { SITE_URL } from '@/lib/constants';
+
+const PATH = '/biweekly-mortgage-calculator';
+const CANONICAL = `${SITE_URL}${PATH}`;
+
+export const metadata: Metadata = {
+  title: 'Biweekly Mortgage Calculator — Save Years & Thousands in Interest',
+  description:
+    'See exactly how much interest and time you save by switching to biweekly mortgage payments. Compare standard monthly vs biweekly side by side, with payoff dates and total cost.',
+  keywords: [
+    'biweekly mortgage calculator',
+    'bi-weekly mortgage calculator',
+    'biweekly payment calculator',
+    'biweekly mortgage savings',
+    'biweekly vs monthly mortgage',
+    'mortgage payoff calculator',
+    'extra mortgage payment calculator',
+    'accelerated mortgage payment',
+  ],
+  alternates: { canonical: CANONICAL },
+  openGraph: {
+    title: 'Biweekly Mortgage Calculator — Free Savings Tool',
+    description:
+      'Calculate your savings from biweekly mortgage payments — interest saved, years cut, and exact payoff date.',
+    url: CANONICAL,
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
+  },
+  robots: { index: true, follow: true },
+};
+
+const FAQ = [
+  {
+    question: 'How do biweekly mortgage payments save you money?',
+    answer:
+      'You pay half your monthly mortgage every 14 days. Because there are 52 weeks in a year, that works out to 26 biweekly payments — equivalent to 13 monthly payments per year, one extra payment annually. That extra payment goes 100% to principal, which slashes the interest charged on every future month and shortens the loan.',
+  },
+  {
+    question: 'How much can I save on a $300,000 mortgage with biweekly payments?',
+    answer:
+      'On a $300,000 30-year mortgage at 6.5%, the standard monthly payment is about $1,896 and total interest over 30 years is roughly $382,633. Switching to biweekly ($948 every 14 days) pays the loan off in about 24.5 years and cuts total interest to roughly $304,000 — saving around $78,000 and over 5 years of payments.',
+  },
+  {
+    question: 'Is biweekly the same as paying extra each month?',
+    answer:
+      'Mathematically, yes. Paying biweekly is equivalent to making 1/12 of a monthly payment as extra principal every month — you arrive at the same payoff date and the same interest savings either way. The advantage of biweekly is that it aligns with biweekly paychecks, so the extra payment happens automatically without budgeting for a separate "extra payment."',
+  },
+  {
+    question: 'Should I sign up for my lender\'s biweekly program or do it myself?',
+    answer:
+      'Many lenders charge $200–$400 enrollment plus monthly fees for biweekly programs — and some only credit the extra payment once a year, which kills most of the benefit. You can get the exact same result fee-free by either paying half your mortgage every two weeks directly, or simply adding 1/12 of your payment to each monthly payment as extra principal. Always confirm your lender accepts extra principal payments without penalty first.',
+  },
+];
+
+export default function BiweeklyMortgageCalculatorPage() {
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Biweekly Mortgage Calculator', item: CANONICAL },
+    ],
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+
+      {/* Hero banner */}
+      <div className="border-b bg-muted/40">
+        <div className="container mx-auto max-w-5xl px-4 py-8">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Biweekly Mortgage Calculator
+          </h1>
+          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
+            See exactly how many years and how much interest you save by paying your mortgage biweekly instead of monthly.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+            Paying half your mortgage every 14 days adds up to 26 payments per year — the equivalent of 13 monthly payments,
+            or one extra full payment annually. On a typical 30-year mortgage that single extra payment shaves 4–6 years off
+            the loan and saves tens of thousands in interest.
+          </p>
+        </div>
+      </div>
+
+      {/* Calculator */}
+      <BiweeklyMortgageCalculator />
+
+      {/* FAQ */}
+      <div className="container mx-auto max-w-5xl px-4 py-12">
+        <h2 className="text-xl font-semibold mb-6">Frequently Asked Questions</h2>
+        <div className="space-y-4">
+          {FAQ.map(({ question, answer }) => (
+            <div key={question} className="rounded-lg border p-5">
+              <h3 className="font-semibold text-sm mb-2">{question}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{answer}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
