@@ -113,7 +113,7 @@ export default function HomePage() {
       </div>
 
       {/* Feature cards */}
-      <div className="container mx-auto max-w-5xl px-4 py-6">
+      <div className="container mx-auto max-w-5xl px-4 pt-6 pb-2">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {FEATURES.map(({ Icon, label, desc }) => (
             <div key={label} className="rounded-lg border p-4 space-y-2">
@@ -129,28 +129,30 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Calculator */}
-      <LoanCalculatorShell />
-
-      {/* Calculator library */}
-      <div className="container mx-auto max-w-5xl px-4 py-12 border-t">
-        <h2 className="text-xl font-semibold mb-2">Specialized Loan Calculators</h2>
-        <p className="text-sm text-muted-foreground mb-6">
-          Jump to a calculator pre-configured for your loan type with typical market rates and terms.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {/* Specialized calculators — funnel routing above the generic tool */}
+      <div className="container mx-auto max-w-5xl px-4 pt-6 pb-2">
+        <div className="flex items-baseline justify-between mb-4">
+          <h2 className="text-lg font-semibold">Pick a calculator for your loan type</h2>
+          <span className="text-xs text-muted-foreground hidden sm:inline">
+            Or use the generic calculator below
+          </span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {CALCULATOR_LINKS.map(({ href, label, desc }) => (
             <Link
               key={href}
               href={href}
-              className="rounded-lg border p-4 hover:border-primary hover:bg-muted/50 transition-colors"
+              className="rounded-lg border p-3 hover:border-primary hover:bg-muted/50 transition-colors"
             >
               <p className="font-semibold text-sm">{label}</p>
-              <p className="text-xs text-muted-foreground mt-1">{desc}</p>
+              <p className="text-xs text-muted-foreground mt-1 leading-snug">{desc}</p>
             </Link>
           ))}
         </div>
       </div>
+
+      {/* Generic calculator */}
+      <LoanCalculatorShell />
     </>
   );
 }
