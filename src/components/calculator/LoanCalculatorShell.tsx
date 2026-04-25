@@ -89,7 +89,7 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
       </Suspense>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="-mx-4 mb-6 overflow-x-auto px-4 sm:mx-0 sm:flex sm:justify-center sm:px-0 sm:overflow-visible">
+        <div className="-mx-4 mb-6 flex justify-center-safe overflow-x-auto px-4 sm:mx-0 sm:px-0 sm:overflow-visible">
           <TabsList className="w-max sm:w-auto">
             <TabsTrigger value="calculator" className="text-xs sm:text-sm">Calculator</TabsTrigger>
             <TabsTrigger value="compare" className="text-xs sm:text-sm">Compare</TabsTrigger>
