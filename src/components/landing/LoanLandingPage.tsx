@@ -1,5 +1,6 @@
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
+import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import { SITE_URL } from '@/lib/constants';
 import type { LoanParams } from '@/types/loan';
 
@@ -102,6 +103,9 @@ export default function LoanLandingPage({
 
       {/* Calculator */}
       <LoanCalculatorShell defaultParams={defaultParams} />
+
+      {/* Related calculators — internal linking for SEO + UX */}
+      <RelatedCalculators currentPath={canonicalPath} />
 
       {/* FAQ */}
       <div className="container mx-auto max-w-5xl px-4 py-12">

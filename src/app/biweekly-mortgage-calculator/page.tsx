@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import BiweeklyMortgageCalculator from '@/components/biweekly/BiweeklyMortgageCalculator';
+import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/biweekly-mortgage-calculator';
@@ -97,6 +98,9 @@ export default function BiweeklyMortgageCalculatorPage() {
 
       {/* Calculator */}
       <BiweeklyMortgageCalculator />
+
+      {/* Related calculators — internal linking for SEO + UX */}
+      <RelatedCalculators currentPath={PATH} />
 
       {/* FAQ */}
       <div className="container mx-auto max-w-5xl px-4 py-12">
