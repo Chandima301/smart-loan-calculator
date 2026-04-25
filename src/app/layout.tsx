@@ -5,8 +5,43 @@ import { Analytics } from '@vercel/analytics/react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import CookieConsent from '@/components/cookies/CookieConsent';
 import { SITE_URL } from '@/lib/constants';
 import './globals.css';
+
+/**
+ * Google Consent Mode v2 — initialized BEFORE any GA / AdSense script loads.
+ * Defaults all advertising + analytics storage to "denied" until the user
+ * explicitly consents via the banner. If the user previously consented, we
+ * restore that state synchronously so they don't see the banner again.
+ *
+ * GDPR / CCPA / AdSense Personalized-Ads policy compliant.
+ */
+const consentDefaultScript = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+  gtag('consent', 'default', {
+    'ad_storage':            'denied',
+    'ad_user_data':          'denied',
+    'ad_personalization':    'denied',
+    'analytics_storage':     'denied',
+    'functionality_storage': 'granted',
+    'security_storage':      'granted',
+    'wait_for_update':       500
+  });
+  try {
+    var saved = localStorage.getItem('cookie-consent');
+    if (saved === 'granted') {
+      gtag('consent', 'update', {
+        'ad_storage':         'granted',
+        'ad_user_data':       'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage':  'granted'
+      });
+    }
+  } catch (e) {}
+`;
 
 const orgJsonLd = {
   '@context': 'https://schema.org',
@@ -65,6 +100,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${jakartaSans.variable} ${jetbrainsMono.variable} h-full antialiased`}>
+      <head>
+        {/* Google Consent Mode v2 default — must run before GA + AdSense */}
+        <script dangerouslySetInnerHTML={{ __html: consentDefaultScript }} />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script
           type="application/ld+json"
@@ -75,6 +114,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main className="flex-1">{children}</main>
           <Footer />
         </TooltipProvider>
+        <CookieConsent />
         <Analytics />
         <Script
           async
