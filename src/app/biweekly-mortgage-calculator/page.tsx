@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import BiweeklyMortgageCalculator from '@/components/biweekly/BiweeklyMortgageCalculator';
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import GuideSection from '@/components/landing/GuideSection';
+import BiweeklyMortgageGuide, { meta as biweeklyGuideMeta } from '@/content/guides/biweekly-mortgage';
 import { SITE_URL } from '@/lib/constants';
+import { buildArticleSchema } from '@/lib/seo/articleSchema';
 
 const PATH = '/biweekly-mortgage-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
@@ -74,10 +77,19 @@ export default function BiweeklyMortgageCalculatorPage() {
     ],
   };
 
+  const articleJsonLd = buildArticleSchema({
+    headline: biweeklyGuideMeta.headline,
+    description: biweeklyGuideMeta.description,
+    url: CANONICAL,
+    datePublished: biweeklyGuideMeta.datePublished,
+    dateModified: biweeklyGuideMeta.dateModified,
+  });
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
       {/* Hero banner */}
       <div className="border-b bg-muted/40">
@@ -98,6 +110,11 @@ export default function BiweeklyMortgageCalculatorPage() {
 
       {/* Calculator */}
       <BiweeklyMortgageCalculator />
+
+      {/* In-depth educational guide (per-page original content) */}
+      <GuideSection>
+        <BiweeklyMortgageGuide />
+      </GuideSection>
 
       {/* Related calculators — internal linking for SEO + UX */}
       <RelatedCalculators currentPath={PATH} />

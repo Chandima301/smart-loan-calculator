@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import CarLoanGuide, { meta as carLoanGuideMeta } from '@/content/guides/car-loan';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/car-loan-calculator';
@@ -56,6 +57,8 @@ export default function CarLoanCalculatorPage() {
           body: 'Thinking of paying off your car loan early or switching lenders? Enter the settlement charge and remaining balance to see if the interest saving justifies the fee.',
         },
       }}
+      guide={<CarLoanGuide />}
+      guideMeta={carLoanGuideMeta}
       faq={[
         {
           question: 'How is car loan EMI calculated?',

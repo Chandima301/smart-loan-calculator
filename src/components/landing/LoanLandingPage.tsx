@@ -1,7 +1,10 @@
+import type { ReactNode } from 'react';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import GuideSection from '@/components/landing/GuideSection';
 import { SITE_URL } from '@/lib/constants';
+import { buildArticleSchema } from '@/lib/seo/articleSchema';
 import type { LoanParams } from '@/types/loan';
 
 export interface FAQItem {
@@ -12,6 +15,17 @@ export interface FAQItem {
 export interface TabDescription {
   title: string;
   body: string;
+}
+
+export interface GuideMeta {
+  /** Short article headline (used for Article JSON-LD). */
+  headline: string;
+  /** 1–2 sentence summary (used for Article JSON-LD description). */
+  description: string;
+  /** ISO date string the guide was first published. */
+  datePublished: string;
+  /** ISO date string the guide was last updated. */
+  dateModified?: string;
 }
 
 export interface LoanLandingPageProps {
@@ -27,6 +41,10 @@ export interface LoanLandingPageProps {
   };
   faq: FAQItem[];
   canonicalPath: string;
+  /** Optional long-form educational guide rendered between the calculator and Related calculators. */
+  guide?: ReactNode;
+  /** Metadata for Article JSON-LD when a guide is present. Required when `guide` is provided. */
+  guideMeta?: GuideMeta;
 }
 
 const TAB_META = [
@@ -44,6 +62,8 @@ export default function LoanLandingPage({
   tabs,
   faq,
   canonicalPath,
+  guide,
+  guideMeta,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
 
@@ -66,10 +86,24 @@ export default function LoanLandingPage({
     ],
   };
 
+  const articleJsonLd =
+    guide && guideMeta
+      ? buildArticleSchema({
+          headline: guideMeta.headline,
+          description: guideMeta.description,
+          url: pageUrl,
+          datePublished: guideMeta.datePublished,
+          dateModified: guideMeta.dateModified,
+        })
+      : null;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      {articleJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      )}
 
       {/* Hero banner */}
       <div className="border-b bg-muted/40">
@@ -103,6 +137,9 @@ export default function LoanLandingPage({
 
       {/* Calculator */}
       <LoanCalculatorShell defaultParams={defaultParams} />
+
+      {/* In-depth educational guide (per-page original content) */}
+      {guide && <GuideSection>{guide}</GuideSection>}
 
       {/* Related calculators — internal linking for SEO + UX */}
       <RelatedCalculators currentPath={canonicalPath} />

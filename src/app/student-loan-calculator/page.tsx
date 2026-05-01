@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import StudentLoanGuide, { meta as studentLoanGuideMeta } from '@/content/guides/student-loan';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/student-loan-calculator';
@@ -57,6 +58,8 @@ export default function StudentLoanCalculatorPage() {
           body: 'Considering refinancing to a lower rate? Enter your current balance, any refinancing fees, and new terms to see the true lifetime saving — and your break-even month.',
         },
       }}
+      guide={<StudentLoanGuide />}
+      guideMeta={studentLoanGuideMeta}
       faq={[
         {
           question: 'How is my student loan monthly payment calculated?',

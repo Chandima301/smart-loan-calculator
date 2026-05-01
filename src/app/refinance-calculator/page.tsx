@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import RefinanceGuide, { meta as refinanceGuideMeta } from '@/content/guides/refinance';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/refinance-calculator';
@@ -57,6 +58,8 @@ export default function RefinanceCalculatorPage() {
           body: 'The core refinance tool: enter your remaining balance, new rate, new term, and closing costs to see the exact month you break even and your total lifetime saving.',
         },
       }}
+      guide={<RefinanceGuide />}
+      guideMeta={refinanceGuideMeta}
       faq={[
         {
           question: 'Is refinancing worth it? What rate drop do I need?',

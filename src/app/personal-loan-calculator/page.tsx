@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import PersonalLoanGuide, { meta as personalLoanGuideMeta } from '@/content/guides/personal-loan';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/personal-loan-calculator';
@@ -56,6 +57,8 @@ export default function PersonalLoanCalculatorPage() {
           body: 'Already have a personal loan at a high rate? Model the true cost of refinancing — including surcharges and processing fees — before making a move.',
         },
       }}
+      guide={<PersonalLoanGuide />}
+      guideMeta={personalLoanGuideMeta}
       faq={[
         {
           question: 'How is personal loan EMI calculated?',

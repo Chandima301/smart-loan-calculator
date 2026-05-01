@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import MortgageGuide, { meta as mortgageGuideMeta } from '@/content/guides/mortgage';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/mortgage-calculator';
@@ -56,6 +57,8 @@ export default function MortgageCalculatorPage() {
           body: 'Exploring a refinance? Enter your outstanding balance, closing costs, and new rate to calculate your break-even month and total net saving over the remaining term.',
         },
       }}
+      guide={<MortgageGuide />}
+      guideMeta={mortgageGuideMeta}
       faq={[
         {
           question: 'How is a monthly mortgage payment calculated?',

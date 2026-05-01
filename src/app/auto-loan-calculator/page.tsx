@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import AutoLoanGuide, { meta as autoLoanGuideMeta } from '@/content/guides/auto-loan';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/auto-loan-calculator';
@@ -57,6 +58,8 @@ export default function AutoLoanCalculatorPage() {
           body: 'Rates dropped or your credit improved since you bought the car? Enter your current balance, any payoff fees, and new terms to see if refinancing saves you money.',
         },
       }}
+      guide={<AutoLoanGuide />}
+      guideMeta={autoLoanGuideMeta}
       faq={[
         {
           question: 'How is my auto loan monthly payment calculated?',

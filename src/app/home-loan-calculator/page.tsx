@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import HomeLoanGuide, { meta as homeLoanGuideMeta } from '@/content/guides/home-loan';
 import { SITE_URL } from '@/lib/constants';
 
 const PATH = '/home-loan-calculator';
@@ -56,6 +57,8 @@ export default function HomeLoanCalculatorPage() {
           body: 'Considering refinancing your home loan to a lower rate? Enter your remaining balance, surcharge, and new terms to see if it\'s worth it.',
         },
       }}
+      guide={<HomeLoanGuide />}
+      guideMeta={homeLoanGuideMeta}
       faq={[
         {
           question: 'How is home loan EMI calculated?',
