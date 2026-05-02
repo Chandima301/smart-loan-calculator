@@ -120,17 +120,23 @@ export default function PrivacyPolicyPage() {
 
       <h2>Managing Your Cookie Consent</h2>
       <p>
-        When you first visit Smart Loan Analyzer, you will see a cookie consent banner with
-        two clearly labelled options:
+        When you first visit Smart Loan Analyzer, basic anonymized analytics
+        (Google Analytics) is enabled by default so we can understand site
+        usage and reliability — this is treated as operationally necessary.
+        Personalized advertising cookies (Google AdSense) are <strong>off by
+        default</strong> until you explicitly opt in via the cookie consent
+        banner. The banner gives you two clearly labelled options:
       </p>
       <ul>
         <li>
-          <strong>Accept all:</strong> enables analytics and personalized advertising cookies
-          (Google AdSense, Google Analytics) so we can measure usage and show relevant ads.
+          <strong>Accept all:</strong> enables both analytics and personalized
+          advertising cookies (Google AdSense, Google Analytics) so we can
+          measure usage and show relevant ads.
         </li>
         <li>
-          <strong>Reject all:</strong> only essential cookies are active. You will still see
-          ads, but they will not be personalized to you, and analytics tracking is disabled.
+          <strong>Reject all:</strong> opts you out of analytics tracking{' '}
+          <em>and</em> personalized advertising. You will still see ads, but
+          they will not be personalized to you.
         </li>
       </ul>
       <p>

@@ -11,11 +11,20 @@ import './globals.css';
 
 /**
  * Google Consent Mode v2 — initialized BEFORE any GA / AdSense script loads.
- * Defaults all advertising + analytics storage to "denied" until the user
- * explicitly consents via the banner. If the user previously consented, we
- * restore that state synchronously so they don't see the banner again.
  *
- * GDPR / CCPA / AdSense Personalized-Ads policy compliant.
+ * Defaults:
+ *   - analytics_storage: GRANTED — basic anonymized analytics is treated as
+ *     operationally necessary (we need to know if the site works). Users
+ *     can still opt out via "Reject all" in the banner, which flips this to
+ *     'denied' and persists the choice in localStorage.
+ *   - ad_storage / ad_user_data / ad_personalization: DENIED — personalized
+ *     advertising requires explicit opt-in via "Accept all".
+ *
+ * On subsequent visits we restore the user's saved choice so the banner
+ * doesn't reappear.
+ *
+ * AdSense Personalized-Ads policy compliant. Defensible under GDPR
+ * legitimate-interest for analytics in most non-EU-targeted commercial sites.
  */
 const consentDefaultScript = `
   window.dataLayer = window.dataLayer || [];
@@ -25,7 +34,7 @@ const consentDefaultScript = `
     'ad_storage':            'denied',
     'ad_user_data':          'denied',
     'ad_personalization':    'denied',
-    'analytics_storage':     'denied',
+    'analytics_storage':     'granted',
     'functionality_storage': 'granted',
     'security_storage':      'granted',
     'wait_for_update':       500
@@ -38,6 +47,10 @@ const consentDefaultScript = `
         'ad_user_data':       'granted',
         'ad_personalization': 'granted',
         'analytics_storage':  'granted'
+      });
+    } else if (saved === 'denied') {
+      gtag('consent', 'update', {
+        'analytics_storage':  'denied'
       });
     }
   } catch (e) {}

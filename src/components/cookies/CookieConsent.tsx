@@ -52,7 +52,11 @@ export default function CookieConsent() {
     try {
       localStorage.setItem(STORAGE_KEY, 'denied');
     } catch {}
-    // No update needed — defaults are already "denied"
+    // analytics_storage defaults to 'granted', so an explicit reject must
+    // flip it to 'denied'. Ad storage flags are already 'denied' by default.
+    window.gtag?.('consent', 'update', {
+      analytics_storage: 'denied',
+    });
     setVisible(false);
   };
 
