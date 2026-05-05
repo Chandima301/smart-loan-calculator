@@ -91,16 +91,16 @@ export default function BiweeklyMortgageCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
-      {/* Hero banner */}
+      {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">
-        <div className="container mx-auto max-w-5xl px-4 py-8">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-7">
+          <h1 className="text-xl font-bold tracking-tight sm:text-3xl">
             Biweekly Mortgage Calculator
           </h1>
-          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
+          <p className="mt-1 text-sm text-muted-foreground max-w-2xl sm:mt-2 sm:text-base">
             See exactly how many years and how much interest you save by paying your mortgage biweekly instead of monthly.
           </p>
-          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+          <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">
             Paying half your mortgage every 14 days adds up to 26 payments per year — the equivalent of 13 monthly payments,
             or one extra full payment annually. On a typical 30-year mortgage that single extra payment shaves 4–6 years off
             the loan and saves tens of thousands in interest.

@@ -105,16 +105,19 @@ export default function LoanLandingPage({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       )}
 
-      {/* Hero banner */}
+      {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">
-        <div className="container mx-auto max-w-5xl px-4 py-8">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>
-          <p className="mt-2 text-base text-muted-foreground max-w-2xl">{subtitle}</p>
-          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">{intro}</p>
+        <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-7">
+          <h1 className="text-xl font-bold tracking-tight sm:text-3xl">{title}</h1>
+          <p className="mt-1 text-sm text-muted-foreground max-w-2xl sm:mt-2 sm:text-base">{subtitle}</p>
+          <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">{intro}</p>
         </div>
       </div>
 
-      {/* Tab feature cards */}
+      {/* Calculator */}
+      <LoanCalculatorShell defaultParams={defaultParams} />
+
+      {/* Tab feature cards — moved below calculator so the tool is above the fold */}
       <div className="container mx-auto max-w-5xl px-4 py-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {TAB_META.map(({ key, label, Icon }) => {
@@ -134,9 +137,6 @@ export default function LoanLandingPage({
           })}
         </div>
       </div>
-
-      {/* Calculator */}
-      <LoanCalculatorShell defaultParams={defaultParams} />
 
       {/* In-depth educational guide (per-page original content) */}
       {guide && <GuideSection>{guide}</GuideSection>}

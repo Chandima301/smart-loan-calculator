@@ -98,18 +98,43 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Hero banner */}
+      {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">
-        <div className="container mx-auto max-w-5xl px-4 py-8">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-7">
+          <h1 className="text-xl font-bold tracking-tight sm:text-3xl">
             Free Loan Calculator
           </h1>
-          <p className="mt-2 text-base text-muted-foreground max-w-2xl">
+          <p className="mt-1 text-sm text-muted-foreground max-w-2xl sm:mt-2 sm:text-base">
             Calculate monthly payments, total interest, and full amortization for any loan — home, mortgage, auto, student, or personal.
           </p>
-          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+          <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">
             Compare up to three offers side by side, simulate prepayments, check affordability, and model refinancing — all in one free tool, no signup required. Works with any currency.
           </p>
+        </div>
+      </div>
+
+      {/* Generic calculator — placed first so it's above the fold on landing */}
+      <LoanCalculatorShell />
+
+      {/* Specialized calculators — funnel routing to per-loan-type pages */}
+      <div className="container mx-auto max-w-5xl px-4 pt-8 pb-2">
+        <div className="flex items-baseline justify-between mb-4">
+          <h2 className="text-lg font-semibold">Pick a calculator for your loan type</h2>
+          <span className="text-xs text-muted-foreground hidden sm:inline">
+            More tuned for your specific loan
+          </span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {CALCULATOR_LINKS.map(({ href, label, desc }) => (
+            <Link
+              key={href}
+              href={href}
+              className="rounded-lg border p-3 hover:border-primary hover:bg-muted/50 transition-colors"
+            >
+              <p className="font-semibold text-sm">{label}</p>
+              <p className="text-xs text-muted-foreground mt-1 leading-snug">{desc}</p>
+            </Link>
+          ))}
         </div>
       </div>
 
@@ -129,31 +154,6 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-
-      {/* Specialized calculators — funnel routing above the generic tool */}
-      <div className="container mx-auto max-w-5xl px-4 pt-6 pb-2">
-        <div className="flex items-baseline justify-between mb-4">
-          <h2 className="text-lg font-semibold">Pick a calculator for your loan type</h2>
-          <span className="text-xs text-muted-foreground hidden sm:inline">
-            Or use the generic calculator below
-          </span>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {CALCULATOR_LINKS.map(({ href, label, desc }) => (
-            <Link
-              key={href}
-              href={href}
-              className="rounded-lg border p-3 hover:border-primary hover:bg-muted/50 transition-colors"
-            >
-              <p className="font-semibold text-sm">{label}</p>
-              <p className="text-xs text-muted-foreground mt-1 leading-snug">{desc}</p>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Generic calculator */}
-      <LoanCalculatorShell />
     </>
   );
 }
