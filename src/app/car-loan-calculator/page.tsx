@@ -37,7 +37,7 @@ export default function CarLoanCalculatorPage() {
       title="Car Loan EMI Calculator"
       subtitle="Calculate your monthly EMI for a car or vehicle loan. Adjust the financed amount, interest rate, and tenure to find repayment terms that fit your budget."
       intro="Car loans are typically 3–7 years. Choosing a 3-year term over a 5-year term significantly reduces total interest paid, though your monthly EMI will be higher. Use the Compare tab to see the exact cost difference, and the Restructure tab to evaluate early settlement options."
-      defaultParams={{ principal: 2_000_000, annualRate: 11, tenureMonths: 60 }}
+      defaultParams={{ principal: 30_000, annualRate: 9, tenureMonths: 60 }}
       canonicalPath={PATH}
       tabs={{
         calculator: {

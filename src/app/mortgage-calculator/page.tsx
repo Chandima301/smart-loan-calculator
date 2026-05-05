@@ -37,7 +37,7 @@ export default function MortgageCalculatorPage() {
       title="Mortgage Calculator"
       subtitle="Calculate your monthly mortgage payment for any fixed-rate home loan. Adjust the loan amount, interest rate, and term to find repayment terms that fit your budget."
       intro="A 30-year mortgage keeps monthly payments manageable but results in paying nearly as much in interest as the original loan amount. Switching to a 15-year term or making regular overpayments dramatically reduces total interest. Use the Compare tab to see the exact difference, and the Prepayment simulator to model overpayment strategies."
-      defaultParams={{ principal: 5_000_000, annualRate: 6.5, tenureMonths: 360 }}
+      defaultParams={{ principal: 400_000, annualRate: 6.5, tenureMonths: 360 }}
       canonicalPath={PATH}
       tabs={{
         calculator: {

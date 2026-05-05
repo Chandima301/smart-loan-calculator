@@ -38,7 +38,7 @@ export default function RefinanceCalculatorPage() {
       title="Refinance Calculator"
       subtitle="Find out if refinancing your mortgage, auto loan, or personal loan is worth it — see the exact break-even month and total lifetime savings."
       intro="Refinancing replaces your existing loan with a new one at a lower rate or different term. Whether it pays off depends on three things: how much lower the new rate is, how long you plan to keep the loan, and how much you'll pay in closing costs or prepayment penalties. This calculator does the full math so you can make the decision with confidence."
-      defaultParams={{ principal: 5_000_000, annualRate: 8.5, tenureMonths: 240 }}
+      defaultParams={{ principal: 300_000, annualRate: 5.5, tenureMonths: 360 }}
       canonicalPath={PATH}
       tabs={{
         calculator: {

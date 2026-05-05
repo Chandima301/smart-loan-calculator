@@ -37,7 +37,7 @@ export default function PersonalLoanCalculatorPage() {
       title="Personal Loan EMI Calculator"
       subtitle="Calculate your monthly EMI for a personal or consumer loan. Adjust amount, rate, and tenure to find repayment terms that fit your budget."
       intro="Personal loans are typically unsecured and carry higher interest rates than secured loans. Even a 1–2% rate difference between lenders adds up significantly over a 3–5 year term. Use the Compare tab to put multiple offers side by side before committing."
-      defaultParams={{ principal: 500_000, annualRate: 15, tenureMonths: 60 }}
+      defaultParams={{ principal: 20_000, annualRate: 12, tenureMonths: 60 }}
       canonicalPath={PATH}
       tabs={{
         calculator: {

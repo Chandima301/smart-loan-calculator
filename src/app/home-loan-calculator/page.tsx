@@ -37,7 +37,7 @@ export default function HomeLoanCalculatorPage() {
       title="Home Loan EMI Calculator"
       subtitle="Calculate your monthly EMI for a home or housing loan. Adjust amount, rate, and tenure to find repayment terms that fit your budget."
       intro="Home loans typically span 10–30 years. Even a 0.5% difference in interest rate can save or cost lakhs over the full tenure. Use the Prepayment simulator to see how an extra monthly contribution cuts your total interest bill significantly."
-      defaultParams={{ principal: 5_000_000, annualRate: 8.5, tenureMonths: 240 }}
+      defaultParams={{ principal: 350_000, annualRate: 7, tenureMonths: 360 }}
       canonicalPath={PATH}
       tabs={{
         calculator: {
