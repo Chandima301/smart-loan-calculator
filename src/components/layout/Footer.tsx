@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import FeaturedOn from './FeaturedOn';
 
 const CALCULATOR_LINKS = [
   { href: '/',                          label: 'EMI Calculator'      },
@@ -87,8 +88,11 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Featured on — directory badges (auto-hidden if no badges configured) */}
+        <FeaturedOn />
+
         {/* Bottom bar */}
-        <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t pt-6 mt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© {new Date().getFullYear()} Smart Loan Analyzer. Free to use.</p>
         </div>
         <p className="mt-3 text-xs">
