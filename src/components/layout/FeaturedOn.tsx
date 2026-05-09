@@ -27,6 +27,10 @@ interface BadgeConfig {
 
 const BADGES: BadgeConfig[] = [
   {
+    name: 'Fazier',
+    html: `<a href="https://fazier.com/launches/smartloanalyzer.com" target="_blank" rel="noopener"><img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=neutral" width="120" alt="Fazier badge" /></a>`,
+  },
+  {
     name: 'Tiny Startups',
     html: `<a href="https://www.tinystartups.com/startup/smart-loan-analyzer" target="_blank" rel="noopener"
    style="display:inline-flex;flex-direction:column;align-items:center;gap:8px;padding:22px 28px 20px;border-radius:18px;text-decoration:none;font-family:'Inter',system-ui,sans-serif;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#3525E6,#D81FE0,#22B8F0) border-box;border:2.5px solid transparent;width:220px;text-align:center;color:#0E0B1F">
