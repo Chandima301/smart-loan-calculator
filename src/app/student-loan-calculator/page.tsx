@@ -7,9 +7,9 @@ const PATH = '/student-loan-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Student Loan Calculator — Monthly Payment & Payoff Estimator',
+  title: 'Student Loan Calculator — Federal & Private, No Signup, Full Schedule',
   description:
-    'Calculate your student loan monthly payment, total interest, and payoff timeline. See how much you save with extra payments and compare repayment plans side by side.',
+    'Calculate your student loan monthly payment, total interest, and payoff timeline for federal or private loans. Compare repayment plans including SAVE, PAYE, IBR, and see how extra payments accelerate payoff. Free, no signup.',
   keywords: [
     'student loan calculator',
     'student loan payment calculator',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Student Loan Calculator — Free Monthly Payment & Payoff Tool',
+    title: 'Student Loan Calculator — Federal & Private, No Signup, Full Schedule',
     description:
-      'Calculate monthly payments, total interest, and how much you save with extra payments on federal or private student loans.',
+      'Calculate student loan monthly payment, total interest, and payoff timeline. Compare SAVE/PAYE/IBR plans. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },

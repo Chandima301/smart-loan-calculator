@@ -7,9 +7,9 @@ const PATH = '/auto-loan-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Auto Loan Calculator — Monthly Car Payment & Total Interest',
+  title: 'Auto Loan Calculator — Free APR & Payment Calculator, No Email',
   description:
-    'Calculate your auto loan monthly payment, total interest, and full amortization schedule. Compare dealer financing vs bank loans and see how a larger down payment changes your numbers.',
+    'Calculate your auto loan APR, monthly payment, and total interest in seconds. See credit-tier rate ranges and how down payment changes total cost. Free, no signup, no email gating.',
   keywords: [
     'auto loan calculator',
     'auto loan payment calculator',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Auto Loan Calculator — Free Monthly Car Payment Tool',
+    title: 'Auto Loan Calculator — Free APR & Payment Calculator, No Email',
     description:
-      'Calculate auto loan monthly payments, total interest paid, and compare financing offers from dealers, banks, and credit unions.',
+      'Calculate auto loan APR, monthly payment, and total interest. Compare dealer vs bank financing. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },

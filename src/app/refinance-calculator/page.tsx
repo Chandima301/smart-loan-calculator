@@ -7,9 +7,9 @@ const PATH = '/refinance-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Refinance Calculator — Break-Even & Lifetime Savings Estimator',
+  title: 'Refinance Calculator — Break-Even Month & Lifetime Savings',
   description:
-    'Calculate whether refinancing your loan is worth it. Enter your current balance, remaining term, new rate, and closing costs to see the exact break-even month and total savings.',
+    'Find out exactly when refinancing pays off — break-even month, lifetime savings, and closing-cost amortization. Side-by-side comparison with keeping your current loan. Free, no signup.',
   keywords: [
     'refinance calculator',
     'loan refinance calculator',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Refinance Calculator — Free Break-Even & Savings Tool',
+    title: 'Refinance Calculator — Break-Even Month & Lifetime Savings',
     description:
-      'Should you refinance? Calculate the exact break-even month, lifetime interest savings, and true cost after fees.',
+      'Find out exactly when refinancing pays off — break-even month, lifetime savings, true cost after fees. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },

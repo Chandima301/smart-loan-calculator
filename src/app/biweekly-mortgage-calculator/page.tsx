@@ -10,9 +10,9 @@ const PATH = '/biweekly-mortgage-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Biweekly Mortgage Calculator — Save Years & Thousands in Interest',
+  title: 'Biweekly Mortgage Calculator — Exact Interest Saved & Payoff Date',
   description:
-    'See exactly how much interest and time you save by switching to biweekly mortgage payments. Compare standard monthly vs biweekly side by side, with payoff dates and total cost.',
+    'See exactly how much interest you save and the new payoff date when you switch to biweekly mortgage payments. Side-by-side comparison with monthly. Free, no signup.',
   keywords: [
     'biweekly mortgage calculator',
     'bi-weekly mortgage calculator',
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Biweekly Mortgage Calculator — Free Savings Tool',
+    title: 'Biweekly Mortgage Calculator — Exact Interest Saved & Payoff Date',
     description:
-      'Calculate your savings from biweekly mortgage payments — interest saved, years cut, and exact payoff date.',
+      'See exactly how much interest you save and the new payoff date with biweekly mortgage payments. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },

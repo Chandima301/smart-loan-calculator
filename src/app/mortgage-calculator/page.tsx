@@ -7,9 +7,9 @@ const PATH = '/mortgage-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Mortgage Calculator — Monthly Payment, Interest & Amortization',
+  title: 'Mortgage Calculator — Free, No Signup, Full Amortization',
   description:
-    'Calculate your mortgage monthly payment instantly. Enter loan amount, interest rate, and term to see monthly payment, total interest, and full 30-year amortization schedule. Free and accurate.',
+    'See exactly what your mortgage costs over 30 years — monthly payment, lifetime interest, and full amortization schedule. Compare 15 vs 30-year terms side by side. Free, no signup, works in any currency.',
   keywords: [
     'mortgage calculator',
     'mortgage payment calculator',
@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Mortgage Calculator — Free Monthly Payment & Amortization Tool',
+    title: 'Mortgage Calculator — Free, No Signup, Full Amortization',
     description:
-      'Instantly calculate your mortgage monthly payment, total interest, and full amortization schedule. Compare 15 vs 30-year terms and simulate overpayments.',
+      'See exactly what your mortgage costs over 30 years — monthly payment, lifetime interest, full amortization. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },
