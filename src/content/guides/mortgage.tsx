@@ -57,6 +57,77 @@ export default function MortgageGuide() {
         applies to every fixed-rate mortgage at this rate and term.
       </p>
 
+      <h2>Worked Examples at Three Price Points</h2>
+      <p>
+        The payment scales linearly with the loan amount when the rate and
+        term are held constant, but the lifetime interest grows just as fast.
+        Here is the same 6.5%, 30-year fixed-rate mortgage at three common
+        loan sizes, so you can see how the numbers move with the property
+        price:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Loan Amount</th>
+            <th>Monthly P&amp;I</th>
+            <th>Total Paid (30 yr)</th>
+            <th>Total Interest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$300,000</td>
+            <td>$1,896</td>
+            <td>$682,632</td>
+            <td>$382,632</td>
+          </tr>
+          <tr>
+            <td>$500,000</td>
+            <td>$3,160</td>
+            <td>$1,137,723</td>
+            <td>$637,723</td>
+          </tr>
+          <tr>
+            <td>$800,000</td>
+            <td>$5,057</td>
+            <td>$1,820,353</td>
+            <td>$1,020,353</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Two things are worth absorbing from this table. First, the interest
+        on an $800,000 loan ($1.02 million) exceeds the original principal —
+        you pay for the house roughly 2.3 times over. Second, the jump from
+        a $500,000 to an $800,000 loan adds about $1,897 to the monthly
+        payment but nearly <strong>$383,000 to the lifetime interest</strong>.
+        Every dollar of additional principal at this rate-and-term carries
+        roughly $1.28 of additional interest over the life of the loan.
+      </p>
+      <p>
+        Now hold the loan amount fixed and change the term instead. The
+        $500,000 loan at 6.5% costs $3,160/month over 30 years (total
+        interest $637,723). The identical loan over 15 years costs about
+        $4,356/month — a 38% higher payment — but the total interest falls
+        to roughly <strong>$284,163</strong>. Cutting the term in half
+        more than halves the lifetime interest, because you spend far fewer
+        months exposed to compounding. This is the single largest lever in
+        the entire calculation, which is why the 15-vs-30 decision gets its
+        own section below.
+      </p>
+      <p>
+        A third worked scenario shows the effect of the interest rate alone.
+        The $500,000 loan at 6.5% over 30 years costs $637,723 in interest.
+        At 5.5% — one percentage point lower — the payment drops to about
+        $2,838 and the lifetime interest falls to roughly{' '}
+        <strong>$521,683</strong>. A single percentage point is worth about
+        $116,000 on a half-million-dollar mortgage. That is the entire reason
+        the &quot;shop at least three lenders&quot; advice exists: the rate
+        spread between lenders on the same day, for the same borrower, is
+        frequently 0.25–0.5 percentage points, which is $30,000–$60,000 of
+        real money on a loan this size.
+      </p>
+
       <h2>What the Calculator Inputs Actually Do</h2>
 
       <h3>Principal</h3>
@@ -217,6 +288,160 @@ export default function MortgageGuide() {
           income volatility, the new water heater. The payment that the
           bank approves and the payment you can comfortably carry are
           rarely the same number.
+        </li>
+      </ul>
+
+      <h2>A Brief History of the American Mortgage</h2>
+      <p>
+        The 30-year fixed-rate mortgage feels like a law of nature to most
+        American buyers, but it is barely 90 years old and largely an
+        artifact of government policy. Before the 1930s, a typical home loan
+        in the United States was a 5-to-10-year, interest-only or
+        partially-amortizing &quot;balloon&quot; loan with a 50% down payment
+        requirement. At the end of the short term the entire principal came
+        due, and most borrowers simply refinanced — a system that worked
+        until the credit markets froze during the Great Depression and an
+        estimated one in ten homes entered foreclosure.
+      </p>
+      <p>
+        The federal response reshaped housing finance permanently. The Home
+        Owners&apos; Loan Corporation (1933) refinanced defaulted balloon
+        loans into long-term amortizing ones. The Federal Housing
+        Administration (1934) insured lenders against default, which made
+        them willing to offer 20-plus-year terms with smaller down payments.
+        The Federal National Mortgage Association — Fannie Mae — was created
+        in 1938 to buy FHA-insured loans from banks, freeing up bank capital
+        to originate more mortgages. The combination produced the modern
+        long-term, low-down-payment, fully-amortizing mortgage.
+      </p>
+      <p>
+        The 30-year term specifically became dominant after World War II,
+        when the GI Bill and a housing boom pushed lenders and the
+        government-sponsored secondary market toward the longest term that
+        still produced an acceptable default rate. By the 1970s the
+        30-year fixed was the default product. The 1970s and early 1980s
+        introduced adjustable-rate mortgages (ARMs) as an inflation-era
+        innovation; the 2008 financial crisis, driven substantially by
+        exotic ARM and interest-only structures, pushed the market back
+        toward the plain 30-year fixed, which now accounts for the large
+        majority of U.S. purchase mortgages.
+      </p>
+      <p>
+        The practical takeaway is not historical trivia. The 30-year fixed
+        exists because it shifts interest-rate risk to the lender (and
+        ultimately the government-backed secondary market) and maximizes
+        the size of loan a given monthly payment can support. It is
+        optimized for affordability of the monthly payment, not for
+        minimizing what you pay. Understanding that the product was
+        designed around a policy goal — get more people into houses —
+        rather than around your financial efficiency reframes every
+        15-vs-30 and prepayment decision you will make.
+      </p>
+
+      <h2>Mortgage Glossary: Every Term on Your Loan Estimate</h2>
+      <p>
+        When you apply for a mortgage in the U.S., the lender must give you
+        a standardized three-page Loan Estimate within three business days.
+        It is dense with terms most buyers have never seen. Here is what
+        each one actually means and why it matters to your bottom line.
+      </p>
+      <ul>
+        <li>
+          <strong>Principal.</strong> The amount you borrow. Every payment
+          splits between principal (reduces what you owe) and interest
+          (the lender&apos;s fee for the money).
+        </li>
+        <li>
+          <strong>APR (Annual Percentage Rate).</strong> The interest rate
+          plus most upfront finance charges, expressed as a yearly rate.
+          Always compare lenders on APR, not the headline note rate — APR
+          captures fees the note rate hides.
+        </li>
+        <li>
+          <strong>Note rate.</strong> The raw interest rate used to
+          compute your monthly principal-and-interest payment. Lower than
+          APR whenever fees are involved.
+        </li>
+        <li>
+          <strong>Amortization.</strong> The schedule by which the loan is
+          repaid. In a fully-amortizing loan every payment is identical and
+          the balance reaches exactly zero at the end of the term.
+        </li>
+        <li>
+          <strong>Escrow.</strong> An account your servicer uses to collect
+          1/12 of your annual property tax and insurance each month and pay
+          those bills on your behalf. It makes the monthly payment larger
+          than principal-and-interest alone.
+        </li>
+        <li>
+          <strong>PITI.</strong> Principal, Interest, Taxes, and Insurance —
+          the full monthly housing payment. Lenders qualify you on PITI, not
+          the bare mortgage payment, and so should you.
+        </li>
+        <li>
+          <strong>PMI (Private Mortgage Insurance).</strong> Insurance the
+          borrower pays to protect the lender when the down payment is below
+          20%. Typically 0.3%–1.5% of the loan per year. Removable once the
+          loan-to-value ratio drops below 80% (request) or 78% (automatic).
+        </li>
+        <li>
+          <strong>LTV (Loan-to-Value ratio).</strong> Loan amount divided by
+          property value. Lower LTV means less lender risk, often a better
+          rate, and the threshold at which PMI disappears.
+        </li>
+        <li>
+          <strong>DTI (Debt-to-Income ratio).</strong> Your total monthly
+          debt payments divided by gross monthly income. Most conforming
+          lenders cap total DTI around 43%–50%.
+        </li>
+        <li>
+          <strong>Discount points.</strong> Optional upfront cash to lower
+          the note rate. One point costs 1% of the loan and typically cuts
+          the rate by about 0.25%. Worth it only if you keep the loan past
+          the break-even month.
+        </li>
+        <li>
+          <strong>Origination fee.</strong> The lender&apos;s charge for
+          processing the loan, usually 0.5%–1% of the loan amount.
+          Negotiable, and a primary line item to compare across Loan
+          Estimates.
+        </li>
+        <li>
+          <strong>Conforming loan.</strong> A loan within the size limit
+          eligible for purchase by Fannie Mae or Freddie Mac. Below the
+          limit, rates are typically lower because the secondary market is
+          deeper.
+        </li>
+        <li>
+          <strong>Jumbo loan.</strong> A loan above the conforming limit.
+          Usually carries a slightly higher rate and stricter underwriting
+          because it cannot be sold to the government-sponsored entities.
+        </li>
+        <li>
+          <strong>Fixed-rate mortgage.</strong> The rate never changes. The
+          payment is fully predictable for the entire term.
+        </li>
+        <li>
+          <strong>ARM (Adjustable-Rate Mortgage).</strong> A rate fixed for
+          an initial period (e.g. 5 years on a 5/1 ARM), then resetting
+          periodically against a benchmark. Lower initial rate, real
+          long-term risk.
+        </li>
+        <li>
+          <strong>Rate lock.</strong> A lender commitment to hold a quoted
+          rate for a set window (commonly 30–60 days) while the loan
+          closes. Protects you if rates rise before closing.
+        </li>
+        <li>
+          <strong>Closing costs.</strong> The total of all fees due at
+          closing — origination, appraisal, title insurance, recording,
+          escrow setup. Commonly 2%–5% of the loan amount.
+        </li>
+        <li>
+          <strong>Prepayment penalty.</strong> A fee for paying the loan
+          off early. Rare on modern conforming loans but still present on
+          some products — always confirm before assuming you can prepay
+          freely.
         </li>
       </ul>
 
