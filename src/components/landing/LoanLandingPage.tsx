@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
-import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
+import LoanCalculatorShell, { type TabValue } from '@/components/calculator/LoanCalculatorShell';
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
@@ -47,6 +47,8 @@ export interface LoanLandingPageProps {
   guide?: ReactNode;
   /** Metadata for Article JSON-LD when a guide is present. Required when `guide` is provided. */
   guideMeta?: GuideMeta;
+  /** Which calculator tab leads on this page (rendered first + selected by default). */
+  primaryTab?: TabValue;
 }
 
 const TAB_META = [
@@ -66,6 +68,7 @@ export default function LoanLandingPage({
   canonicalPath,
   guide,
   guideMeta,
+  primaryTab,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
 
@@ -116,7 +119,7 @@ export default function LoanLandingPage({
       />
 
       {/* Calculator */}
-      <LoanCalculatorShell defaultParams={defaultParams} />
+      <LoanCalculatorShell defaultParams={defaultParams} primaryTab={primaryTab} />
 
       {/* Inline related calculators — quick cross-links right after the tool */}
       <InlineRelatedCalculators currentPath={canonicalPath} />

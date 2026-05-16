@@ -23,11 +23,27 @@ import { calculateEMI, generateAmortizationSchedule, simulatePrepayment } from '
 import { LOAN_DEFAULTS } from '@/lib/constants';
 import type { LoanParams, PrepaymentParams } from '@/types/loan';
 
+export type TabValue = 'calculator' | 'compare' | 'affordability' | 'restructure';
+
+const TAB_DEFS: { value: TabValue; label: string }[] = [
+  { value: 'calculator', label: 'Calculator' },
+  { value: 'compare', label: 'Compare' },
+  { value: 'affordability', label: 'Affordability' },
+  { value: 'restructure', label: 'Restructure' },
+];
+
 interface Props {
   defaultParams?: Partial<LoanParams>;
+  /**
+   * Which tab is the primary tool for this page. When set, that tab is
+   * rendered FIRST in the tab bar and selected by default. Other tabs
+   * remain available. Used e.g. by /refinance-calculator to lead with
+   * the Restructure analyzer instead of the generic EMI calculator.
+   */
+  primaryTab?: TabValue;
 }
 
-export default function LoanCalculatorShell({ defaultParams }: Props) {
+export default function LoanCalculatorShell({ defaultParams, primaryTab }: Props) {
   const [loanParams, setLoanParams] = useState<LoanParams>({
     ...LOAN_DEFAULTS,
     ...defaultParams,
@@ -41,7 +57,16 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
   });
 
   const [showPrepayment, setShowPrepayment] = useState(false);
-  const [activeTab, setActiveTab] = useState('calculator');
+  const [activeTab, setActiveTab] = useState<string>(primaryTab ?? 'calculator');
+
+  // When a primaryTab is set, surface it first in the tab bar so the
+  // pre-selected tab isn't visually the 4th one.
+  const orderedTabs = primaryTab
+    ? [
+        ...TAB_DEFS.filter((t) => t.value === primaryTab),
+        ...TAB_DEFS.filter((t) => t.value !== primaryTab),
+      ]
+    : TAB_DEFS;
 
   const handleLoanChange = (params: LoanParams) => {
     setLoanParams(params);
@@ -91,10 +116,11 @@ export default function LoanCalculatorShell({ defaultParams }: Props) {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="-mx-4 mb-6 flex justify-center-safe overflow-x-auto px-4 sm:mx-0 sm:px-0 sm:overflow-visible">
           <TabsList className="w-max sm:w-auto">
-            <TabsTrigger value="calculator" className="text-xs sm:text-sm">Calculator</TabsTrigger>
-            <TabsTrigger value="compare" className="text-xs sm:text-sm">Compare</TabsTrigger>
-            <TabsTrigger value="affordability" className="text-xs sm:text-sm">Affordability</TabsTrigger>
-            <TabsTrigger value="restructure" className="text-xs sm:text-sm">Restructure</TabsTrigger>
+            {orderedTabs.map((t) => (
+              <TabsTrigger key={t.value} value={t.value} className="text-xs sm:text-sm">
+                {t.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
         </div>
 
