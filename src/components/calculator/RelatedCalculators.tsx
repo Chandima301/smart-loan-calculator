@@ -12,7 +12,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-interface CalcMeta {
+export interface CalcMeta {
   label: string;
   desc: string;
   Icon: LucideIcon;
@@ -20,8 +20,10 @@ interface CalcMeta {
 
 /**
  * Master metadata for every calculator route. Keys are canonical paths.
+ * Exported so `InlineRelatedCalculators` (and any future component) can
+ * reuse the single source of truth instead of duplicating the map.
  */
-const ALL: Record<string, CalcMeta> = {
+export const ALL: Record<string, CalcMeta> = {
   '/': {
     label: 'Loan / EMI Calculator',
     desc: 'Generic loan EMI, comparison, prepayment & affordability tool.',
@@ -74,7 +76,7 @@ const ALL: Record<string, CalcMeta> = {
  * 3–4 strategically chosen links per page to maximize internal linking
  * for SEO (depth + topic clustering) without becoming spammy.
  */
-const RELATIONS: Record<string, string[]> = {
+export const RELATIONS: Record<string, string[]> = {
   '/': [
     '/home-loan-calculator',
     '/mortgage-calculator',

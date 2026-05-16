@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import BiweeklyMortgageCalculator from '@/components/biweekly/BiweeklyMortgageCalculator';
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
+import Breadcrumb from '@/components/layout/Breadcrumb';
 import BiweeklyMortgageGuide, { meta as biweeklyGuideMeta } from '@/content/guides/biweekly-mortgage';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
@@ -68,15 +70,6 @@ export default function BiweeklyMortgageCalculatorPage() {
     })),
   };
 
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Biweekly Mortgage Calculator', item: CANONICAL },
-    ],
-  };
-
   const articleJsonLd = buildArticleSchema({
     headline: biweeklyGuideMeta.headline,
     description: biweeklyGuideMeta.description,
@@ -88,7 +81,6 @@ export default function BiweeklyMortgageCalculatorPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
       {/* Hero banner — compact on mobile so the calculator is above the fold */}
@@ -108,8 +100,20 @@ export default function BiweeklyMortgageCalculatorPage() {
         </div>
       </div>
 
+      {/* Breadcrumb — visible trail + emits BreadcrumbList JSON-LD */}
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Loan Calculators', href: '/' },
+          { label: 'Biweekly Mortgage Calculator' },
+        ]}
+      />
+
       {/* Calculator */}
       <BiweeklyMortgageCalculator />
+
+      {/* Inline related calculators — quick cross-links right after the tool */}
+      <InlineRelatedCalculators currentPath={PATH} />
 
       {/* In-depth educational guide (per-page original content) */}
       <GuideSection>

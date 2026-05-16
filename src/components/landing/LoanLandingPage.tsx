@@ -2,7 +2,9 @@ import type { ReactNode } from 'react';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
+import Breadcrumb from '@/components/layout/Breadcrumb';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
 import type { LoanParams } from '@/types/loan';
@@ -77,15 +79,6 @@ export default function LoanLandingPage({
     })),
   };
 
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: title,  item: pageUrl  },
-    ],
-  };
-
   const articleJsonLd =
     guide && guideMeta
       ? buildArticleSchema({
@@ -100,7 +93,6 @@ export default function LoanLandingPage({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {articleJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       )}
@@ -114,8 +106,20 @@ export default function LoanLandingPage({
         </div>
       </div>
 
+      {/* Breadcrumb — visible trail + emits BreadcrumbList JSON-LD */}
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Loan Calculators', href: '/' },
+          { label: title },
+        ]}
+      />
+
       {/* Calculator */}
       <LoanCalculatorShell defaultParams={defaultParams} />
+
+      {/* Inline related calculators — quick cross-links right after the tool */}
+      <InlineRelatedCalculators currentPath={canonicalPath} />
 
       {/* Tab feature cards — moved below calculator so the tool is above the fold */}
       <div className="container mx-auto max-w-5xl px-4 py-6">
