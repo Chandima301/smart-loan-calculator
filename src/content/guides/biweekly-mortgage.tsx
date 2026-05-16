@@ -93,6 +93,158 @@ export default function BiweeklyMortgageGuide() {
         keep simply by changing the rhythm of when you pay.
       </p>
 
+      <h2>How the Savings Scale With Loan Size</h2>
+      <p>
+        The interest you save grows proportionally with the size of the
+        loan, because the biweekly schedule removes a fixed{' '}
+        <em>percentage</em> of the lifetime interest regardless of the
+        principal. Here is the same 6.5%, 30-year fixed mortgage at three
+        loan sizes, each on the biweekly schedule:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Loan</th>
+            <th>Biweekly Payment</th>
+            <th>Interest (Monthly Plan)</th>
+            <th>Interest (Biweekly)</th>
+            <th>Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$300,000</td>
+            <td>$948</td>
+            <td>$382,633</td>
+            <td>$295,377</td>
+            <td>
+              <strong>$87,256</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>$500,000</td>
+            <td>$1,580</td>
+            <td>$637,723</td>
+            <td>$492,323</td>
+            <td>
+              <strong>$145,400</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>$800,000</td>
+            <td>$2,528</td>
+            <td>$1,020,353</td>
+            <td>$787,713</td>
+            <td>
+              <strong>$232,640</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Notice the payoff acceleration is identical across all three —
+        roughly <strong>5 years 10 months earlier</strong>, finishing in
+        about 24 years and 2 months. That is because the time saved
+        depends only on the interest rate, the term, and the size of the
+        extra payment <em>as a fraction of the regular payment</em> (always
+        1/12 with biweekly). It does not depend on the dollar size of the
+        loan. A $300,000 borrower and an $800,000 borrower on identical
+        6.5% / 30-year loans both finish in the same 24 years 2 months —
+        the $800,000 borrower just keeps a much larger pile of money for
+        doing it.
+      </p>
+      <p>
+        The interest <em>saved</em> does scale with loan size, almost
+        exactly linearly: every method here removes about 22.8% of the
+        lifetime interest at 6.5% / 30 years. The percentage shifts with
+        the rate — higher rates make biweekly more powerful — which is the
+        subject of the next section.
+      </p>
+
+      <h2>The Math, Derived</h2>
+      <p>
+        The &quot;26 biweekly payments equal 13 monthly payments&quot;
+        claim is repeated everywhere but rarely shown. Here it is, in
+        full, so you can verify it rather than trust it.
+      </p>
+      <p>
+        There are 52 weeks in a year. A biweekly schedule means one
+        payment every two weeks, so the number of payments per year is
+        52 ÷ 2 = <strong>26</strong>. Each biweekly payment is half of
+        the standard monthly payment, by definition of the plan. So the
+        total paid per year under the biweekly schedule is:
+      </p>
+      <p>
+        <strong>
+          26 × (monthly payment ÷ 2) = 13 × monthly payment
+        </strong>
+      </p>
+      <p>
+        A standard monthly schedule pays 12 × monthly payment per year.
+        The biweekly schedule pays 13 × monthly payment per year. The
+        difference is exactly <strong>one extra monthly payment every
+        year</strong>. Because the 12 scheduled payments already cover
+        each month&apos;s accrued interest, the entire 13th payment lands
+        on principal. Mathematically this is identical to keeping the
+        monthly schedule and adding (monthly payment ÷ 12) of extra
+        principal every month — an 8.33% acceleration of principal
+        repayment.
+      </p>
+      <p>
+        How much time that 8.33% acceleration removes depends on the
+        interest rate, because the value of retiring principal early is
+        exactly the future interest it would have accrued. On a 30-year
+        loan:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Interest Rate</th>
+            <th>Approx. Years Saved</th>
+            <th>Approx. % of Interest Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>4%</td>
+            <td>~4 yr 0 mo</td>
+            <td>~15%</td>
+          </tr>
+          <tr>
+            <td>5%</td>
+            <td>~4 yr 7 mo</td>
+            <td>~18%</td>
+          </tr>
+          <tr>
+            <td>6%</td>
+            <td>~5 yr 4 mo</td>
+            <td>~21%</td>
+          </tr>
+          <tr>
+            <td>6.5%</td>
+            <td>~5 yr 10 mo</td>
+            <td>~23%</td>
+          </tr>
+          <tr>
+            <td>7%</td>
+            <td>~6 yr 2 mo</td>
+            <td>~25%</td>
+          </tr>
+          <tr>
+            <td>8%</td>
+            <td>~7 yr 0 mo</td>
+            <td>~28%</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The relationship is monotonic: the higher your mortgage rate, the
+        more biweekly payments are worth, because there is more interest
+        to avoid. At a 3% rate the strategy is barely worth the bother; at
+        an 8% rate it is one of the highest-return moves available to a
+        homeowner who already has cheap debt under control.
+      </p>
+
       <h2>Three Ways to Capture the Savings</h2>
       <p>
         The math we just walked through depends on one specific behavior:
@@ -180,6 +332,65 @@ export default function BiweeklyMortgageGuide() {
         agrees or not.
       </p>
 
+      <h2>The Four Methods, Side by Side</h2>
+      <p>
+        Here is every common way to run a biweekly-equivalent strategy on
+        a $300,000 / 6.5% / 30-year mortgage, with the real cost of each.
+        The DIY and free-lender methods are mathematically the best; the
+        fee-based programs simply skim money off a behavior change that
+        costs the borrower nothing.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Setup Fee</th>
+            <th>Recurring Fee</th>
+            <th>When Credited</th>
+            <th>Net Interest Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DIY (1/12 extra principal monthly)</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td>Immediately</td>
+            <td>~$87,000</td>
+          </tr>
+          <tr>
+            <td>True biweekly, free lender</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td>On receipt</td>
+            <td>~$87,300</td>
+          </tr>
+          <tr>
+            <td>Lender biweekly enrollment (fee)</td>
+            <td>$200–$400</td>
+            <td>$4–$10/mo</td>
+            <td>Often year-end</td>
+            <td>~$83,000–86,000</td>
+          </tr>
+          <tr>
+            <td>Third-party &quot;equity accelerator&quot;</td>
+            <td>$300–$500</td>
+            <td>$8–$12/mo</td>
+            <td>Varies</td>
+            <td>~$80,000–84,000</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Over a 24-year payoff, $8/month plus a $400 setup fee is roughly
+        $2,700 in fees — money paid to a third party for the privilege of
+        a payment-scheduling change you can make yourself in your bank&apos;s
+        bill-pay screen in five minutes. The fee-based products survive
+        only because most borrowers never see the math laid out like this.
+        Use the DIY method unless your lender offers true biweekly with no
+        fees and immediate crediting.
+      </p>
+
       <h2>When Biweekly Isn&apos;t Worth Doing</h2>
       <p>
         Biweekly payments help anyone who has the cash flow to make
@@ -261,6 +472,61 @@ export default function BiweeklyMortgageGuide() {
           mortgages) do. Confirm before you start.
         </li>
       </ul>
+
+      <h2>Biweekly vs the Other Acceleration Strategies</h2>
+      <p>
+        Biweekly is one of four common ways to pay a mortgage off early.
+        Each has a distinct profile, and the best choice depends on how
+        your cash actually arrives.
+      </p>
+      <ul>
+        <li>
+          <strong>Biweekly / 1-12 extra (steady acceleration).</strong>
+          A small, automatic 8.33% principal acceleration every month. Low
+          willpower required, predictable, and it aligns with biweekly
+          paychecks. Best for steady W-2 income. This is the default
+          recommendation for most households.
+        </li>
+        <li>
+          <strong>Annual lump-sum prepayment.</strong> Apply a bonus, tax
+          refund, or commission once a year directly to principal. A
+          $5,000 annual lump sum on a $300,000 / 6.5% loan is roughly
+          comparable to biweekly in total years saved, but it depends on
+          you actually redirecting the windfall instead of spending it.
+          Best for variable income (sales, contracting, business owners).
+        </li>
+        <li>
+          <strong>Mortgage recast.</strong> After a large one-time
+          principal payment (often a $10,000+ minimum), the lender
+          re-amortizes the loan over the original remaining term. Your
+          monthly payment <em>drops</em> while the payoff date stays the
+          same — the opposite of biweekly, which keeps the payment level
+          and pulls the payoff date in. Recasting trades interest savings
+          for cash-flow relief. It costs a small fee ($150–$500) and is
+          the right move only if you need a lower required payment, not a
+          faster payoff.
+        </li>
+        <li>
+          <strong>Refinance to a shorter term.</strong> Replacing a
+          30-year loan with a 15-year loan at a lower rate is the most
+          aggressive option. It locks in both a lower rate and a forced
+          faster payoff, but the higher required payment removes the
+          flexibility biweekly preserves. Only sensible when the rate drop
+          is real and the higher payment is comfortably affordable in your
+          worst plausible month.
+        </li>
+      </ul>
+      <p>
+        The defining advantage of biweekly over recasting and shorter-term
+        refinancing is <em>optionality</em>: with the DIY biweekly method
+        you can pause the extra principal in a hard month with zero
+        consequence, because your scheduled payment is unchanged. A
+        15-year refinance gives you no such escape hatch — the higher
+        payment is contractually required every month for 180 months. For
+        households whose income has any volatility, the flexibility of
+        biweekly is worth more than the marginally larger guaranteed
+        savings of a forced shorter term.
+      </p>
 
       <h2>Bottom Line</h2>
       <p>

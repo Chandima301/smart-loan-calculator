@@ -57,6 +57,41 @@ const FAQ = [
     answer:
       'Many lenders charge $200–$400 enrollment plus monthly fees for biweekly programs — and some only credit the extra payment once a year, which kills most of the benefit. You can get the exact same result fee-free by either paying half your mortgage every two weeks directly, or simply adding 1/12 of your payment to each monthly payment as extra principal. Always confirm your lender accepts extra principal payments without penalty first.',
   },
+  {
+    question: 'Why do 26 biweekly payments equal 13 monthly payments?',
+    answer:
+      'There are 52 weeks in a year, so a payment every two weeks gives 52 ÷ 2 = 26 payments per year. Each biweekly payment is half the monthly amount, so 26 × (monthly ÷ 2) = 13 × monthly. A standard schedule pays 12 monthly payments per year; biweekly pays 13 — exactly one extra full payment annually, which lands entirely on principal because the regular payments already cover each month’s interest.',
+  },
+  {
+    question: 'Does the loan size change how many years biweekly saves?',
+    answer:
+      'No. The payoff acceleration depends only on the interest rate, the term, and the size of the extra payment as a fraction of the regular payment (always 1/12 with biweekly). At 6.5% over 30 years, a $300,000 borrower and an $800,000 borrower both finish about 5 years 10 months early. The dollars saved scale with loan size, but the time saved does not.',
+  },
+  {
+    question: 'How does the interest rate affect biweekly savings?',
+    answer:
+      'Higher rates make biweekly far more powerful, because early principal reduction avoids more future interest. On a 30-year loan, biweekly saves roughly 4 years at 4%, about 5 years 10 months at 6.5%, and around 7 years at 8%. The percentage of lifetime interest removed rises from ~15% at 4% to ~28% at 8%. At very low rates the strategy is barely worth the effort.',
+  },
+  {
+    question: 'What is the DIY way to get biweekly savings without enrolling?',
+    answer:
+      'Keep your normal monthly payment and add 1/12 of it as extra principal each month, clearly marked "apply to principal." On a $1,896 payment that is about $158 extra monthly. Over 12 months you make one full extra payment — mathematically identical to biweekly, with no enrollment fee and full control if a tight month forces you to skip the extra.',
+  },
+  {
+    question: 'Are there any fees I should avoid with biweekly programs?',
+    answer:
+      'Yes. Many lender and third-party "equity accelerator" programs charge a $200–$500 setup fee plus $4–$12/month for what is a free behavior change. Over a 24-year payoff that can total $2,700+ in fees. Worse, some hold your half-payments and only credit the extra payment once a year, losing the in-year compounding. Use the free DIY method instead.',
+  },
+  {
+    question: 'When should I NOT use biweekly payments?',
+    answer:
+      'Skip accelerating your mortgage if you still carry higher-rate debt (credit cards at 20%+, personal loans at 14%+), if you have not captured your full employer retirement match (an instant 100% return), or if you lack a 3–6 month emergency fund. Mortgage prepayments are not liquid — you cannot get the money back without refinancing. Prioritise those three first.',
+  },
+  {
+    question: 'Should I refinance instead of paying biweekly?',
+    answer:
+      'If rates have dropped at least 0.75–1 percentage point below your current rate and you will stay in the home long enough to recover closing costs, refinancing usually beats prepaying — it lowers interest while preserving liquidity. The two are not mutually exclusive: many borrowers refinance to a lower rate, then run biweekly on the new loan. Use the refinance calculator to model the break-even month first.',
+  },
 ];
 
 export default function BiweeklyMortgageCalculatorPage() {
