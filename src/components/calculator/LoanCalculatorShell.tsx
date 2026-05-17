@@ -418,7 +418,12 @@ export default function LoanCalculatorShell({
                     </span>
                   )}
                 </div>
-                <BalanceChart schedule={displaySchedule} />
+                <BalanceChart
+                  schedule={displaySchedule}
+                  compareSchedule={
+                    prepaymentReflected ? amortizationSchedule : undefined
+                  }
+                />
                 {prepaymentReflected && (
                   <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
                     Paid off in{' '}
