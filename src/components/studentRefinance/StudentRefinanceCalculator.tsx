@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -8,6 +8,10 @@ import { NumericField } from '@/components/ui/numeric-field';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import { calculateStudentRefinance } from '@/lib/studentRefinanceCalculations';
 import { TrendingDown, Wallet, ShieldX } from 'lucide-react';
+import DownloadPdfButton from '@/components/calculator/DownloadPdfButton';
+import { useSettingsStore } from '@/store/settingsStore';
+import { pdfMoney } from '@/lib/pdf/pdfFormat';
+import type { LoanSummaryPdfInput } from '@/lib/pdf/loanSummaryPdf';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
@@ -32,6 +36,8 @@ export default function StudentRefinanceCalculator() {
   const [newTermYears, setNewTermYears] = useState(10);
   const [refinanceFee, setRefinanceFee] = useState(0);
 
+  const currencyCode = useSettingsStore((s) => s.currencyCode);
+
   const result = useMemo(
     () =>
       calculateStudentRefinance({
@@ -44,6 +50,76 @@ export default function StudentRefinanceCalculator() {
       }),
     [balance, currentRate, remainingYears, newRate, newTermYears, refinanceFee],
   );
+
+  const getPdfInput = useCallback((): LoanSummaryPdfInput => {
+    const money = (v: number) => pdfMoney(v, currencyCode);
+    return {
+      documentTitle: 'Student Loan Refinance Calculator — Summary',
+      generatedOn: new Date().toLocaleDateString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      sections: [
+        {
+          heading: 'Your Federal Loan & Refinance Offer',
+          rows: [
+            { label: 'Federal loan balance', value: money(balance) },
+            { label: 'Current federal rate', value: `${currentRate.toFixed(2)}% p.a.` },
+            { label: 'Years remaining (federal)', value: `${remainingYears} yr` },
+            { label: 'New private rate', value: `${newRate.toFixed(2)}% p.a.` },
+            { label: 'New private term', value: `${newTermYears} yr` },
+            { label: 'Refinance fee', value: money(refinanceFee) },
+          ],
+        },
+        {
+          heading: 'Keep Federal Loans',
+          rows: [
+            { label: 'Monthly payment', value: money(result.federalMonthly) },
+            { label: 'Total interest', value: money(result.federalTotalInterest) },
+            { label: 'Total paid', value: money(result.federalTotalPaid) },
+          ],
+        },
+        {
+          heading: 'Private Refinance',
+          rows: [
+            { label: 'Monthly payment', value: money(result.privateMonthly) },
+            { label: 'Total interest', value: money(result.privateTotalInterest) },
+            { label: 'Total paid', value: money(result.privateTotalPaid) },
+          ],
+        },
+        {
+          heading: 'The Money Side',
+          rows: [
+            {
+              label: 'Lifetime interest change',
+              value: `${result.lifetimeInterestDelta >= 0 ? 'Save ' : 'Costs '}${money(Math.abs(result.lifetimeInterestDelta))}`,
+            },
+            {
+              label: 'Monthly payment change',
+              value: `${result.monthlyDelta >= 0 ? '−' : '+'}${money(Math.abs(result.monthlyDelta))} / mo`,
+            },
+          ],
+        },
+        {
+          heading: 'What You Permanently Forfeit (Irreversible)',
+          rows: FORFEITED.map((item) => ({ label: `• ${item}`, value: '' })),
+        },
+      ],
+      fileSlug: 'student-loan-refinance',
+      disclaimer:
+        'Refinancing federal → private is irreversible. Estimate only — verify terms with your lender.',
+    };
+  }, [
+    currencyCode,
+    balance,
+    currentRate,
+    remainingYears,
+    newRate,
+    newTermYears,
+    refinanceFee,
+    result,
+  ]);
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
@@ -172,6 +248,10 @@ export default function StudentRefinanceCalculator() {
 
         {/* Results */}
         <div className="space-y-6">
+
+          <div className="flex justify-end">
+            <DownloadPdfButton getInput={getPdfInput} />
+          </div>
 
           {/* Side-by-side */}
           <div className="grid gap-4 sm:grid-cols-2">

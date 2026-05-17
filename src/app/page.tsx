@@ -114,7 +114,7 @@ export default function HomePage() {
       </div>
 
       {/* Generic calculator — placed first so it's above the fold on landing */}
-      <LoanCalculatorShell />
+      <LoanCalculatorShell pdfTitle="Loan / EMI Calculator" pdfSlug="loan-emi" />
 
       {/* Specialized calculators — funnel routing to per-loan-type pages */}
       <div className="container mx-auto max-w-5xl px-4 pt-8 pb-2">

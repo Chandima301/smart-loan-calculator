@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -8,6 +8,10 @@ import { NumericField } from '@/components/ui/numeric-field';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import { calculatePslf, type StateGroup } from '@/lib/pslfCalculations';
 import { GraduationCap, Gift, Wallet, AlertTriangle } from 'lucide-react';
+import DownloadPdfButton from '@/components/calculator/DownloadPdfButton';
+import { useSettingsStore } from '@/store/settingsStore';
+import { pdfMoney, pdfMonths } from '@/lib/pdf/pdfFormat';
+import type { LoanSummaryPdfInput } from '@/lib/pdf/loanSummaryPdf';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
@@ -41,6 +45,8 @@ export default function PslfCalculator() {
   const regionLabel =
     STATE_OPTIONS.find((o) => o.value === stateGroup)?.label ?? '';
 
+  const currencyCode = useSettingsStore((s) => s.currencyCode);
+
   const result = useMemo(
     () =>
       calculatePslf({
@@ -54,6 +60,99 @@ export default function PslfCalculator() {
       }),
     [balance, annualRate, agi, familySize, stateGroup, paymentsAlreadyMade, incomeGrowthPct],
   );
+
+  const getPdfInput = useCallback((): LoanSummaryPdfInput => {
+    const money = (v: number) => pdfMoney(v, currencyCode);
+
+    const sections: LoanSummaryPdfInput['sections'] = [
+      {
+        heading: 'Your Federal Loan & Income',
+        rows: [
+          { label: 'Federal loan balance', value: money(balance) },
+          { label: 'Interest rate', value: `${annualRate.toFixed(2)}% p.a.` },
+          { label: 'Adjusted gross income', value: `${money(agi)} / yr` },
+          { label: 'Family size', value: String(familySize) },
+          { label: 'Poverty-guideline region', value: regionLabel },
+          { label: 'Qualifying payments made', value: `${paymentsAlreadyMade} / 120` },
+          { label: 'Assumed annual income growth', value: `${incomeGrowthPct.toFixed(1)}%` },
+        ],
+      },
+      {
+        heading: 'Standard 10-Year Plan',
+        rows: [
+          { label: 'Monthly payment', value: money(result.standardMonthlyPayment) },
+          { label: 'Total paid', value: money(result.standardTotalPaid) },
+          { label: 'Amount forgiven', value: money(0) },
+        ],
+      },
+      {
+        heading: 'PSLF (Income-Driven Repayment)',
+        rows: [
+          { label: 'Est. starting monthly payment', value: money(result.initialMonthlyPayment) },
+          { label: 'Est. final monthly payment (yr 10)', value: money(result.finalMonthlyPayment) },
+          { label: 'Total paid before forgiveness', value: money(result.totalPaidUnderPslf) },
+          { label: 'Time to forgiveness', value: pdfMonths(result.monthsToForgiveness) },
+        ],
+      },
+      {
+        heading: 'How Your Monthly Payment Is Derived',
+        rows: [
+          { label: 'Adjusted gross income', value: money(agi) },
+          {
+            label: `− 1.5 × poverty guideline (${money(result.povertyGuideline)})`,
+            value: `−${money(1.5 * result.povertyGuideline)}`,
+          },
+          { label: '= Discretionary income', value: money(result.discretionaryIncome) },
+          { label: '× 10% ÷ 12 = est. monthly payment', value: money(result.initialMonthlyPayment) },
+        ],
+      },
+    ];
+
+    sections.push(
+      result.paidOffBeforeForgiveness
+        ? {
+            heading: 'Estimated Outcome',
+            rows: [
+              { label: 'PSLF benefit', value: 'None at this income / debt level' },
+              {
+                label: 'Reason',
+                value: 'Loan repaid before 120 payments — nothing left to forgive',
+              },
+            ],
+          }
+        : {
+            heading: 'Your Estimated PSLF Outcome',
+            rows: [
+              { label: 'Forgiven tax-free', value: money(result.forgivenAmount) },
+              { label: 'Net PSLF benefit', value: money(result.pslfBenefit) },
+              { label: 'You pay over 10 yr', value: money(result.totalPaidUnderPslf) },
+            ],
+          },
+    );
+
+    return {
+      documentTitle: 'PSLF Calculator — Summary',
+      generatedOn: new Date().toLocaleDateString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      sections,
+      fileSlug: 'pslf',
+      disclaimer:
+        'Estimate for planning only — IDR rules & poverty guidelines change yearly. Confirm on StudentAid.gov.',
+    };
+  }, [
+    currencyCode,
+    balance,
+    annualRate,
+    agi,
+    familySize,
+    regionLabel,
+    paymentsAlreadyMade,
+    incomeGrowthPct,
+    result,
+  ]);
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
@@ -203,6 +302,10 @@ export default function PslfCalculator() {
 
         {/* Results */}
         <div className="space-y-6">
+
+          <div className="flex justify-end">
+            <DownloadPdfButton getInput={getPdfInput} />
+          </div>
 
           {/* Side-by-side: PSLF path vs standard 10-year */}
           <div className="grid gap-4 sm:grid-cols-2">

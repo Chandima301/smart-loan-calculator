@@ -7,7 +7,12 @@ import { Separator } from '@/components/ui/separator';
 import LoanInputPanel from './LoanInputPanel';
 import SummaryCards from './SummaryCards';
 import ShareButton from './ShareButton';
+import DownloadPdfButton from './DownloadPdfButton';
 import LoanParamsFromUrl from './LoanParamsFromUrl';
+import { useSettingsStore } from '@/store/settingsStore';
+import { pdfMoney, pdfMoneyRounded, pdfMonths } from '@/lib/pdf/pdfFormat';
+import { formatPercent } from '@/lib/formatters';
+import type { LoanSummaryPdfInput } from '@/lib/pdf/loanSummaryPdf';
 
 // Lazy load heavy components — keeps initial bundle small and FCP fast
 const LoanPieChart       = dynamic(() => import('./LoanPieChart'),       { ssr: false });
@@ -57,6 +62,16 @@ interface Props {
    * { calculator: 'Payoff Simulator' }.
    */
   tabLabels?: Partial<Record<TabValue, string>>;
+  /**
+   * Page name used in the downloadable PDF summary's title/footer,
+   * e.g. "Mortgage Calculator". Falls back to a generic label.
+   */
+  pdfTitle?: string;
+  /**
+   * Filename stem for the PDF → `${pdfSlug}-loan-summary.pdf`.
+   * e.g. "mortgage". Falls back to "loan".
+   */
+  pdfSlug?: string;
 }
 
 export default function LoanCalculatorShell({
@@ -65,7 +80,10 @@ export default function LoanCalculatorShell({
   enabledTabs,
   prepaymentDefaultOpen,
   tabLabels,
+  pdfTitle = 'Loan Calculator',
+  pdfSlug = 'loan',
 }: Props) {
+  const currencyCode = useSettingsStore((s) => s.currencyCode);
   const [loanParams, setLoanParams] = useState<LoanParams>({
     ...LOAN_DEFAULTS,
     ...defaultParams,
@@ -145,6 +163,118 @@ export default function LoanCalculatorShell({
     setActiveTab('calculator');
   };
 
+  // Built lazily on click (passed to DownloadPdfButton.getInput) so the
+  // 360-row table array isn't constructed on every render.
+  const getPdfInput = useCallback((): LoanSummaryPdfInput => {
+    const money = (v: number) => pdfMoney(v, currencyCode);
+    const moneyR = (v: number) => pdfMoneyRounded(v, currencyCode);
+
+    const sections: LoanSummaryPdfInput['sections'] = [
+      {
+        heading: 'Loan Details',
+        rows: [
+          { label: 'Loan amount (principal)', value: money(loanParams.principal) },
+          {
+            label: 'Annual interest rate',
+            value: `${loanParams.annualRate.toFixed(2)}% p.a.`,
+          },
+          {
+            label: 'Loan tenure',
+            value: `${pdfMonths(loanParams.tenureMonths)} (${loanParams.tenureMonths} months)`,
+          },
+        ],
+      },
+      {
+        heading: 'Payment Summary',
+        rows: [
+          { label: 'Monthly payment (EMI)', value: money(loanResult.emi) },
+          { label: 'Total interest payable', value: money(loanResult.totalInterest) },
+          { label: 'Total repayment', value: money(loanResult.totalRepayment) },
+          {
+            label: 'Effective interest cost',
+            value: formatPercent(loanResult.effectiveRate),
+          },
+        ],
+      },
+    ];
+
+    const prepaymentActive =
+      showPrepayment &&
+      (prepaymentParams.extraMonthlyPayment > 0 ||
+        prepaymentParams.lumpSumPayment > 0) &&
+      prepaymentResult.monthsSaved > 0;
+
+    if (prepaymentActive) {
+      const ppRows: { label: string; value: string }[] = [];
+      if (prepaymentParams.extraMonthlyPayment > 0) {
+        ppRows.push({
+          label: 'Extra monthly payment',
+          value: money(prepaymentParams.extraMonthlyPayment),
+        });
+      }
+      if (prepaymentParams.lumpSumPayment > 0) {
+        ppRows.push({
+          label: `Lump sum (month ${prepaymentParams.lumpSumMonth})`,
+          value: money(prepaymentParams.lumpSumPayment),
+        });
+      }
+      ppRows.push(
+        {
+          label: 'New payoff time',
+          value: `${pdfMonths(prepaymentResult.newTenureMonths)} (${prepaymentResult.newTenureMonths} months)`,
+        },
+        { label: 'Time saved', value: pdfMonths(prepaymentResult.monthsSaved) },
+        {
+          label: 'Interest saved',
+          value: money(prepaymentResult.interestSaved),
+        },
+      );
+      sections.push({ heading: 'With Prepayment', rows: ppRows });
+    }
+
+    return {
+      documentTitle: `${pdfTitle} — Summary`,
+      generatedOn: new Date().toLocaleDateString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      sections,
+      table: {
+        title: 'Amortization Schedule',
+        head: [
+          'Month',
+          'Opening',
+          'Payment',
+          'Principal',
+          'Interest',
+          'Closing',
+          'Cum. Interest',
+        ],
+        body: amortizationSchedule.map((r) => [
+          String(r.month),
+          moneyR(r.openingBalance),
+          moneyR(r.emi),
+          moneyR(r.principalComponent),
+          moneyR(r.interestComponent),
+          moneyR(r.closingBalance),
+          moneyR(r.cumulativeInterest),
+        ]),
+      },
+      fileSlug: pdfSlug,
+    };
+  }, [
+    currencyCode,
+    loanParams,
+    loanResult,
+    amortizationSchedule,
+    showPrepayment,
+    prepaymentParams,
+    prepaymentResult,
+    pdfTitle,
+    pdfSlug,
+  ]);
+
   return (
     <div className="container mx-auto max-w-5xl px-4 py-6">
       <Suspense fallback={null}>
@@ -163,7 +293,8 @@ export default function LoanCalculatorShell({
         </div>
 
         <TabsContent value="calculator" className="space-y-6 mt-0">
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <DownloadPdfButton getInput={getPdfInput} />
             <ShareButton />
           </div>
 

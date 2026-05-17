@@ -80,6 +80,9 @@ export default function LoanLandingPage({
   tabLabels,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
+  // "/mortgage-calculator" → "mortgage"; "/" → "loan"
+  const pdfSlug =
+    canonicalPath.replace(/^\//, '').replace(/-calculator$/, '') || 'loan';
   const enabledTabKeys = enabledTabs ?? TAB_META.map((t) => t.key);
   const visibleTabMeta = TAB_META.filter((t) => enabledTabKeys.includes(t.key));
 
@@ -136,6 +139,8 @@ export default function LoanLandingPage({
         enabledTabs={enabledTabs}
         prepaymentDefaultOpen={prepaymentDefaultOpen}
         tabLabels={tabLabels}
+        pdfTitle={title}
+        pdfSlug={pdfSlug}
       />
 
       {/* Inline related calculators — quick cross-links right after the tool */}

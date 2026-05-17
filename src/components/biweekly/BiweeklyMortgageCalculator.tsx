@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -9,6 +9,10 @@ import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import { calculateBiweekly } from '@/lib/biweeklyCalculations';
 import { LOAN_LIMITS } from '@/lib/constants';
 import { TrendingDown, Clock, Calendar } from 'lucide-react';
+import DownloadPdfButton from '@/components/calculator/DownloadPdfButton';
+import { useSettingsStore } from '@/store/settingsStore';
+import { pdfMoney, pdfMonths } from '@/lib/pdf/pdfFormat';
+import type { LoanSummaryPdfInput } from '@/lib/pdf/loanSummaryPdf';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
@@ -33,6 +37,8 @@ export default function BiweeklyMortgageCalculator() {
   const [annualRate, setAnnualRate] = useState(6.5);
   const [years, setYears] = useState(30);
 
+  const currencyCode = useSettingsStore((s) => s.currencyCode);
+
   const result = useMemo(
     () =>
       calculateBiweekly({
@@ -42,6 +48,55 @@ export default function BiweeklyMortgageCalculator() {
       }),
     [principal, annualRate, years],
   );
+
+  const getPdfInput = useCallback((): LoanSummaryPdfInput => {
+    const money = (v: number) => pdfMoney(v, currencyCode);
+    return {
+      documentTitle: 'Biweekly Mortgage Calculator — Summary',
+      generatedOn: new Date().toLocaleDateString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      sections: [
+        {
+          heading: 'Mortgage Details',
+          rows: [
+            { label: 'Mortgage amount', value: money(principal) },
+            { label: 'Annual interest rate', value: `${annualRate.toFixed(2)}% p.a.` },
+            { label: 'Loan term', value: `${years} years` },
+          ],
+        },
+        {
+          heading: 'Standard Monthly Plan',
+          rows: [
+            { label: 'Monthly payment', value: money(result.monthlyPayment) },
+            { label: 'Total interest', value: money(result.monthlyTotalInterest) },
+            { label: 'Total paid', value: money(result.monthlyTotalPaid) },
+            { label: 'Payoff date', value: formatDate(result.payoffDateMonthly) },
+          ],
+        },
+        {
+          heading: 'Biweekly Plan',
+          rows: [
+            { label: 'Biweekly payment (every 14 days)', value: money(result.biweeklyPayment) },
+            { label: 'Total interest', value: money(result.biweeklyTotalInterest) },
+            { label: 'Total paid', value: money(result.biweeklyTotalPaid) },
+            { label: 'Paid off in', value: pdfMonths(result.biweeklyMonths) },
+            { label: 'Payoff date', value: formatDate(result.biweeklyPayoffDate) },
+          ],
+        },
+        {
+          heading: 'Your Savings with Biweekly Payments',
+          rows: [
+            { label: 'Interest saved', value: money(result.interestSaved) },
+            { label: 'Time saved', value: pdfMonths(result.monthsSaved) },
+          ],
+        },
+      ],
+      fileSlug: 'biweekly-mortgage',
+    };
+  }, [currencyCode, principal, annualRate, years, result]);
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
@@ -125,6 +180,10 @@ export default function BiweeklyMortgageCalculator() {
 
         {/* Results */}
         <div className="space-y-6">
+
+          <div className="flex justify-end">
+            <DownloadPdfButton getInput={getPdfInput} />
+          </div>
 
           {/* Side-by-side comparison */}
           <div className="grid gap-4 sm:grid-cols-2">
