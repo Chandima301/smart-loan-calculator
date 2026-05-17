@@ -35,14 +35,18 @@ export default function StudentLoanPayoffCalculatorPage() {
   return (
     <LoanLandingPage
       title="Student Loan Payoff Calculator"
-      subtitle="See exactly how many years and how much interest you save by adding extra payments to your student loans — and check whether accelerating payoff is even the right move."
-      intro="An extra dollar of principal paid early is worth far more than a dollar, because it removes the interest that dollar would have generated for the rest of the loan. Use the Prepayment Simulator in the Calculator tab to model your exact extra-payment savings, then read the guide below for the avalanche-vs-snowball strategy and the one situation — federal loans headed for forgiveness — where prepaying is a costly mistake."
+      subtitle="See exactly how many years and how much interest you save by adding extra payments to your student loans — the simulator opens ready, with the extra-payment fields front and center."
+      intro="An extra dollar of principal paid early is worth far more than a dollar, because it removes the interest that dollar would have generated for the rest of the loan. The Payoff Simulator below opens with the extra-payment controls already expanded — set a monthly extra or a one-time lump sum and watch the payoff date and total interest drop. Then read the guide for the avalanche-vs-snowball strategy and the one situation — federal loans headed for forgiveness — where prepaying is a costly mistake."
       defaultParams={{ principal: 35_000, annualRate: 6.5, tenureMonths: 120 }}
       canonicalPath={PATH}
+      primaryTab="calculator"
+      enabledTabs={['calculator', 'compare', 'affordability']}
+      prepaymentDefaultOpen
+      tabLabels={{ calculator: 'Payoff Simulator' }}
       tabs={{
         calculator: {
-          title: 'Simulate Extra Payments',
-          body: 'Enter your balance, rate, and term, then open the Prepayment Simulator to see how a monthly extra or a lump sum shortens the payoff and cuts total interest — month by month.',
+          title: 'Payoff Simulator (extra payments)',
+          body: 'Opens with the extra-payment controls already expanded. Add a monthly extra or a lump sum and instantly see how many months drop off the payoff and how much interest you avoid — with the full amortization month by month.',
         },
         compare: {
           title: 'Compare Payoff Scenarios',
@@ -54,7 +58,7 @@ export default function StudentLoanPayoffCalculatorPage() {
         },
         restructure: {
           title: 'Payoff vs Refinance',
-          body: 'Accelerating pays the existing loan faster at the existing rate; refinancing changes the rate. Model whether a rate change plus acceleration beats acceleration alone — but never refinance federal loans you might need forgiveness on.',
+          body: 'Not shown on this page — refinancing is covered by the dedicated Student Loan Refinance Calculator.',
         },
       }}
       guide={<StudentLoanPayoffGuide />}

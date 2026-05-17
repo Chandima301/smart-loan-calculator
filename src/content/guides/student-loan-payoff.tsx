@@ -401,7 +401,10 @@ export default function StudentLoanPayoffGuide() {
         than one who heroically throws every spare dollar at a low-rate
         student loan while the higher-priority pieces go unaddressed.
         Accelerated payoff is a powerful tool, but it is the last step in
-        a sequence — not the first, and never the only one.
+        a sequence — not the first, and never the only one. Get the
+        sequence right and the payoff almost takes care of itself; get it
+        wrong and no amount of aggressive overpayment will rescue the
+        outcome.
       </p>
     </>
   );

@@ -41,9 +41,31 @@ interface Props {
    * the Restructure analyzer instead of the generic EMI calculator.
    */
   primaryTab?: TabValue;
+  /**
+   * Restrict which tabs render. Default: all four. Used e.g. by
+   * /student-loan-payoff-calculator to drop the irrelevant Restructure
+   * tab and keep only calculator + compare + affordability.
+   */
+  enabledTabs?: TabValue[];
+  /**
+   * Start with the prepayment simulator already expanded. For
+   * payoff-focused pages where the extra-payment mechanic IS the point.
+   */
+  prepaymentDefaultOpen?: boolean;
+  /**
+   * Override the tab-bar label for specific tabs, e.g.
+   * { calculator: 'Payoff Simulator' }.
+   */
+  tabLabels?: Partial<Record<TabValue, string>>;
 }
 
-export default function LoanCalculatorShell({ defaultParams, primaryTab }: Props) {
+export default function LoanCalculatorShell({
+  defaultParams,
+  primaryTab,
+  enabledTabs,
+  prepaymentDefaultOpen,
+  tabLabels,
+}: Props) {
   const [loanParams, setLoanParams] = useState<LoanParams>({
     ...LOAN_DEFAULTS,
     ...defaultParams,
@@ -56,17 +78,33 @@ export default function LoanCalculatorShell({ defaultParams, primaryTab }: Props
     lumpSumMonth: 12,
   });
 
-  const [showPrepayment, setShowPrepayment] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>(primaryTab ?? 'calculator');
+  const [showPrepayment, setShowPrepayment] = useState(
+    prepaymentDefaultOpen ?? false,
+  );
 
-  // When a primaryTab is set, surface it first in the tab bar so the
-  // pre-selected tab isn't visually the 4th one.
-  const orderedTabs = primaryTab
-    ? [
-        ...TAB_DEFS.filter((t) => t.value === primaryTab),
-        ...TAB_DEFS.filter((t) => t.value !== primaryTab),
-      ]
-    : TAB_DEFS;
+  // Tabs available on this page (default: all four).
+  const enabled = enabledTabs ?? TAB_DEFS.map((t) => t.value);
+  const isEnabled = (t: TabValue) => enabled.includes(t);
+
+  // Build the visible tab list: filter to enabled, apply label overrides,
+  // then float the primaryTab to the front if it is enabled.
+  const visibleTabs = TAB_DEFS.filter((t) => isEnabled(t.value)).map((t) => ({
+    value: t.value,
+    label: tabLabels?.[t.value] ?? t.label,
+  }));
+  const orderedTabs =
+    primaryTab && isEnabled(primaryTab)
+      ? [
+          ...visibleTabs.filter((t) => t.value === primaryTab),
+          ...visibleTabs.filter((t) => t.value !== primaryTab),
+        ]
+      : visibleTabs;
+
+  const initialTab =
+    primaryTab && isEnabled(primaryTab)
+      ? primaryTab
+      : (orderedTabs[0]?.value ?? 'calculator');
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
 
   const handleLoanChange = (params: LoanParams) => {
     setLoanParams(params);
@@ -196,31 +234,37 @@ export default function LoanCalculatorShell({ defaultParams, primaryTab }: Props
           <RateSensitivity params={loanParams} />
         </TabsContent>
 
-        <TabsContent value="compare" className="mt-0">
-          <ComparisonPanel />
-        </TabsContent>
+        {isEnabled('compare') && (
+          <TabsContent value="compare" className="mt-0">
+            <ComparisonPanel />
+          </TabsContent>
+        )}
 
-        <TabsContent value="affordability" className="mt-0">
-          <div className="max-w-2xl mx-auto">
+        {isEnabled('affordability') && (
+          <TabsContent value="affordability" className="mt-0">
+            <div className="max-w-2xl mx-auto">
+              <div className="mb-4">
+                <h2 className="text-base font-semibold">Affordability Check</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Find out the maximum loan you can afford based on your income.
+                </p>
+              </div>
+              <AffordabilityChecker onApplyToCalculator={handleApplyAffordability} />
+            </div>
+          </TabsContent>
+        )}
+
+        {isEnabled('restructure') && (
+          <TabsContent value="restructure" className="mt-0">
             <div className="mb-4">
-              <h2 className="text-base font-semibold">Affordability Check</h2>
+              <h2 className="text-base font-semibold">Loan Restructure Analyzer</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Find out the maximum loan you can afford based on your income.
+                Evaluate whether settling your current loan early and refinancing makes financial sense.
               </p>
             </div>
-            <AffordabilityChecker onApplyToCalculator={handleApplyAffordability} />
-          </div>
-        </TabsContent>
-
-        <TabsContent value="restructure" className="mt-0">
-          <div className="mb-4">
-            <h2 className="text-base font-semibold">Loan Restructure Analyzer</h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              Evaluate whether settling your current loan early and refinancing makes financial sense.
-            </p>
-          </div>
-          <LoanRestructure initialParams={loanParams} />
-        </TabsContent>
+            <LoanRestructure initialParams={loanParams} />
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );

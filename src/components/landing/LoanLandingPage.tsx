@@ -49,6 +49,12 @@ export interface LoanLandingPageProps {
   guideMeta?: GuideMeta;
   /** Which calculator tab leads on this page (rendered first + selected by default). */
   primaryTab?: TabValue;
+  /** Restrict which calculator tabs render (default: all four). */
+  enabledTabs?: TabValue[];
+  /** Start with the prepayment simulator expanded (payoff-focused pages). */
+  prepaymentDefaultOpen?: boolean;
+  /** Override tab-bar labels, e.g. { calculator: 'Payoff Simulator' }. */
+  tabLabels?: Partial<Record<TabValue, string>>;
 }
 
 const TAB_META = [
@@ -69,8 +75,13 @@ export default function LoanLandingPage({
   guide,
   guideMeta,
   primaryTab,
+  enabledTabs,
+  prepaymentDefaultOpen,
+  tabLabels,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
+  const enabledTabKeys = enabledTabs ?? TAB_META.map((t) => t.key);
+  const visibleTabMeta = TAB_META.filter((t) => enabledTabKeys.includes(t.key));
 
   const faqJsonLd = {
     '@context': 'https://schema.org',
@@ -119,7 +130,13 @@ export default function LoanLandingPage({
       />
 
       {/* Calculator */}
-      <LoanCalculatorShell defaultParams={defaultParams} primaryTab={primaryTab} />
+      <LoanCalculatorShell
+        defaultParams={defaultParams}
+        primaryTab={primaryTab}
+        enabledTabs={enabledTabs}
+        prepaymentDefaultOpen={prepaymentDefaultOpen}
+        tabLabels={tabLabels}
+      />
 
       {/* Inline related calculators — quick cross-links right after the tool */}
       <InlineRelatedCalculators currentPath={canonicalPath} />
@@ -127,7 +144,7 @@ export default function LoanLandingPage({
       {/* Tab feature cards — moved below calculator so the tool is above the fold */}
       <div className="container mx-auto max-w-5xl px-4 py-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {TAB_META.map(({ key, label, Icon }) => {
+          {visibleTabMeta.map(({ key, label, Icon }) => {
             const desc = tabs[key];
             return (
               <div key={key} className="rounded-lg border p-4 space-y-2">
