@@ -42,6 +42,7 @@ export default function StudentLoanPayoffCalculatorPage() {
       primaryTab="calculator"
       enabledTabs={['calculator', 'compare', 'affordability']}
       prepaymentDefaultOpen
+      prepaymentDrivenResults
       tabLabels={{ calculator: 'Payoff Simulator' }}
       tabs={{
         calculator: {

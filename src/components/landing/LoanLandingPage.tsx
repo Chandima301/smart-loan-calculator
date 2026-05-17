@@ -55,6 +55,11 @@ export interface LoanLandingPageProps {
   prepaymentDefaultOpen?: boolean;
   /** Override tab-bar labels, e.g. { calculator: 'Payoff Simulator' }. */
   tabLabels?: Partial<Record<TabValue, string>>;
+  /**
+   * Make an active prepayment drive the charts, amortization table and
+   * PDF (with before/after labels). Opt-in — payoff-focused pages.
+   */
+  prepaymentDrivenResults?: boolean;
 }
 
 const TAB_META = [
@@ -78,6 +83,7 @@ export default function LoanLandingPage({
   enabledTabs,
   prepaymentDefaultOpen,
   tabLabels,
+  prepaymentDrivenResults,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   // "/mortgage-calculator" → "mortgage"; "/" → "loan"
@@ -141,6 +147,7 @@ export default function LoanLandingPage({
         tabLabels={tabLabels}
         pdfTitle={title}
         pdfSlug={pdfSlug}
+        prepaymentDrivenResults={prepaymentDrivenResults}
       />
 
       {/* Inline related calculators — quick cross-links right after the tool */}

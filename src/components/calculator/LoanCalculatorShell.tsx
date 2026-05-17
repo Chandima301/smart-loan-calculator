@@ -10,8 +10,9 @@ import ShareButton from './ShareButton';
 import DownloadPdfButton from './DownloadPdfButton';
 import LoanParamsFromUrl from './LoanParamsFromUrl';
 import { useSettingsStore } from '@/store/settingsStore';
+import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import { pdfMoney, pdfMoneyRounded, pdfMonths } from '@/lib/pdf/pdfFormat';
-import { formatPercent } from '@/lib/formatters';
+import { formatPercent, formatMonths } from '@/lib/formatters';
 import type { LoanSummaryPdfInput } from '@/lib/pdf/loanSummaryPdf';
 
 // Lazy load heavy components — keeps initial bundle small and FCP fast
@@ -72,6 +73,15 @@ interface Props {
    * e.g. "mortgage". Falls back to "loan".
    */
   pdfSlug?: string;
+  /**
+   * When true, an active prepayment (extra monthly / lump sum) drives the
+   * results: the pie chart, balance chart, amortization table AND the PDF
+   * reflect the accelerated schedule, with explicit before/after labels.
+   * Opt-in — used by /student-loan-payoff-calculator where seeing the
+   * extra-payment effect on interest IS the point. Other pages keep
+   * showing the base schedule.
+   */
+  prepaymentDrivenResults?: boolean;
 }
 
 export default function LoanCalculatorShell({
@@ -82,8 +92,10 @@ export default function LoanCalculatorShell({
   tabLabels,
   pdfTitle = 'Loan Calculator',
   pdfSlug = 'loan',
+  prepaymentDrivenResults = false,
 }: Props) {
   const currencyCode = useSettingsStore((s) => s.currencyCode);
+  const fmt = useCurrencyFormat();
   const [loanParams, setLoanParams] = useState<LoanParams>({
     ...LOAN_DEFAULTS,
     ...defaultParams,
@@ -157,6 +169,24 @@ export default function LoanCalculatorShell({
     () => simulatePrepayment(prepaymentParams),
     [prepaymentParams]
   );
+
+  // When the page opts in (payoff calculator) and the user has entered an
+  // extra monthly / lump-sum payment, the on-screen charts, amortization
+  // table and the PDF all reflect the accelerated schedule so the
+  // interest impact is visible — not just summarized in the simulator.
+  const prepaymentReflected =
+    prepaymentDrivenResults &&
+    showPrepayment &&
+    (prepaymentParams.extraMonthlyPayment > 0 ||
+      prepaymentParams.lumpSumPayment > 0) &&
+    prepaymentResult.schedule.length > 0;
+
+  const displaySchedule = prepaymentReflected
+    ? prepaymentResult.schedule
+    : amortizationSchedule;
+  const displayInterest = prepaymentReflected
+    ? prepaymentResult.totalInterestWithPrepayment
+    : loanResult.totalInterest;
 
   const handleApplyAffordability = (params: LoanParams) => {
     handleLoanChange(params);
@@ -241,7 +271,9 @@ export default function LoanCalculatorShell({
       }),
       sections,
       table: {
-        title: 'Amortization Schedule',
+        title: prepaymentReflected
+          ? 'Amortization Schedule (with your extra payments)'
+          : 'Amortization Schedule',
         head: [
           'Month',
           'Opening',
@@ -251,7 +283,7 @@ export default function LoanCalculatorShell({
           'Closing',
           'Cum. Interest',
         ],
-        body: amortizationSchedule.map((r) => [
+        body: displaySchedule.map((r) => [
           String(r.month),
           moneyR(r.openingBalance),
           moneyR(r.emi),
@@ -267,7 +299,8 @@ export default function LoanCalculatorShell({
     currencyCode,
     loanParams,
     loanResult,
-    amortizationSchedule,
+    displaySchedule,
+    prepaymentReflected,
     showPrepayment,
     prepaymentParams,
     prepaymentResult,
@@ -345,23 +378,76 @@ export default function LoanCalculatorShell({
 
             <div className="space-y-6">
               <div className="rounded-lg border p-5">
-                <h2 className="text-base font-semibold mb-2">Principal vs Interest</h2>
+                <div className="flex items-baseline justify-between mb-2">
+                  <h2 className="text-base font-semibold">Principal vs Interest</h2>
+                  {prepaymentReflected && (
+                    <span className="text-[11px] font-medium text-emerald-600">
+                      with your extra payments
+                    </span>
+                  )}
+                </div>
                 <LoanPieChart
                   principal={loanParams.principal}
-                  totalInterest={loanResult.totalInterest}
+                  totalInterest={displayInterest}
                 />
+                {prepaymentReflected && (
+                  <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                    Interest drops from{' '}
+                    <span className="font-medium text-foreground">
+                      {fmt(loanResult.totalInterest)}
+                    </span>{' '}
+                    to{' '}
+                    <span className="font-medium text-emerald-600">
+                      {fmt(displayInterest)}
+                    </span>{' '}
+                    — you save{' '}
+                    <span className="font-semibold text-emerald-600">
+                      {fmt(prepaymentResult.interestSaved)}
+                    </span>
+                    .
+                  </p>
+                )}
               </div>
 
               <div className="rounded-lg border p-5">
-                <h2 className="text-base font-semibold mb-2">Balance Over Time</h2>
-                <BalanceChart schedule={amortizationSchedule} />
+                <div className="flex items-baseline justify-between mb-2">
+                  <h2 className="text-base font-semibold">Balance Over Time</h2>
+                  {prepaymentReflected && (
+                    <span className="text-[11px] font-medium text-emerald-600">
+                      with your extra payments
+                    </span>
+                  )}
+                </div>
+                <BalanceChart schedule={displaySchedule} />
+                {prepaymentReflected && (
+                  <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                    Paid off in{' '}
+                    <span className="font-medium text-foreground">
+                      {formatMonths(prepaymentResult.newTenureMonths)}
+                    </span>{' '}
+                    instead of {formatMonths(loanParams.tenureMonths)} —{' '}
+                    <span className="font-semibold text-emerald-600">
+                      {prepaymentResult.monthsSaved} months sooner
+                    </span>
+                    .
+                  </p>
+                )}
               </div>
             </div>
           </div>
 
           <Separator />
 
-          <AmortizationTable schedule={amortizationSchedule} />
+          {prepaymentReflected && (
+            <p className="text-xs text-muted-foreground">
+              The schedule below reflects your extra payments —{' '}
+              <span className="font-medium text-foreground">
+                {displaySchedule.length} months
+              </span>{' '}
+              instead of {amortizationSchedule.length}.
+            </p>
+          )}
+          <AmortizationTable schedule={displaySchedule} />
           <RateSensitivity params={loanParams} />
         </TabsContent>
 
