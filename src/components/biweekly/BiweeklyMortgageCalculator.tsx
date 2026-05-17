@@ -100,6 +100,10 @@ export default function BiweeklyMortgageCalculator() {
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
+      <div className="mb-4 flex justify-end">
+        <DownloadPdfButton getInput={getPdfInput} />
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
 
         {/* Inputs */}
@@ -180,10 +184,6 @@ export default function BiweeklyMortgageCalculator() {
 
         {/* Results */}
         <div className="space-y-6">
-
-          <div className="flex justify-end">
-            <DownloadPdfButton getInput={getPdfInput} />
-          </div>
 
           {/* Side-by-side comparison */}
           <div className="grid gap-4 sm:grid-cols-2">
