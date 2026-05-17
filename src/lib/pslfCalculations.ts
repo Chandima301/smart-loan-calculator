@@ -47,7 +47,9 @@ export interface PslfResult {
   initialMonthlyPayment: number;
   /** Estimated IDR monthly payment in the final year before forgiveness. */
   finalMonthlyPayment: number;
-  /** Discretionary income used for the year-1 payment. */
+  /** Federal Poverty Guideline applied (region + family size). */
+  povertyGuideline: number;
+  /** Discretionary income used for the year-1 payment (AGI − 1.5 × FPG). */
   discretionaryIncome: number;
   /** Remaining qualifying payments until forgiveness (120 − already made). */
   monthsToForgiveness: number;
@@ -113,10 +115,8 @@ export function calculatePslf(params: PslfParams): PslfResult {
   const alreadyMade = Math.min(119, Math.max(0, Math.floor(paymentsAlreadyMade)));
   const monthsToForgiveness = 120 - alreadyMade;
 
-  const discretionaryIncome = Math.max(
-    0,
-    agi - 1.5 * povertyGuideline(familySize, stateGroup),
-  );
+  const fpg = povertyGuideline(familySize, stateGroup);
+  const discretionaryIncome = Math.max(0, agi - 1.5 * fpg);
 
   const initialMonthlyPayment = idrMonthlyPayment(agi, familySize, stateGroup);
 
@@ -162,6 +162,7 @@ export function calculatePslf(params: PslfParams): PslfResult {
   return {
     initialMonthlyPayment,
     finalMonthlyPayment,
+    povertyGuideline: fpg,
     discretionaryIncome,
     monthsToForgiveness,
     totalPaidUnderPslf: totalPaid,

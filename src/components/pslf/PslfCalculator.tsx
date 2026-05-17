@@ -38,6 +38,9 @@ export default function PslfCalculator() {
   const [paymentsAlreadyMade, setPaymentsAlreadyMade] = useState(0);
   const [incomeGrowthPct, setIncomeGrowthPct] = useState(3);
 
+  const regionLabel =
+    STATE_OPTIONS.find((o) => o.value === stateGroup)?.label ?? '';
+
   const result = useMemo(
     () =>
       calculatePslf({
@@ -256,6 +259,53 @@ export default function PslfCalculator() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Derivation — makes the region / AGI / family-size effect visible */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm uppercase tracking-wide text-muted-foreground">
+                How Your Monthly Payment Is Derived
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-sm space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Adjusted gross income</span>
+                  <span className="font-medium">{fmt(agi)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">
+                    − 1.5 × poverty guideline
+                    <span className="block text-[11px]">
+                      {regionLabel}, family of {familySize} · guideline{' '}
+                      {fmt(result.povertyGuideline)}
+                    </span>
+                  </span>
+                  <span className="font-medium">
+                    −{fmt(1.5 * result.povertyGuideline)}
+                  </span>
+                </div>
+                <div className="flex justify-between border-t pt-2">
+                  <span className="text-muted-foreground">= Discretionary income</span>
+                  <span className="font-semibold">{fmt(result.discretionaryIncome)}</span>
+                </div>
+                <div className="flex justify-between border-t pt-2">
+                  <span className="text-muted-foreground">
+                    × 10% ÷ 12 = est. monthly payment
+                  </span>
+                  <span className="font-semibold text-primary">
+                    {fmt(result.initialMonthlyPayment)}
+                  </span>
+                </div>
+              </div>
+              <p className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
+                Switching the poverty-guideline region changes only the
+                guideline figure above (Alaska and Hawaii are set higher than
+                the 48 contiguous states), which flows through to a different
+                discretionary income and payment.
+              </p>
+            </CardContent>
+          </Card>
 
           {/* Headline outcome */}
           {result.paidOffBeforeForgiveness ? (
