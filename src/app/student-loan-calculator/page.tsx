@@ -81,6 +81,46 @@ export default function StudentLoanCalculatorPage() {
           answer:
             'Subsidized loans don\'t accrue interest while you\'re in school or during deferment — the government pays it. Unsubsidized loans accrue interest from day one, which capitalizes (gets added to principal) when you start repayment. This calculator handles either type once you know your total balance at repayment start.',
         },
+        {
+          question: 'What is the difference between federal and private student loans?',
+          answer:
+            'Federal loans are issued by the Department of Education with a fixed rate set by Congress and a thick layer of protections — income-driven repayment, deferment, forbearance, PSLF, and death/disability discharge. Private loans come from banks at a market rate (fixed or variable) and have essentially none of those protections. If a loan is listed on StudentAid.gov it is federal; anything not listed there is private.',
+        },
+        {
+          question: 'What is income-driven repayment (IDR)?',
+          answer:
+            'IDR plans (SAVE, PAYE, IBR, ICR) cap your monthly payment at roughly 10% of discretionary income — income above 1.5× the federal poverty guideline for your family size — instead of the amount needed to amortize the loan in 10 years. Any balance remaining after the plan term (20–25 years) is forgiven. On $60,000 at 6% with a $48,000 salary, the standard payment is about $666/month while an IDR payment is roughly $220/month.',
+        },
+        {
+          question: 'What is PSLF and how is it different from IDR forgiveness?',
+          answer:
+            'Public Service Loan Forgiveness erases the remaining federal Direct Loan balance tax-free after 120 qualifying payments while working full-time for a government or 501(c)(3) employer. It is distinct from the 20–25 year IDR forgiveness (which has historically been taxable). Use the dedicated PSLF Calculator on this site to estimate your income-driven payment and tax-free forgiveness.',
+        },
+        {
+          question: 'Should I refinance my federal loans into a private loan?',
+          answer:
+            'Only if you have a high stable income, no public-service path, a solid emergency fund, and a genuinely lower fixed rate — because refinancing federal loans permanently forfeits IDR, PSLF, deferment, and discharge, and the move is irreversible. Run the dedicated Student Loan Refinance Calculator first; it shows both the interest math and the full list of protections you would give up.',
+        },
+        {
+          question: 'When does student loan interest capitalize?',
+          answer:
+            'Capitalization — unpaid interest added to principal, after which you pay interest on the interest — typically happens at the end of the grace period, when exiting a deferment or forbearance, and on certain income-driven-plan exits. Paying even the accruing interest on unsubsidized loans while still in school prevents the balance from ballooning before repayment begins.',
+        },
+        {
+          question: 'Avalanche or snowball for multiple student loans?',
+          answer:
+            'Avalanche (attack the highest-rate loan first) is mathematically cheapest and worth it when your loans have a wide rate spread. Snowball (attack the smallest balance first) costs slightly more interest but has a higher real-world completion rate. If you have ever abandoned a payoff plan, use the snowball. The Student Loan Payoff Calculator models extra-payment scenarios in detail.',
+        },
+        {
+          question: 'What happens if I default on federal student loans?',
+          answer:
+            'Federal loans enter default after 270 days of missed payments. Default triggers wage garnishment, tax-refund seizure, and the loss of all flexible repayment options. If you cannot make a payment, contact your servicer and switch to an income-driven plan or request forbearance before default — both keep you out of it and preserve your options.',
+        },
+        {
+          question: 'Should I prioritize student loans over retirement savings?',
+          answer:
+            'Usually not before the basics. Capture the full employer retirement match first (a 100% guaranteed return beats any loan rate), clear genuinely high-interest debt like credit cards, and build a 3–6 month emergency fund. Accelerated student-loan payoff is the right move only after those — and never on a federal loan headed for PSLF or IDR forgiveness, where extra payments simply reduce the amount forgiven.',
+        },
       ]}
     />
   );

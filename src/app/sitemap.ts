@@ -40,6 +40,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${SITE_URL}/pslf-calculator`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/student-loan-refinance-calculator`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/student-loan-payoff-calculator`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/auto-loan-calculator`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

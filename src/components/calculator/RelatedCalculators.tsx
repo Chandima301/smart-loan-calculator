@@ -9,6 +9,9 @@ import {
   GraduationCap,
   RefreshCw,
   Calculator,
+  Landmark,
+  Repeat,
+  Rocket,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -63,6 +66,21 @@ export const ALL: Record<string, CalcMeta> = {
     label: 'Student Loan Calculator',
     desc: 'Repayment schedule and payoff timeline for student debt.',
     Icon: GraduationCap,
+  },
+  '/pslf-calculator': {
+    label: 'PSLF Calculator',
+    desc: 'Estimate tax-free Public Service Loan Forgiveness.',
+    Icon: Landmark,
+  },
+  '/student-loan-refinance-calculator': {
+    label: 'Student Loan Refinance',
+    desc: 'Federal vs private — savings and what you forfeit.',
+    Icon: Repeat,
+  },
+  '/student-loan-payoff-calculator': {
+    label: 'Student Loan Payoff',
+    desc: 'How fast extra payments clear student debt.',
+    Icon: Rocket,
   },
   '/refinance-calculator': {
     label: 'Refinance Calculator',
@@ -119,11 +137,30 @@ export const RELATIONS: Record<string, string[]> = {
     '/refinance-calculator',
     '/mortgage-calculator',
   ],
+  // Student-loan topic cluster — hub links to all 3 spokes + a related general tool.
   '/student-loan-calculator': [
-    '/personal-loan-calculator',
+    '/pslf-calculator',
+    '/student-loan-refinance-calculator',
+    '/student-loan-payoff-calculator',
     '/refinance-calculator',
-    '/biweekly-mortgage-calculator',
-    '/',
+  ],
+  '/pslf-calculator': [
+    '/student-loan-calculator',
+    '/student-loan-refinance-calculator',
+    '/student-loan-payoff-calculator',
+    '/refinance-calculator',
+  ],
+  '/student-loan-refinance-calculator': [
+    '/student-loan-calculator',
+    '/pslf-calculator',
+    '/student-loan-payoff-calculator',
+    '/refinance-calculator',
+  ],
+  '/student-loan-payoff-calculator': [
+    '/student-loan-calculator',
+    '/pslf-calculator',
+    '/student-loan-refinance-calculator',
+    '/personal-loan-calculator',
   ],
   '/refinance-calculator': [
     '/mortgage-calculator',

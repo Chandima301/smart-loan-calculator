@@ -46,6 +46,106 @@ export default function StudentLoanGuide() {
         thousand dollars on the same nominal principal.
       </p>
 
+      <h2>The Federal Loan Programs, Compared</h2>
+      <p>
+        &quot;Federal loan&quot; is not one thing. The program your loan
+        came from determines its rate, whether interest is subsidized,
+        and — critically — whether it qualifies for forgiveness without
+        extra steps. This is the table nobody hands you at graduation:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Program</th>
+            <th>Who</th>
+            <th>Subsidized?</th>
+            <th>PSLF without consolidation?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Direct Subsidized</td>
+            <td>Undergrad, financial need</td>
+            <td>Yes (in school / grace / deferment)</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Direct Unsubsidized</td>
+            <td>Undergrad &amp; grad, no need test</td>
+            <td>No</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Direct PLUS (Grad)</td>
+            <td>Grad / professional students</td>
+            <td>No</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Direct PLUS (Parent)</td>
+            <td>Parents of undergrads</td>
+            <td>No</td>
+            <td>Only via consolidation + ICR</td>
+          </tr>
+          <tr>
+            <td>FFEL (legacy)</td>
+            <td>Pre-2010 borrowers</td>
+            <td>Varies</td>
+            <td>No — must consolidate to Direct</td>
+          </tr>
+          <tr>
+            <td>Perkins (legacy)</td>
+            <td>Older high-need borrowers</td>
+            <td>Yes</td>
+            <td>No — must consolidate to Direct</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The single most expensive misunderstanding in this table is the
+        bottom two rows. Borrowers with FFEL or Perkins loans who make
+        years of &quot;PSLF payments&quot; without first consolidating
+        into a Direct Consolidation Loan discover, often at year eight,
+        that <em>none</em> of those payments counted. If any part of your
+        balance is FFEL or Perkins and PSLF is in play, consolidating to
+        Direct is step zero — and consolidation generally restarts the
+        120-payment count, so the timing of that move matters enormously.
+      </p>
+
+      <h2>When Interest Capitalizes — the Expensive Moments</h2>
+      <p>
+        Capitalization is when accrued, unpaid interest is added to your
+        principal balance, so you begin paying interest on that interest.
+        It is the quiet mechanism that turns a $30,000 loan into a
+        $34,000 balance before you make a single payment. The moments it
+        typically happens:
+      </p>
+      <ul>
+        <li>
+          <strong>End of the grace period.</strong> Unsubsidized interest
+          that accrued during school and the six-month grace period
+          capitalizes when repayment begins.
+        </li>
+        <li>
+          <strong>Exiting a deferment or forbearance.</strong> Interest
+          accrued during the pause is added to principal when the pause
+          ends.
+        </li>
+        <li>
+          <strong>Leaving or losing eligibility for certain income-driven
+          plans.</strong> Some plan exits trigger capitalization of the
+          interest that was not being covered by the reduced payment.
+        </li>
+      </ul>
+      <p>
+        The practical defense: if you can pay even the accruing interest
+        on unsubsidized loans while still in school, you stop the balance
+        from ballooning before repayment starts. A small voluntary
+        interest-only payment during school is one of the highest-return
+        moves in all of student lending, because it prevents years of
+        compounding on capitalized interest.
+      </p>
+
       <h2>How Student Loan Repayment Math Works</h2>
       <p>
         The standard repayment plan amortizes the loan over 10 years
@@ -103,6 +203,30 @@ export default function StudentLoanGuide() {
         or nonprofit employer and make 120 qualifying payments
         under an IDR plan have their remaining balance forgiven
         tax-free.
+      </p>
+
+      <h3>A Worked IDR Example</h3>
+      <p>
+        Numbers make the value concrete. Take $60,000 of federal loans at
+        6% with a $48,000 salary, single, no dependents. On the standard
+        10-year plan the payment is about <strong>$666/month</strong> —
+        nearly 17% of gross pay, brutal at that income. On an
+        income-driven plan the payment is roughly 10% of discretionary
+        income (income above 1.5× the poverty guideline), which works out
+        to about <strong>$220/month</strong> in year one.
+      </p>
+      <p>
+        That cuts the required payment by two-thirds, freeing roughly
+        $440/month — but it also means the loan is not being amortized
+        away on schedule, so the balance lingers and interest accrues.
+        For a borrower headed toward forgiveness (PSLF or the plan&apos;s
+        20–25 year forgiveness) that is the point: pay the capped amount,
+        let the rest be forgiven. For a borrower <em>not</em> headed
+        toward forgiveness, the low IDR payment is a cash-flow bridge, not
+        a savings strategy — they will ultimately pay more interest than
+        the standard plan unless they accelerate once income rises. The
+        IDR plan is a tool whose correct use depends entirely on whether
+        forgiveness is your destination.
       </p>
 
       <h3>The IDR Tax Bomb</h3>
@@ -256,6 +380,96 @@ export default function StudentLoanGuide() {
           a Direct Consolidation Loan. Borrowers who don&apos;t
           consolidate may waste years of payments that don&apos;t
           count toward the PSLF total.
+        </li>
+      </ul>
+
+      <h2>Use the Right Tool for Each Decision</h2>
+      <p>
+        Student-loan questions are not one decision; they are three
+        distinct ones, and each has a dedicated calculator on this site
+        built for exactly that question:
+      </p>
+      <ul>
+        <li>
+          <strong>
+            <a href="/pslf-calculator">PSLF Calculator</a>
+          </strong>{' '}
+          — if you work (or might work) in government or non-profit,
+          estimate your income-driven payment, what you pay over 120
+          months, and how much is forgiven tax-free. This is the single
+          highest-stakes calculation a public-service borrower can run.
+        </li>
+        <li>
+          <strong>
+            <a href="/student-loan-refinance-calculator">
+              Student Loan Refinance Calculator
+            </a>
+          </strong>{' '}
+          — compare keeping federal loans against refinancing into a
+          private loan: the interest math <em>and</em> the full list of
+          federal protections you would permanently forfeit. Run this
+          before you ever sign a refinance offer.
+        </li>
+        <li>
+          <strong>
+            <a href="/student-loan-payoff-calculator">
+              Student Loan Payoff Calculator
+            </a>
+          </strong>{' '}
+          — if you are <em>not</em> on a forgiveness track, model how an
+          extra monthly amount or a lump sum shortens the payoff and
+          slashes total interest, and apply avalanche or snowball
+          ordering across multiple loans.
+        </li>
+      </ul>
+      <p>
+        The decision tree is simple: public service → start with PSLF;
+        considering a private refinance → run the refinance comparison
+        first; definitely repaying in full → use the payoff simulator.
+        Using the wrong tool for your situation is how borrowers make
+        five-figure mistakes that the right one would have caught in
+        thirty seconds.
+      </p>
+
+      <h2>Glossary</h2>
+      <ul>
+        <li>
+          <strong>Subsidized loan.</strong> The government pays the
+          interest while you are in school, in grace, or in deferment.
+          Direct Subsidized only.
+        </li>
+        <li>
+          <strong>Unsubsidized loan.</strong> Interest accrues from
+          disbursement and capitalizes into principal at repayment.
+        </li>
+        <li>
+          <strong>Capitalization.</strong> Unpaid interest added to
+          principal — after which you pay interest on that interest.
+        </li>
+        <li>
+          <strong>IDR.</strong> Income-driven repayment — payment capped
+          at a share of discretionary income; balance forgiven after
+          20–25 years (SAVE, PAYE, IBR, ICR).
+        </li>
+        <li>
+          <strong>PSLF.</strong> Public Service Loan Forgiveness —
+          tax-free discharge after 120 qualifying payments in
+          government/non-profit work.
+        </li>
+        <li>
+          <strong>Direct Consolidation Loan.</strong> A new Direct Loan
+          that combines other federal loans, making FFEL/Perkins
+          PSLF-eligible — but generally restarts the payment count.
+        </li>
+        <li>
+          <strong>Discretionary income.</strong> Income above 1.5× the
+          federal poverty guideline for your family size; the base for
+          IDR payments.
+        </li>
+        <li>
+          <strong>Default.</strong> Federal status after 270 days
+          missed — triggers wage garnishment and loss of flexible
+          options.
         </li>
       </ul>
 
