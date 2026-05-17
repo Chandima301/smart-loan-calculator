@@ -50,7 +50,20 @@ export default function LoanInsights({ params, result, schedule, onApplyQuickWin
     return schedule.length;
   }, [schedule, params.principal]);
 
-  const quickWinAmount = Math.round(params.principal * 0.005 / 1000) * 1000 || 5000;
+  // A realistic, sustainable extra MONTHLY payment — roughly 10% of the
+  // EMI, rounded to a clean increment and capped so it never suggests
+  // more than half the regular payment. (The old formula used 0.5% of
+  // principal, which is a lump-sum-sized number that made no sense as a
+  // recurring monthly amount — e.g. $5,000/mo on a $397/mo loan.)
+  const quickWinAmount = useMemo(() => {
+    const emi = result.emi;
+    if (!Number.isFinite(emi) || emi <= 0) return 25;
+    const target = emi * 0.1;
+    const step = target < 100 ? 10 : target < 500 ? 25 : 50;
+    const rounded = Math.round(target / step) * step;
+    return Math.min(Math.max(rounded, step), Math.round(emi * 0.5));
+  }, [result.emi]);
+
   const quickWinResult = useMemo(() => simulatePrepayment({
     ...params, extraMonthlyPayment: quickWinAmount, lumpSumPayment: 0, lumpSumMonth: 1,
   }), [params, quickWinAmount]);
