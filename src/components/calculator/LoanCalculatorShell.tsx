@@ -74,12 +74,15 @@ interface Props {
    */
   pdfSlug?: string;
   /**
-   * When true, an active prepayment (extra monthly / lump sum) drives the
-   * results: the pie chart, balance chart, amortization table AND the PDF
-   * reflect the accelerated schedule, with explicit before/after labels.
-   * Opt-in — used by /student-loan-payoff-calculator where seeing the
-   * extra-payment effect on interest IS the point. Other pages keep
-   * showing the base schedule.
+   * When an active prepayment (extra monthly / lump sum) is entered, the
+   * pie chart, balance chart, amortization table AND the PDF reflect the
+   * accelerated schedule, with explicit before/after labels and an
+   * original-vs-accelerated overlay on the balance chart.
+   *
+   * Default: true — applies to every calculator's prepayment section
+   * (it only kicks in once the user actually opens the simulator and
+   * enters an extra payment; otherwise the base schedule shows as
+   * before). Pass `false` to keep a page on the plain base schedule.
    */
   prepaymentDrivenResults?: boolean;
 }
@@ -92,7 +95,7 @@ export default function LoanCalculatorShell({
   tabLabels,
   pdfTitle = 'Loan Calculator',
   pdfSlug = 'loan',
-  prepaymentDrivenResults = false,
+  prepaymentDrivenResults = true,
 }: Props) {
   const currencyCode = useSettingsStore((s) => s.currencyCode);
   const fmt = useCurrencyFormat();
