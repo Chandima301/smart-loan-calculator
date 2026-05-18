@@ -101,8 +101,12 @@ export default function LoanCalculatorShell({
     ...defaultParams,
   });
 
-  const [prepaymentParams, setPrepaymentParams] = useState<PrepaymentParams>({
-    ...loanParams,
+  // Only the prepayment DELTA lives in state. The full PrepaymentParams is
+  // derived from the live loanParams below, so loan + prepayment can never
+  // desync (the old dual-state copy drifted when loanParams changed via the
+  // URL, which is why prepayment-driven charts/table needed a page reload
+  // to pick up changes).
+  const [prepaymentDelta, setPrepaymentDelta] = useState({
     extraMonthlyPayment: 0,
     lumpSumPayment: 0,
     lumpSumMonth: 12,
@@ -138,7 +142,6 @@ export default function LoanCalculatorShell({
 
   const handleLoanChange = (params: LoanParams) => {
     setLoanParams(params);
-    setPrepaymentParams((p) => ({ ...p, ...params }));
   };
 
   const handleUrlParams = useCallback((params: Partial<LoanParams>) => {
@@ -163,6 +166,12 @@ export default function LoanCalculatorShell({
   const amortizationSchedule = useMemo(
     () => generateAmortizationSchedule(loanParams),
     [loanParams]
+  );
+
+  // Single source of truth: prepayment always uses the CURRENT loan params.
+  const prepaymentParams = useMemo<PrepaymentParams>(
+    () => ({ ...loanParams, ...prepaymentDelta }),
+    [loanParams, prepaymentDelta]
   );
 
   const prepaymentResult = useMemo(
@@ -338,7 +347,7 @@ export default function LoanCalculatorShell({
             result={loanResult}
             schedule={amortizationSchedule}
             onApplyQuickWin={(amount) => {
-              setPrepaymentParams((p) => ({ ...p, extraMonthlyPayment: amount }));
+              setPrepaymentDelta((d) => ({ ...d, extraMonthlyPayment: amount }));
               setShowPrepayment(true);
             }}
           />
@@ -366,7 +375,13 @@ export default function LoanCalculatorShell({
                     result={prepaymentResult}
                     baseInterest={loanResult.totalInterest}
                     baseTenure={loanParams.tenureMonths}
-                    onChange={setPrepaymentParams}
+                    onChange={(p) =>
+                      setPrepaymentDelta({
+                        extraMonthlyPayment: p.extraMonthlyPayment,
+                        lumpSumPayment: p.lumpSumPayment,
+                        lumpSumMonth: p.lumpSumMonth,
+                      })
+                    }
                   />
                 ) : (
                   <p className="text-sm text-muted-foreground">
