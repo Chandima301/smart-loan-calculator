@@ -521,15 +521,13 @@ export default function LoanCalculatorShell({
 
         {isEnabled('affordability') && (
           <TabsContent value="affordability" className="mt-0">
-            <div className="max-w-2xl mx-auto">
-              <div className="mb-4">
-                <h2 className="text-base font-semibold">Affordability Check</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Find out the maximum loan you can afford based on your income.
-                </p>
-              </div>
-              <AffordabilityChecker onApplyToCalculator={handleApplyAffordability} />
+            <div className="mb-4">
+              <h2 className="text-base font-semibold">Affordability Check</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Find out the maximum loan you can afford based on your income.
+              </p>
             </div>
+            <AffordabilityChecker onApplyToCalculator={handleApplyAffordability} />
           </TabsContent>
         )}
 
