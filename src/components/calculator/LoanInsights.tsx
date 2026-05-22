@@ -72,13 +72,26 @@ export default function LoanInsights({
   const interestPer100 = Math.round(interestRatio * 100);
 
   const tiles = [
-    { label: 'First-payment principal', value: `${firstPrincipalPct}%` },
+    {
+      label: 'First-payment principal',
+      value: `${firstPrincipalPct}%`,
+      bar: 'bg-blue-400',
+    },
     {
       label: 'Crossover month',
       value: crossoverMonth > 0 ? `~${crossoverMonth}` : '—',
+      bar: 'bg-purple-400',
     },
-    { label: 'Interest per 100 borrowed', value: costPer100 },
-    { label: 'Total repaid', value: `${multiplier.toFixed(2)}×` },
+    {
+      label: 'Interest per 100 borrowed',
+      value: costPer100,
+      bar: 'bg-amber-400',
+    },
+    {
+      label: 'Total repaid',
+      value: `${multiplier.toFixed(2)}×`,
+      bar: 'bg-emerald-400',
+    },
   ];
 
   return (
@@ -88,10 +101,7 @@ export default function LoanInsights({
         className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-muted/40"
       >
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
-            <Sparkles className="h-3.5 w-3.5 text-ai" />
-            Loan Insights
-          </span>
+          <span className="text-sm font-semibold">Loan Insights</span>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ${health.pill}`}
           >
@@ -118,8 +128,15 @@ export default function LoanInsights({
 
       {open && (
         <div className="border-t p-4">
-          {/* Deterministic plain-English narrative */}
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          {/* AI narrative — light-purple box with the AI icon */}
+          <div className="rounded-lg border border-ai/20 bg-ai-soft p-3">
+            <div className="mb-1.5 flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-ai" />
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-ai-ink">
+                AI summary
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-muted-foreground">
             At a <strong className="text-foreground">{params.annualRate}%</strong>{' '}
             rate over{' '}
             <strong className="text-foreground">
@@ -153,15 +170,24 @@ export default function LoanInsights({
               ? 'This is a heavy interest load — a shorter tenure, a lower rate, or early extra payments would each cut it sharply.'
               : 'Extra payments in the early years are the strongest lever — every unit then dodges the most compounded interest.'}
           </p>
+          </div>
 
-          {/* Metric tiles */}
+          {/* Metric cards — colored accent bar per metric */}
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {tiles.map((t) => (
-              <div key={t.label} className="rounded-lg bg-muted/50 p-3">
-                <div className="text-[11px] leading-tight text-muted-foreground">
-                  {t.label}
+              <div
+                key={t.label}
+                className="flex gap-2 rounded-lg border p-3"
+              >
+                <div
+                  className={`w-1 shrink-0 self-stretch rounded-full ${t.bar}`}
+                />
+                <div className="min-w-0">
+                  <div className="text-[11px] leading-tight text-muted-foreground">
+                    {t.label}
+                  </div>
+                  <div className="mt-1 text-base font-semibold">{t.value}</div>
                 </div>
-                <div className="mt-1 text-base font-semibold">{t.value}</div>
               </div>
             ))}
           </div>
