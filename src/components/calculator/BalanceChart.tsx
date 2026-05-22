@@ -95,7 +95,7 @@ export default function BalanceChart({
     return (
       <div style={{ height: 280 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+          <ComposedChart data={data} margin={{ top: 24, right: 10, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="gradBalance" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
@@ -142,7 +142,7 @@ export default function BalanceChart({
                 strokeWidth={1.5}
                 strokeDasharray="4 3"
                 label={{
-                  value: '✦ Crossover',
+                  value: 'Crossover',
                   position: 'top',
                   fontSize: 10,
                   fill: 'var(--ai)',
@@ -195,7 +195,7 @@ export default function BalanceChart({
   return (
     <div style={{ height: 300 }}>
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <ComposedChart data={data} margin={{ top: 24, right: 10, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="gradBalance" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
