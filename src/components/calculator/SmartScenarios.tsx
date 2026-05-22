@@ -15,6 +15,7 @@ import {
   suggestedExtraPayment,
 } from '@/lib/loanCalculations';
 import { LOAN_LIMITS } from '@/lib/constants';
+import { formatMonths } from '@/lib/formatters';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import type { LoanParams, LoanResult } from '@/types/loan';
 
@@ -74,11 +75,16 @@ export default function SmartScenarios({
       lumpSumMonth: 1,
     }).interestSaved;
 
-    // 4 — Five years off the tenure.
+    // 4 — Five years off the tenure. Only meaningful when a genuine
+    // 60-month cut still lands at or above the minimum term; for short
+    // loans the card is disabled rather than clamped to a 6-month term.
+    const rawShorterTenure = params.tenureMonths - 60;
+    const tenureTooShort = rawShorterTenure < LOAN_LIMITS.tenureMonths.min;
     const shorterTenure = Math.max(
       LOAN_LIMITS.tenureMonths.min,
-      params.tenureMonths - 60,
+      rawShorterTenure,
     );
+    const tenureCutMonths = params.tenureMonths - shorterTenure;
     const tenureSave =
       baseInterest -
       calculateEMI({ ...params, tenureMonths: shorterTenure }).totalInterest;
@@ -117,11 +123,15 @@ export default function SmartScenarios({
       {
         key: 'tenure',
         Icon: Clock,
-        title: `${Math.round(shorterTenure / 12)}-year term`,
-        sub: '5 years shorter',
+        title: tenureTooShort
+          ? 'Shorter term'
+          : `${formatMonths(shorterTenure)} term`,
+        sub: tenureTooShort
+          ? 'loan already short'
+          : `${formatMonths(tenureCutMonths)} shorter`,
         save: tenureSave,
         apply: () => onApplyTenure(shorterTenure),
-        disabled: shorterTenure >= params.tenureMonths,
+        disabled: tenureTooShort,
       },
     ];
   }, [params, result, fmt, router, onApplyRate, onApplyTenure, onApplyExtra]);
