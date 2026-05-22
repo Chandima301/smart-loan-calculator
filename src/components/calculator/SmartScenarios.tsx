@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Sparkles,
@@ -42,6 +42,16 @@ export default function SmartScenarios({
 }: Props) {
   const fmt = useCurrencyFormat();
   const router = useRouter();
+  const [generating, setGenerating] = useState(true);
+
+  // Re-"generate" the scenarios (debounced) when the loan changes — a
+  // brief loading state that signals the cards are freshly produced and
+  // avoids them recomputing visibly while a slider is dragged.
+  useEffect(() => {
+    setGenerating(true);
+    const id = setTimeout(() => setGenerating(false), 550);
+    return () => clearTimeout(id);
+  }, [params.principal, params.annualRate, params.tenureMonths]);
 
   const scenarios = useMemo(() => {
     const baseInterest = result.totalInterest;
@@ -140,14 +150,32 @@ export default function SmartScenarios({
     <section>
       <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
         <h2 className="inline-flex items-center gap-1.5 text-base font-semibold">
-          <Sparkles className="h-3.5 w-3.5 text-ai" /> Smart Scenarios
+          <Sparkles
+            className={`h-3.5 w-3.5 text-ai ${generating ? 'animate-pulse' : ''}`}
+          />{' '}
+          Smart Scenarios
         </h2>
         <span className="text-xs text-muted-foreground">
-          Generated from your inputs · tap to apply
+          {generating
+            ? 'Generating scenarios…'
+            : 'Generated from your inputs · tap to apply'}
         </span>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {scenarios.map((s) => (
+        {generating
+          ? [0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                aria-hidden="true"
+                className="flex flex-col gap-1.5 rounded-lg border p-3"
+              >
+                <div className="h-4 w-4 animate-pulse rounded bg-ai/20" />
+                <div className="h-3.5 w-3/4 animate-pulse rounded bg-ai/20" />
+                <div className="h-3 w-1/2 animate-pulse rounded bg-ai/15" />
+                <div className="mt-0.5 h-3 w-2/3 animate-pulse rounded bg-emerald-500/20" />
+              </div>
+            ))
+          : scenarios.map((s) => (
           <button
             key={s.key}
             type="button"
