@@ -108,32 +108,46 @@ export default function LoanRestructure({ initialParams }: Props) {
       >
         {result.isWorthIt ? (
           <>
-            Moving from <strong>{currentRate.toFixed(2)}%</strong> to{' '}
-            <strong>{newRate.toFixed(2)}%</strong> comes out ahead — you&apos;d{' '}
+            Refinancing from <strong>{currentRate.toFixed(2)}%</strong> to{' '}
+            <strong>{newRate.toFixed(2)}%</strong> comes out ahead.{' '}
             {result.emiDifference < 0 && (
               <>
-                cut your EMI by{' '}
-                <strong>{fmt(Math.abs(result.emiDifference))}/mo</strong> and{' '}
+                Your monthly payment drops by{' '}
+                <strong>{fmt(Math.abs(result.emiDifference))}</strong>, easing
+                cash flow right away, and{' '}
               </>
             )}
-            save <strong>{fmt(result.netSaving)}</strong> overall
+            across the remaining loan you save{' '}
+            <strong>{fmt(result.netSaving)}</strong> in total — and that is the
+            figure <em>after</em> the{' '}
+            {fmt(result.surchargeAmount + result.fixedFee)} in surcharge and
+            fees has been subtracted, so it is a genuine net gain.{' '}
             {result.breakEvenMonth !== null && (
               <>
-                , recovering the upfront costs by{' '}
-                {formatMonths(result.breakEvenMonth)}
+                Those upfront costs are recouped by{' '}
+                <strong>{formatMonths(result.breakEvenMonth)}</strong>; every
+                month beyond that point is pure saving, so this only pays off
+                if you intend to keep the loan well past then.{' '}
               </>
             )}
-            .
+            Before committing, confirm the new rate is locked in writing and
+            check your current loan for any early-settlement penalty that
+            could eat into the gain.
           </>
         ) : (
           <>
-            Moving from <strong>{currentRate.toFixed(2)}%</strong> to{' '}
-            <strong>{newRate.toFixed(2)}%</strong> doesn&apos;t pay off — the
-            surcharge and new-loan interest outweigh the savings by{' '}
-            <strong>{fmt(Math.abs(result.netSaving))}</strong>
-            {newRate >= currentRate &&
-              ' (the new rate is not actually lower than your current one)'}
-            .
+            Refinancing from <strong>{currentRate.toFixed(2)}%</strong> to{' '}
+            <strong>{newRate.toFixed(2)}%</strong> does not pay off as things
+            stand — the{' '}
+            <strong>{fmt(result.surchargeAmount + result.fixedFee)}</strong> in
+            surcharge and fees, together with the interest on the new loan,
+            outweigh what you would save by{' '}
+            <strong>{fmt(Math.abs(result.netSaving))}</strong>.{' '}
+            {newRate >= currentRate
+              ? `The core problem is the rate itself: at ${newRate.toFixed(2)}% it is not actually lower than your current ${currentRate.toFixed(2)}%, so there is simply no interest saving for the upfront costs to pay back.`
+              : 'A deeper rate cut, a smaller surcharge, or restructuring earlier in the loan term — while more interest is still ahead of you — would each help tip this in your favour.'}{' '}
+            Re-run this if rates fall further or the lender offers to waive
+            the fees.
           </>
         )}
       </AiTakeBanner>

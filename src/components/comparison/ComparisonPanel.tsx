@@ -44,26 +44,40 @@ export default function ComparisonPanel() {
         >
           {verdict.nearIdentical ? (
             <>
-              Total interest is within{' '}
+              Total interest comes within{' '}
               <strong>{fmt(verdict.interestSaved)}</strong> across these
-              scenarios — pick the lender you trust most; fees and service
-              matter more than a gap this small.
+              scenarios — small enough that, in practice, the math is a wash.
+              When the numbers sit this close the decision shifts away from
+              the spreadsheet and onto the lender itself: processing fees,
+              prepayment flexibility, approval speed and customer service.
+              Pick the lender you trust most rather than chasing a marginal
+              difference that everyday banking quirks will erase anyway.
             </>
           ) : verdict.emiDelta <= 0 ? (
             <>
-              <strong>{verdict.best.label}</strong> wins on both fronts — it
-              saves <strong>{fmt(verdict.interestSaved)}</strong> in total
-              interest and is{' '}
-              <strong>{fmt(Math.abs(verdict.emiDelta))}/mo</strong> cheaper
-              than {verdict.runnerUp.label}. No trade-off here.
+              <strong>{verdict.best.label}</strong> is the clear winner — it
+              costs <strong>{fmt(Math.abs(verdict.emiDelta))}/mo less</strong>{' '}
+              than {verdict.runnerUp.label} <em>and</em> saves{' '}
+              <strong>{fmt(verdict.interestSaved)}</strong> in total interest
+              across the life of the loan. Normally a lighter monthly payment
+              is bought with a longer term or a higher rate, so you trade one
+              for the other — but here {verdict.best.label} beats{' '}
+              {verdict.runnerUp.label} on both counts at once, which means
+              there is genuinely no downside to weigh. Lock it in unless the
+              lender&apos;s other terms give you a clear reason not to.
             </>
           ) : (
             <>
               <strong>{verdict.best.label}</strong> saves{' '}
               <strong>{fmt(verdict.interestSaved)}</strong> in total interest,
-              but costs <strong>{fmt(verdict.emiDelta)}/mo more</strong> than{' '}
-              {verdict.runnerUp.label} — worth it if your cashflow can absorb
-              the higher payment.
+              but it costs <strong>{fmt(verdict.emiDelta)}/mo more</strong>{' '}
+              than {verdict.runnerUp.label}. That is the classic shorter-term
+              trade-off — a heavier payment now in exchange for far less paid
+              overall, because your money spends less time accruing interest.
+              It is the better deal <em>if</em> your budget can absorb the
+              higher payment without strain; if cash flow is tight, the
+              lighter payment on {verdict.runnerUp.label} — and the breathing
+              room it leaves each month — can be worth the extra interest.
             </>
           )}
         </AiTakeBanner>

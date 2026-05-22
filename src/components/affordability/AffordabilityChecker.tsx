@@ -73,17 +73,26 @@ export default function AffordabilityChecker({ onApplyToCalculator }: Props) {
         watch={`${monthlyIncome}:${annualRate}:${tenureMonths}:${ratio}`}
         title="What you can comfortably afford"
       >
-        On <strong>{fmt(monthlyIncome)}/mo</strong> gross income at{' '}
-        {annualRate}% over {formatMonths(tenureMonths)}, you can comfortably
-        borrow up to <strong>{fmt(result.maxLoanAmount)}</strong> — keeping your
-        EMI at a manageable {(result.ratioUsed * 100).toFixed(0)}% of income.
+        On <strong>{fmt(monthlyIncome)}/mo</strong> of gross income, a lender
+        will typically let you commit about{' '}
+        <strong>{(result.ratioUsed * 100).toFixed(0)}%</strong> of it —{' '}
+        <strong>{fmt(result.maxEMI)}/mo</strong> — to a loan repayment. At{' '}
+        {annualRate}% over {formatMonths(tenureMonths)}, a payment that size
+        supports a loan of roughly{' '}
+        <strong>{fmt(result.maxLoanAmount)}</strong>. Borrowing at this level
+        keeps the repayment comfortable and still leaves room for everyday
+        expenses, regular saving and the occasional unplanned bill — the
+        cushion that keeps a loan from becoming a burden.
         {stretchRatio > result.ratioUsed && (
           <>
             {' '}
-            A lender might stretch you to{' '}
-            <strong>{fmt(stretch.maxLoanAmount)}</strong> at{' '}
-            {(stretchRatio * 100).toFixed(0)}% of income, but that leaves little
-            breathing room — the comfortable figure is the safer target.
+            Push the ratio to <strong>{(stretchRatio * 100).toFixed(0)}%</strong>{' '}
+            of income and a lender may approve as much as{' '}
+            <strong>{fmt(stretch.maxLoanAmount)}</strong> — but that extra
+            borrowing power comes straight out of your financial breathing
+            room, and a single bad month gets stressful fast. Treat the
+            comfortable figure as your real target and the stretch figure as a
+            hard ceiling you stay under, not a goal to reach.
           </>
         )}
       </AiTakeBanner>
