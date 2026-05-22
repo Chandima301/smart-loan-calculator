@@ -11,6 +11,7 @@ import { checkAffordability } from '@/lib/loanCalculations';
 import { LOAN_DEFAULTS, LOAN_LIMITS } from '@/lib/constants';
 import { formatMonths } from '@/lib/formatters';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
+import AiTakeBanner from '@/components/ai/AiTakeBanner';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
@@ -44,6 +45,19 @@ export default function AffordabilityChecker({ onApplyToCalculator }: Props) {
     [monthlyIncome, annualRate, tenureMonths, ratio]
   );
 
+  // Comfortable-vs-stretch: what a lender might approve at a higher ratio.
+  const stretchRatio = Math.min(0.5, parseFloat(ratio) + 0.1);
+  const stretch = useMemo(
+    () =>
+      checkAffordability({
+        monthlyIncome,
+        annualRate,
+        tenureMonths,
+        emiToIncomeRatio: stretchRatio,
+      }),
+    [monthlyIncome, annualRate, tenureMonths, stretchRatio]
+  );
+
   const handleApply = () => {
     onApplyToCalculator({
       principal: Math.round(result.maxLoanAmount / 10_000) * 10_000,
@@ -54,6 +68,22 @@ export default function AffordabilityChecker({ onApplyToCalculator }: Props) {
 
   return (
     <div className="space-y-6">
+      <AiTakeBanner title="What you can comfortably afford">
+        On <strong>{fmt(monthlyIncome)}/mo</strong> gross income at{' '}
+        {annualRate}% over {formatMonths(tenureMonths)}, you can comfortably
+        borrow up to <strong>{fmt(result.maxLoanAmount)}</strong> — keeping your
+        EMI at a manageable {(result.ratioUsed * 100).toFixed(0)}% of income.
+        {stretchRatio > result.ratioUsed && (
+          <>
+            {' '}
+            A lender might stretch you to{' '}
+            <strong>{fmt(stretch.maxLoanAmount)}</strong> at{' '}
+            {(stretchRatio * 100).toFixed(0)}% of income, but that leaves little
+            breathing room — the comfortable figure is the safer target.
+          </>
+        )}
+      </AiTakeBanner>
+
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-sm font-medium">Monthly Income (Gross)</Label>

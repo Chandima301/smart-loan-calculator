@@ -12,6 +12,7 @@ import { calculateRestructure, generateAmortizationSchedule } from '@/lib/loanCa
 import { LOAN_LIMITS, LOAN_DEFAULTS } from '@/lib/constants';
 import { formatMonths } from '@/lib/formatters';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
+import AiTakeBanner from '@/components/ai/AiTakeBanner';
 import type { LoanParams } from '@/types/loan';
 
 const sv = (val: number | readonly number[]): number =>
@@ -95,6 +96,46 @@ export default function LoanRestructure({ initialParams }: Props) {
           any fixed fees, and the new loan terms to see if restructuring makes financial sense.
         </p>
       </div>
+
+      <AiTakeBanner
+        title={
+          result.isWorthIt
+            ? 'Refinancing looks worth it'
+            : "Refinancing isn't worth it yet"
+        }
+        tone={result.isWorthIt ? 'positive' : 'caution'}
+      >
+        {result.isWorthIt ? (
+          <>
+            Moving from <strong>{currentRate.toFixed(2)}%</strong> to{' '}
+            <strong>{newRate.toFixed(2)}%</strong> comes out ahead — you&apos;d{' '}
+            {result.emiDifference < 0 && (
+              <>
+                cut your EMI by{' '}
+                <strong>{fmt(Math.abs(result.emiDifference))}/mo</strong> and{' '}
+              </>
+            )}
+            save <strong>{fmt(result.netSaving)}</strong> overall
+            {result.breakEvenMonth !== null && (
+              <>
+                , recovering the upfront costs by{' '}
+                {formatMonths(result.breakEvenMonth)}
+              </>
+            )}
+            .
+          </>
+        ) : (
+          <>
+            Moving from <strong>{currentRate.toFixed(2)}%</strong> to{' '}
+            <strong>{newRate.toFixed(2)}%</strong> doesn&apos;t pay off — the
+            surcharge and new-loan interest outweigh the savings by{' '}
+            <strong>{fmt(Math.abs(result.netSaving))}</strong>
+            {newRate >= currentRate &&
+              ' (the new rate is not actually lower than your current one)'}
+            .
+          </>
+        )}
+      </AiTakeBanner>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* ── Inputs ── */}
