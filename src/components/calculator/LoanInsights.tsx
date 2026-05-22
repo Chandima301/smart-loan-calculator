@@ -79,7 +79,12 @@ export default function LoanInsights({
     },
     {
       label: 'Crossover month',
-      value: crossoverMonth > 0 ? `~${crossoverMonth}` : '—',
+      value:
+        crossoverMonth > 1
+          ? `~${crossoverMonth}`
+          : crossoverMonth === 1
+            ? 'Month 1'
+            : '—',
       bar: 'bg-purple-400',
     },
     {
@@ -149,16 +154,12 @@ export default function LoanInsights({
             by payoff — that is{' '}
             <strong className="text-foreground">{fmt(result.totalInterest)}</strong>{' '}
             of interest on top of your {fmt(params.principal)}.{' '}
-            {firstRow && (
+            {firstRow && crossoverMonth > 1 && (
               <>
                 In <strong className="text-foreground">month 1</strong>, only{' '}
                 <strong className="text-foreground">{firstPrincipalPct}%</strong>{' '}
-                of your payment reduces the balance — the rest is interest.{' '}
-              </>
-            )}
-            {crossoverMonth > 0 && (
-              <>
-                That balance tips around{' '}
+                of your payment reduces the balance — the rest is interest. That
+                balance tips around{' '}
                 <strong className="text-foreground">
                   month {crossoverMonth}
                 </strong>{' '}
@@ -166,9 +167,18 @@ export default function LoanInsights({
                 finally attacks the principal.{' '}
               </>
             )}
+            {firstRow && crossoverMonth > 0 && crossoverMonth <= 1 && (
+              <>
+                Even in{' '}
+                <strong className="text-foreground">month 1</strong>,{' '}
+                <strong className="text-foreground">{firstPrincipalPct}%</strong>{' '}
+                of your payment already goes to principal — at this rate
+                interest never dominates the loan.{' '}
+              </>
+            )}
             {interestRatio >= 0.5
               ? 'This is a heavy interest load — a shorter tenure, a lower rate, or early extra payments would each cut it sharply.'
-              : 'Extra payments in the early years are the strongest lever — every unit then dodges the most compounded interest.'}
+              : 'Extra payments in the early years are still the strongest lever — every unit then dodges the most compounded interest.'}
           </p>
           </div>
 
