@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Sparkles,
   TrendingDown,
@@ -39,6 +40,7 @@ export default function SmartScenarios({
   onApplyExtra,
 }: Props) {
   const fmt = useCurrencyFormat();
+  const router = useRouter();
 
   const scenarios = useMemo(() => {
     const baseInterest = result.totalInterest;
@@ -61,7 +63,9 @@ export default function SmartScenarios({
       lumpSumMonth: 1,
     }).interestSaved;
 
-    // 3 — Biweekly equivalent: one extra payment a year (≈ EMI / 12 / mo).
+    // 3 — Biweekly: preview the saving (one extra payment a year ≈
+    // EMI / 12 / mo), then hand off to the dedicated biweekly calculator
+    // for the real 26-payments-a-year model.
     const biweekly = Math.max(1, Math.round(result.emi / 12));
     const biweeklySave = simulatePrepayment({
       ...params,
@@ -101,10 +105,13 @@ export default function SmartScenarios({
       {
         key: 'biweekly',
         Icon: CalendarClock,
-        title: 'Biweekly equivalent',
-        sub: '13 payments a year',
+        title: 'Switch to biweekly',
+        sub: 'open the biweekly calculator →',
         save: biweeklySave,
-        apply: () => onApplyExtra(biweekly),
+        apply: () =>
+          router.push(
+            `/biweekly-mortgage-calculator?p=${params.principal}&r=${params.annualRate}&t=${params.tenureMonths}`,
+          ),
         disabled: false,
       },
       {
@@ -117,7 +124,7 @@ export default function SmartScenarios({
         disabled: shorterTenure >= params.tenureMonths,
       },
     ];
-  }, [params, result, fmt, onApplyRate, onApplyTenure, onApplyExtra]);
+  }, [params, result, fmt, router, onApplyRate, onApplyTenure, onApplyExtra]);
 
   return (
     <section>

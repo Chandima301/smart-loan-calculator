@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -36,6 +36,32 @@ export default function BiweeklyMortgageCalculator() {
   const [principal, setPrincipal] = useState(300_000);
   const [annualRate, setAnnualRate] = useState(6.5);
   const [years, setYears] = useState(30);
+
+  // Pre-fill from ?p=&r=&t= when arriving from another calculator
+  // (e.g. the "Switch to biweekly" Smart Scenario). Client-only, runs once.
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const p = Number(sp.get('p'));
+    const r = Number(sp.get('r'));
+    const t = Number(sp.get('t'));
+    if (
+      Number.isFinite(p) &&
+      p >= LOAN_LIMITS.principal.min &&
+      p <= LOAN_LIMITS.principal.max
+    ) {
+      setPrincipal(p);
+    }
+    if (
+      Number.isFinite(r) &&
+      r >= LOAN_LIMITS.annualRate.min &&
+      r <= LOAN_LIMITS.annualRate.max
+    ) {
+      setAnnualRate(r);
+    }
+    if (Number.isFinite(t) && t >= 12) {
+      setYears(Math.min(40, Math.max(1, Math.round(t / 12))));
+    }
+  }, []);
 
   const currencyCode = useSettingsStore((s) => s.currencyCode);
 
