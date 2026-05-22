@@ -98,12 +98,12 @@ export default function LoanRestructure({ initialParams }: Props) {
       </div>
 
       <AiTakeBanner
+        label="AI verdict"
         title={
           result.isWorthIt
             ? 'Refinancing looks worth it'
             : "Refinancing isn't worth it yet"
         }
-        tone={result.isWorthIt ? 'positive' : 'caution'}
       >
         {result.isWorthIt ? (
           <>

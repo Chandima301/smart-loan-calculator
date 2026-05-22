@@ -34,6 +34,7 @@ export default function ComparisonPanel() {
     <div className="space-y-6">
       {verdict && (
         <AiTakeBanner
+          label="AI verdict"
           title={
             verdict.nearIdentical
               ? 'These scenarios are nearly identical'
