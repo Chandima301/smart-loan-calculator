@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { LoanParams, LoanResult, AmortizationRow } from '@/types/loan';
 import { formatMonths } from '@/lib/formatters';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
@@ -55,7 +55,17 @@ export default function LoanInsights({
   crossoverMonth,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [generating, setGenerating] = useState(true);
   const fmt = useCurrencyFormat();
+
+  // Re-"generate" the AI summary (debounced) whenever the loan changes —
+  // a brief loading state that reassures the user the summary is freshly
+  // produced for their numbers, and avoids flicker while dragging sliders.
+  useEffect(() => {
+    setGenerating(true);
+    const id = setTimeout(() => setGenerating(false), 550);
+    return () => clearTimeout(id);
+  }, [params.principal, params.annualRate, params.tenureMonths]);
 
   const interestRatio =
     params.principal > 0 ? result.totalInterest / params.principal : 0;
@@ -136,11 +146,23 @@ export default function LoanInsights({
           {/* AI narrative — light-purple box with the AI icon */}
           <div className="rounded-lg border border-ai/20 bg-ai-soft p-3">
             <div className="mb-1.5 flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-ai" />
+              <Sparkles
+                className={`h-3.5 w-3.5 text-ai ${generating ? 'animate-pulse' : ''}`}
+              />
               <span className="text-[11px] font-semibold uppercase tracking-wide text-ai-ink">
-                AI summary
+                {generating ? 'Generating…' : 'AI summary'}
               </span>
             </div>
+            {generating ? (
+              <div className="space-y-2 py-0.5" aria-hidden="true">
+                <div className="h-2.5 w-2/3 animate-pulse rounded bg-ai/20" />
+                <div className="h-2.5 w-full animate-pulse rounded bg-ai/20" />
+                <div className="h-2.5 w-5/6 animate-pulse rounded bg-ai/20" />
+                <p className="pt-1 text-[11px] font-medium text-ai-ink/80">
+                  Analyzing your loan…
+                </p>
+              </div>
+            ) : (
             <p className="text-sm leading-relaxed text-muted-foreground">
             At a <strong className="text-foreground">{params.annualRate}%</strong>{' '}
             rate over{' '}
@@ -179,7 +201,8 @@ export default function LoanInsights({
             {interestRatio >= 0.5
               ? 'This is a heavy interest load — a shorter tenure, a lower rate, or early extra payments would each cut it sharply.'
               : 'Extra payments in the early years are still the strongest lever — every unit then dodges the most compounded interest.'}
-          </p>
+            </p>
+            )}
           </div>
 
           {/* Metric cards — colored accent bar per metric */}
