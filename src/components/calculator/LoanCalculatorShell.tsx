@@ -4,10 +4,12 @@ import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import { Target } from 'lucide-react';
 import LoanInputPanel from './LoanInputPanel';
 import SummaryCards from './SummaryCards';
 import ShareButton from './ShareButton';
 import DownloadPdfButton from './DownloadPdfButton';
+import GoalPlannerModal from './GoalPlannerModal';
 import LoanParamsFromUrl from './LoanParamsFromUrl';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
@@ -118,6 +120,8 @@ export default function LoanCalculatorShell({
   const [showPrepayment, setShowPrepayment] = useState(
     prepaymentDefaultOpen ?? false,
   );
+
+  const [showGoalPlanner, setShowGoalPlanner] = useState(false);
 
   // Tabs available on this page (default: all four).
   const enabled = enabledTabs ?? TAB_DEFS.map((t) => t.value);
@@ -392,6 +396,14 @@ export default function LoanCalculatorShell({
                   </p>
                 )}
               </div>
+
+              <button
+                type="button"
+                onClick={() => setShowGoalPlanner(true)}
+                className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed py-2.5 text-xs font-medium text-ai-ink transition-colors hover:bg-ai-soft"
+              >
+                <Target className="h-3.5 w-3.5" /> Goal Planner — work backward from a payoff date
+              </button>
             </div>
 
             <div className="space-y-6">
@@ -506,6 +518,17 @@ export default function LoanCalculatorShell({
           </TabsContent>
         )}
       </Tabs>
+
+      {showGoalPlanner && (
+        <GoalPlannerModal
+          params={loanParams}
+          onApply={(tenureMonths) => {
+            setLoanParams((p) => ({ ...p, tenureMonths }));
+            setShowGoalPlanner(false);
+          }}
+          onClose={() => setShowGoalPlanner(false)}
+        />
+      )}
     </div>
   );
 }

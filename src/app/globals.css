@@ -37,6 +37,10 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-ai: var(--ai);
+  --color-ai-foreground: var(--ai-foreground);
+  --color-ai-soft: var(--ai-soft);
+  --color-ai-ink: var(--ai-ink);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -59,6 +63,13 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
+  /* AI accent — violet→blue, distinct from the orange/blue calculator palette */
+  --ai: #6d28d9;
+  --ai-2: #8b5cf6;
+  --ai-foreground: #ffffff;
+  --ai-soft: #f3eeff;
+  --ai-ink: #4c1d95;
+  --ai-grad: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -94,6 +105,13 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
+  /* AI accent — lighter violet for dark mode contrast */
+  --ai: #a78bfa;
+  --ai-2: #8b5cf6;
+  --ai-foreground: #1e1b4b;
+  --ai-soft: oklch(0.27 0.06 290);
+  --ai-ink: #ddd6fe;
+  --ai-grad: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);

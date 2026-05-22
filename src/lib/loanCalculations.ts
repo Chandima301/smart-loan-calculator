@@ -196,3 +196,60 @@ export function checkAffordability(params: AffordabilityParams): AffordabilityRe
     ratioUsed: emiToIncomeRatio,
   };
 }
+
+/**
+ * A realistic, sustainable extra MONTHLY payment suggestion — roughly 10%
+ * of the EMI, rounded to a clean increment and capped at half the EMI.
+ * Shared by the Loan Insights / Prepayment "AI strategy" callout and the
+ * Smart Scenarios strip so the suggestion is consistent everywhere.
+ */
+export function suggestedExtraPayment(emi: number): number {
+  if (!Number.isFinite(emi) || emi <= 0) return 25;
+  const target = emi * 0.1;
+  const step = target < 100 ? 10 : target < 500 ? 25 : 50;
+  const rounded = Math.round(target / step) * step;
+  return Math.min(Math.max(rounded, step), Math.round(emi * 0.5));
+}
+
+export interface PayoffTargetPlan {
+  /** Clamped target months used for the calculation. */
+  targetMonths: number;
+  /** Monthly payment required to clear the loan exactly by the target. */
+  requiredMonthlyPayment: number;
+  /** The current scheduled EMI for comparison. */
+  currentEMI: number;
+  /** How much MORE than the current EMI the target demands (0 if target is slower). */
+  extraVsCurrent: number;
+  /** True when the target is unreachable within sane bounds. */
+  feasible: boolean;
+}
+
+/**
+ * Goal Planner math — work backward from a payoff deadline.
+ * Given a loan and a target number of months, solve the amortization
+ * formula for the monthly payment that clears the balance exactly on time.
+ */
+export function planForPayoffTarget(
+  params: LoanParams,
+  targetMonths: number,
+): PayoffTargetPlan {
+  const current = calculateEMI(params);
+  const n = Math.max(1, Math.round(targetMonths));
+  const r = params.annualRate / 100 / 12;
+
+  let requiredMonthlyPayment: number;
+  if (r === 0) {
+    requiredMonthlyPayment = params.principal / n;
+  } else {
+    const x = Math.pow(1 + r, n);
+    requiredMonthlyPayment = (params.principal * r * x) / (x - 1);
+  }
+
+  return {
+    targetMonths: n,
+    requiredMonthlyPayment,
+    currentEMI: current.emi,
+    extraVsCurrent: Math.max(0, requiredMonthlyPayment - current.emi),
+    feasible: Number.isFinite(requiredMonthlyPayment) && requiredMonthlyPayment > 0,
+  };
+}
