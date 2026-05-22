@@ -2,7 +2,7 @@
 
 import {
   ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer,
+  ReferenceLine, ResponsiveContainer,
 } from 'recharts';
 import type { AmortizationRow } from '@/types/loan';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
@@ -15,6 +15,12 @@ interface Props {
    * (original) so the user can see the difference extra payments make.
    */
   compareSchedule?: AmortizationRow[];
+  /**
+   * Amortization crossover month — Smart chart annotation. When set (and
+   * not in comparison mode), a violet marker flags where the principal
+   * portion of the payment overtakes the interest portion.
+   */
+  crossoverMonth?: number;
 }
 
 function abbreviateValue(value: number): string {
@@ -49,13 +55,17 @@ function ChartTooltip({
   );
 }
 
-export default function BalanceChart({ schedule, compareSchedule }: Props) {
+export default function BalanceChart({
+  schedule,
+  compareSchedule,
+  crossoverMonth,
+}: Props) {
   if (!schedule.length) return null;
 
   const comparing = !!compareSchedule && compareSchedule.length > 0;
 
   if (!comparing) {
-    // ---- Original single-schedule view (unchanged) ----
+    // ---- Original single-schedule view ----
     const step = schedule.length > 120 ? 6 : schedule.length > 60 ? 3 : 1;
     const data = schedule
       .filter((r) => r.month % step === 0 || r.month === schedule.length)
@@ -64,6 +74,20 @@ export default function BalanceChart({ schedule, compareSchedule }: Props) {
         balance: Math.round(r.closingBalance),
         interest: Math.round(r.cumulativeInterest),
       }));
+
+    // Snap the crossover annotation to the nearest plotted month so the
+    // ReferenceLine lands on a real category value.
+    const markerMonth =
+      crossoverMonth && crossoverMonth > 0 && data.length
+        ? data.reduce(
+            (best, d) =>
+              Math.abs(d.month - crossoverMonth) <
+              Math.abs(best - crossoverMonth)
+                ? d.month
+                : best,
+            data[0].month,
+          )
+        : null;
 
     const xTickFormatter = (month: number) =>
       month % 12 === 0 ? `Yr ${month / 12}` : '';
@@ -111,6 +135,20 @@ export default function BalanceChart({ schedule, compareSchedule }: Props) {
               dot={false}
               activeDot={{ r: 4 }}
             />
+            {markerMonth !== null && (
+              <ReferenceLine
+                x={markerMonth}
+                stroke="var(--ai)"
+                strokeWidth={1.5}
+                strokeDasharray="4 3"
+                label={{
+                  value: '✦ Crossover',
+                  position: 'top',
+                  fontSize: 10,
+                  fill: 'var(--ai)',
+                }}
+              />
+            )}
           </ComposedChart>
         </ResponsiveContainer>
       </div>

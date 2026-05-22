@@ -1,146 +1,105 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import type { LoanParams, LoanResult, AmortizationRow } from '@/types/loan';
 import { formatMonths } from '@/lib/formatters';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
-import { simulatePrepayment } from '@/lib/loanCalculations';
-import { AlertTriangle, TrendingDown, Lightbulb, Clock, BadgeInfo, ChevronDown, Zap } from 'lucide-react';
+import { ChevronDown, Sparkles } from 'lucide-react';
 
 interface Props {
   params: LoanParams;
   result: LoanResult;
   schedule: AmortizationRow[];
-  onApplyQuickWin: (amount: number) => void;
+  /** Amortization crossover month — when the principal portion of the
+   *  payment overtakes the interest portion. Computed by the shell. */
+  crossoverMonth: number;
 }
 
 function getHealth(ratio: number) {
-  if (ratio < 0.25) return { label: 'Excellent', dot: 'bg-emerald-500', text: 'text-emerald-700', pill: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40' };
-  if (ratio < 0.50) return { label: 'Fair',      dot: 'bg-yellow-400', text: 'text-yellow-700', pill: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40' };
-  if (ratio < 1.0)  return { label: 'High',      dot: 'bg-orange-500', text: 'text-orange-700', pill: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40' };
-  return              { label: 'Very High',  dot: 'bg-red-500',    text: 'text-red-700',    pill: 'bg-red-100 text-red-700 dark:bg-red-900/40' };
+  if (ratio < 0.25)
+    return {
+      label: 'Excellent',
+      dot: 'bg-emerald-500',
+      pill: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40',
+    };
+  if (ratio < 0.5)
+    return {
+      label: 'Fair',
+      dot: 'bg-yellow-400',
+      pill: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40',
+    };
+  if (ratio < 1.0)
+    return {
+      label: 'High',
+      dot: 'bg-orange-500',
+      pill: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40',
+    };
+  return {
+    label: 'Very High',
+    dot: 'bg-red-500',
+    pill: 'bg-red-100 text-red-700 dark:bg-red-900/40',
+  };
 }
 
-const ACCENT: Record<string, { bar: string; icon: string }> = {
-  health:   { bar: 'bg-current', icon: '' },
-  cost:     { bar: 'bg-blue-400',   icon: 'text-blue-500' },
-  emi:      { bar: 'bg-purple-400', icon: 'text-purple-500' },
-  mid:      { bar: 'bg-amber-400',  icon: 'text-amber-500' },
-  tip:      { bar: 'bg-emerald-400',icon: 'text-emerald-500' },
-};
-
-export default function LoanInsights({ params, result, schedule, onApplyQuickWin }: Props) {
+/**
+ * Loan Insights — a collapsible analytical card. The expanded body shows
+ * a deterministic plain-English "AI narrative" of the amortization plus a
+ * grid of metric tiles. All template text from the existing pure math —
+ * no LLM. The tailored extra-payment suggestion now lives in the
+ * Prepayment section, not here.
+ */
+export default function LoanInsights({
+  params,
+  result,
+  schedule,
+  crossoverMonth,
+}: Props) {
   const [open, setOpen] = useState(false);
-
   const fmt = useCurrencyFormat();
-  const interestRatio = result.totalInterest / params.principal;
+
+  const interestRatio =
+    params.principal > 0 ? result.totalInterest / params.principal : 0;
   const health = getHealth(interestRatio);
-  const costPer100 = ((result.totalRepayment / params.principal) * 100).toFixed(0);
+  const multiplier =
+    params.principal > 0 ? result.totalRepayment / params.principal : 0;
+  const costPer100 = (multiplier * 100).toFixed(0);
 
   const firstRow = schedule[0];
-  const firstPrincipalPct = firstRow ? ((firstRow.principalComponent / firstRow.emi) * 100).toFixed(0) : '0';
-  const firstInterestPct  = firstRow ? ((firstRow.interestComponent  / firstRow.emi) * 100).toFixed(0) : '0';
+  const firstPrincipalPct =
+    firstRow && firstRow.emi > 0
+      ? Math.round((firstRow.principalComponent / firstRow.emi) * 100)
+      : 0;
+  const interestPer100 = Math.round(interestRatio * 100);
 
-  const midpointMonth = useMemo(() => {
-    let cum = 0;
-    for (const row of schedule) {
-      cum += row.principalComponent;
-      if (cum >= params.principal / 2) return row.month;
-    }
-    return schedule.length;
-  }, [schedule, params.principal]);
-
-  // A realistic, sustainable extra MONTHLY payment — roughly 10% of the
-  // EMI, rounded to a clean increment and capped so it never suggests
-  // more than half the regular payment. (The old formula used 0.5% of
-  // principal, which is a lump-sum-sized number that made no sense as a
-  // recurring monthly amount — e.g. $5,000/mo on a $397/mo loan.)
-  const quickWinAmount = useMemo(() => {
-    const emi = result.emi;
-    if (!Number.isFinite(emi) || emi <= 0) return 25;
-    const target = emi * 0.1;
-    const step = target < 100 ? 10 : target < 500 ? 25 : 50;
-    const rounded = Math.round(target / step) * step;
-    return Math.min(Math.max(rounded, step), Math.round(emi * 0.5));
-  }, [result.emi]);
-
-  const quickWinResult = useMemo(() => simulatePrepayment({
-    ...params, extraMonthlyPayment: quickWinAmount, lumpSumPayment: 0, lumpSumMonth: 1,
-  }), [params, quickWinAmount]);
-
-  const insights = [
+  const tiles = [
+    { label: 'First-payment principal', value: `${firstPrincipalPct}%` },
     {
-      key: 'health',
-      icon: interestRatio >= 0.5 ? <AlertTriangle className="h-3.5 w-3.5" /> : <BadgeInfo className="h-3.5 w-3.5" />,
-      iconClass: health.text,
-      label: 'Interest burden',
-      value: interestRatio >= 1
-        ? `${((interestRatio) * 100).toFixed(0)}% more than borrowed`
-        : `${(interestRatio * 100).toFixed(0)}% of principal`,
-      valueClass: health.text,
-      detail: interestRatio >= 1
-        ? "You're paying MORE in interest than your loan — consider renegotiating."
-        : interestRatio >= 0.5
-        ? "Significant interest. A shorter tenure or lower rate would help."
-        : interestRatio >= 0.25
-        ? "Moderate interest burden. Consider prepayments to reduce it."
-        : "Very low interest burden — great loan terms.",
+      label: 'Crossover month',
+      value: crossoverMonth > 0 ? `~${crossoverMonth}` : '—',
     },
-    {
-      key: 'cost',
-      icon: <TrendingDown className="h-3.5 w-3.5" />,
-      iconClass: ACCENT.cost.icon,
-      label: 'Cost per 100 borrowed',
-      value: `${costPer100} repaid`,
-      valueClass: 'text-blue-600',
-      detail: `For every 100 borrowed you repay ${costPer100} in total.`,
-    },
-    {
-      key: 'emi',
-      icon: <Clock className="h-3.5 w-3.5" />,
-      iconClass: ACCENT.emi.icon,
-      label: 'Month 1 split',
-      value: `${firstPrincipalPct}% principal · ${firstInterestPct}% interest`,
-      valueClass: 'text-purple-600',
-      detail: `Only ${firstPrincipalPct}% of your first EMI reduces debt — ${firstInterestPct}% is pure interest.`,
-    },
-    {
-      key: 'mid',
-      icon: <Clock className="h-3.5 w-3.5" />,
-      iconClass: ACCENT.mid.icon,
-      label: '50% paid off',
-      value: `Month ${midpointMonth} of ${params.tenureMonths}`,
-      valueClass: 'text-amber-600',
-      detail: `You won't clear half your loan until month ${midpointMonth} — ${formatMonths(midpointMonth)} in.`,
-    },
-    ...(quickWinResult.interestSaved > 0 ? [{
-      key: 'tip',
-      icon: <Lightbulb className="h-3.5 w-3.5" />,
-      iconClass: ACCENT.tip.icon,
-      label: 'Quick win',
-      value: `Save ${fmt(quickWinResult.interestSaved)}`,
-      valueClass: 'text-emerald-600',
-      detail: `Add ${fmt(quickWinAmount)}/mo extra → save ${fmt(quickWinResult.interestSaved)} & cut ${formatMonths(quickWinResult.monthsSaved)}.`,
-      action: { label: 'Apply', onClick: () => onApplyQuickWin(quickWinAmount) },
-    }] : []),
+    { label: 'Interest per 100 borrowed', value: costPer100 },
+    { label: 'Total repaid', value: `${multiplier.toFixed(2)}×` },
   ];
 
   return (
-    <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
-      {/* Header — always visible */}
+    <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-4 py-3 hover:bg-muted/40 transition-colors"
+        className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-muted/40"
       >
         <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold">Loan Insights</span>
-          <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ${health.pill}`}>
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+            <Sparkles className="h-3.5 w-3.5 text-ai" />
+            Loan Insights
+          </span>
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ${health.pill}`}
+          >
             <span className={`h-1.5 w-1.5 rounded-full ${health.dot}`} />
             {health.label}
           </span>
-          {/* Collapsed preview pills */}
           {!open && (
-            <div className="hidden sm:flex items-center gap-1.5">
+            <div className="hidden items-center gap-1.5 sm:flex">
               <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 {costPer100} per 100 borrowed
               </span>
@@ -151,35 +110,66 @@ export default function LoanInsights({ params, result, schedule, onApplyQuickWin
           )}
         </div>
         <ChevronDown
-          className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+            open ? 'rotate-180' : ''
+          }`}
         />
       </button>
 
-      {/* Expandable body */}
       {open && (
-        <div className="border-t divide-y">
-          {insights.map((ins) => (
-            <div key={ins.key} className="flex items-start gap-3 px-4 py-3">
-              <div className={`mt-1 w-0.5 self-stretch rounded-full ${ACCENT[ins.key]?.bar ?? 'bg-muted'} shrink-0`} />
-              <span className={`mt-0.5 shrink-0 ${ins.iconClass}`}>{ins.icon}</span>
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                  <span className="text-xs text-muted-foreground">{ins.label}</span>
-                  <span className={`text-sm font-semibold ${ins.valueClass}`}>{ins.value}</span>
+        <div className="border-t p-4">
+          {/* Deterministic plain-English narrative */}
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            At a <strong className="text-foreground">{params.annualRate}%</strong>{' '}
+            rate over{' '}
+            <strong className="text-foreground">
+              {formatMonths(params.tenureMonths)}
+            </strong>
+            , every unit borrowed becomes{' '}
+            <strong className="text-foreground">
+              {multiplier.toFixed(2)}×
+            </strong>{' '}
+            by payoff — that is{' '}
+            <strong className="text-foreground">{fmt(result.totalInterest)}</strong>{' '}
+            of interest on top of your {fmt(params.principal)}.{' '}
+            {firstRow && (
+              <>
+                In <strong className="text-foreground">month 1</strong>, only{' '}
+                <strong className="text-foreground">{firstPrincipalPct}%</strong>{' '}
+                of your payment reduces the balance — the rest is interest.{' '}
+              </>
+            )}
+            {crossoverMonth > 0 && (
+              <>
+                That balance tips around{' '}
+                <strong className="text-foreground">
+                  month {crossoverMonth}
+                </strong>{' '}
+                (the amortization crossover), after which most of each payment
+                finally attacks the principal.{' '}
+              </>
+            )}
+            {interestRatio >= 0.5
+              ? 'This is a heavy interest load — a shorter tenure, a lower rate, or early extra payments would each cut it sharply.'
+              : 'Extra payments in the early years are the strongest lever — every unit then dodges the most compounded interest.'}
+          </p>
+
+          {/* Metric tiles */}
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {tiles.map((t) => (
+              <div key={t.label} className="rounded-lg bg-muted/50 p-3">
+                <div className="text-[11px] leading-tight text-muted-foreground">
+                  {t.label}
                 </div>
-                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{ins.detail}</p>
+                <div className="mt-1 text-base font-semibold">{t.value}</div>
               </div>
-              {'action' in ins && ins.action && (
-                <button
-                  onClick={ins.action.onClick}
-                  className="shrink-0 inline-flex items-center gap-1 rounded-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-medium px-2.5 py-1 transition-all"
-                >
-                  <Zap className="h-3 w-3" />
-                  {ins.action.label}
-                </button>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <p className="mt-3 text-[11px] text-muted-foreground">
+            Interest is {interestPer100}% of the amount borrowed. Figures are
+            computed from your inputs — not an estimate.
+          </p>
         </div>
       )}
     </div>

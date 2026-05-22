@@ -10,6 +10,7 @@ import SummaryCards from './SummaryCards';
 import ShareButton from './ShareButton';
 import DownloadPdfButton from './DownloadPdfButton';
 import GoalPlannerModal from './GoalPlannerModal';
+import SmartScenarios from './SmartScenarios';
 import LoanParamsFromUrl from './LoanParamsFromUrl';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
@@ -174,6 +175,16 @@ export default function LoanCalculatorShell({
     () => generateAmortizationSchedule(loanParams),
     [loanParams]
   );
+
+  // Amortization crossover — first month the principal portion of the
+  // payment overtakes the interest portion. Shared by Loan Insights and
+  // the Balance chart's "Smart chart annotation".
+  const crossoverMonth = useMemo(() => {
+    for (const row of amortizationSchedule) {
+      if (row.principalComponent >= row.interestComponent) return row.month;
+    }
+    return 0;
+  }, [amortizationSchedule]);
 
   // Single source of truth: prepayment always uses the CURRENT loan params.
   const prepaymentParams = useMemo<PrepaymentParams>(
@@ -353,8 +364,23 @@ export default function LoanCalculatorShell({
             params={loanParams}
             result={loanResult}
             schedule={amortizationSchedule}
-            onApplyQuickWin={(amount) => {
-              setPrepaymentDelta((d) => ({ ...d, extraMonthlyPayment: amount }));
+            crossoverMonth={crossoverMonth}
+          />
+
+          <SmartScenarios
+            params={loanParams}
+            result={loanResult}
+            onApplyRate={(annualRate) =>
+              setLoanParams((p) => ({ ...p, annualRate }))
+            }
+            onApplyTenure={(tenureMonths) =>
+              setLoanParams((p) => ({ ...p, tenureMonths }))
+            }
+            onApplyExtra={(extraMonthly) => {
+              setPrepaymentDelta((d) => ({
+                ...d,
+                extraMonthlyPayment: extraMonthly,
+              }));
               setShowPrepayment(true);
             }}
           />
@@ -453,6 +479,7 @@ export default function LoanCalculatorShell({
                   compareSchedule={
                     prepaymentReflected ? amortizationSchedule : undefined
                   }
+                  crossoverMonth={crossoverMonth}
                 />
                 {prepaymentReflected && (
                   <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
