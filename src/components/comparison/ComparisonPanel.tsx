@@ -15,19 +15,51 @@ export default function ComparisonPanel() {
     useLoanComparisonStore();
   const fmt = useCurrencyFormat();
 
-  // Deterministic "AI verdict": rank the on-screen scenarios by total
-  // interest and state the trade-off vs. the runner-up in plain English.
+  // Deterministic "AI verdict": rank scenarios by interest cost per unit
+  // borrowed (total interest ÷ principal) so loans of different sizes are
+  // compared fairly — a smaller loan naturally has less total interest,
+  // which a raw-total ranking would unfairly crown the "cheaper" loan.
   const verdict = useMemo(() => {
     if (scenarios.length < 2) return null;
-    const sorted = [...scenarios].sort(
-      (a, b) => a.result.totalInterest - b.result.totalInterest,
+
+    const ranked = scenarios
+      .map((s) => ({
+        s,
+        ratio:
+          s.params.principal > 0
+            ? s.result.totalInterest / s.params.principal
+            : 0,
+      }))
+      .sort((a, b) => a.ratio - b.ratio);
+
+    const best = ranked[0].s;
+    const runnerUp = ranked[1].s;
+    const samePrincipal = scenarios.every(
+      (s) => s.params.principal === scenarios[0].params.principal,
     );
-    const best = sorted[0];
-    const runnerUp = sorted[1];
-    const interestSaved = runnerUp.result.totalInterest - best.result.totalInterest;
+
+    const interestSaved =
+      runnerUp.result.totalInterest - best.result.totalInterest;
     const emiDelta = best.result.emi - runnerUp.result.emi;
-    const nearIdentical = interestSaved < best.result.totalRepayment * 0.005;
-    return { best, runnerUp, interestSaved, emiDelta, nearIdentical };
+    const bestPer100 = ranked[0].ratio * 100;
+    const runnerPer100 = ranked[1].ratio * 100;
+    const per100Saved = runnerPer100 - bestPer100;
+
+    const nearIdentical = samePrincipal
+      ? interestSaved < best.result.totalRepayment * 0.005
+      : per100Saved < 0.5;
+
+    return {
+      best,
+      runnerUp,
+      samePrincipal,
+      interestSaved,
+      emiDelta,
+      bestPer100,
+      runnerPer100,
+      per100Saved,
+      nearIdentical,
+    };
   }, [scenarios]);
 
   return (
@@ -35,49 +67,68 @@ export default function ComparisonPanel() {
       {verdict && (
         <AiTakeBanner
           label="AI verdict"
-          watch={`${verdict.best.id}:${Math.round(verdict.interestSaved)}:${Math.round(verdict.emiDelta)}`}
+          watch={`${verdict.best.id}:${Math.round(verdict.interestSaved)}:${Math.round(verdict.emiDelta)}:${verdict.samePrincipal}`}
           title={
             verdict.nearIdentical
               ? 'These scenarios are nearly identical'
-              : `${verdict.best.label} is the cheaper loan`
+              : `${verdict.best.label} is the ${
+                  verdict.samePrincipal ? 'cheaper loan' : 'most cost-efficient'
+                }`
           }
         >
           {verdict.nearIdentical ? (
             <>
-              Total interest comes within{' '}
-              <strong>{fmt(verdict.interestSaved)}</strong> across these
-              scenarios — small enough that, in practice, the math is a wash.
-              When the numbers sit this close the decision shifts away from
-              the spreadsheet and onto the lender itself: processing fees,
-              prepayment flexibility, approval speed and customer service.
-              Pick the lender you trust most rather than chasing a marginal
-              difference that everyday banking quirks will erase anyway.
+              These scenarios land within a hair of each other on cost. Once
+              the gap is this small the decision shifts off the spreadsheet
+              and onto the lender itself — processing fees, prepayment
+              flexibility, approval speed and customer service. Pick the one
+              you trust most rather than chasing a difference that everyday
+              banking quirks will erase anyway.
+            </>
+          ) : !verdict.samePrincipal ? (
+            <>
+              Heads-up — these scenarios borrow different amounts (
+              <strong>{fmt(verdict.best.params.principal)}</strong> vs{' '}
+              <strong>{fmt(verdict.runnerUp.params.principal)}</strong>), so
+              raw total interest — and even the monthly payment — would be
+              misleading: a smaller loan always looks cheaper simply because
+              it is smaller. Measured fairly, by interest cost per 100
+              borrowed, <strong>{verdict.best.label}</strong> is the most
+              efficient at <strong>{fmt(verdict.bestPer100)} per 100</strong>{' '}
+              against {fmt(verdict.runnerPer100)} for {verdict.runnerUp.label}.
+              That gap is driven by rate and term — the parts you actually
+              control. Pick the loan with the lowest per-100 cost, then size
+              the borrowing to what you genuinely need.
             </>
           ) : verdict.emiDelta <= 0 ? (
             <>
+              Both scenarios borrow{' '}
+              <strong>{fmt(verdict.best.params.principal)}</strong>, so this is
+              a clean like-for-like comparison.{' '}
               <strong>{verdict.best.label}</strong> is the clear winner — it
               costs <strong>{fmt(Math.abs(verdict.emiDelta))}/mo less</strong>{' '}
               than {verdict.runnerUp.label} <em>and</em> saves{' '}
               <strong>{fmt(verdict.interestSaved)}</strong> in total interest
-              across the life of the loan. Normally a lighter monthly payment
-              is bought with a longer term or a higher rate, so you trade one
-              for the other — but here {verdict.best.label} beats{' '}
-              {verdict.runnerUp.label} on both counts at once, which means
-              there is genuinely no downside to weigh. Lock it in unless the
+              across the life of the loan. A lighter monthly payment normally
+              costs you a longer term or a higher rate — but here{' '}
+              {verdict.best.label} beats {verdict.runnerUp.label} on both at
+              once, so there is no trade-off to weigh. Lock it in unless the
               lender&apos;s other terms give you a clear reason not to.
             </>
           ) : (
             <>
+              Both scenarios borrow{' '}
+              <strong>{fmt(verdict.best.params.principal)}</strong>, so this is
+              a clean like-for-like comparison.{' '}
               <strong>{verdict.best.label}</strong> saves{' '}
               <strong>{fmt(verdict.interestSaved)}</strong> in total interest,
               but it costs <strong>{fmt(verdict.emiDelta)}/mo more</strong>{' '}
-              than {verdict.runnerUp.label}. That is the classic shorter-term
-              trade-off — a heavier payment now in exchange for far less paid
-              overall, because your money spends less time accruing interest.
-              It is the better deal <em>if</em> your budget can absorb the
-              higher payment without strain; if cash flow is tight, the
-              lighter payment on {verdict.runnerUp.label} — and the breathing
-              room it leaves each month — can be worth the extra interest.
+              than {verdict.runnerUp.label} — the classic shorter-term
+              trade-off, a heavier payment now in exchange for far less paid
+              overall. Choose {verdict.best.label} if your budget absorbs the
+              higher payment comfortably; if cash flow is tight, the lighter
+              payment on {verdict.runnerUp.label} — and the breathing room it
+              leaves each month — can be worth the extra interest.
             </>
           )}
         </AiTakeBanner>
