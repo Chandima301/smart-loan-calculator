@@ -35,6 +35,7 @@ export default function ComparisonPanel() {
       {verdict && (
         <AiTakeBanner
           label="AI verdict"
+          watch={`${verdict.best.id}:${Math.round(verdict.interestSaved)}:${Math.round(verdict.emiDelta)}`}
           title={
             verdict.nearIdentical
               ? 'These scenarios are nearly identical'

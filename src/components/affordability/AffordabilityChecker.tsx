@@ -68,7 +68,11 @@ export default function AffordabilityChecker({ onApplyToCalculator }: Props) {
 
   return (
     <div className="space-y-6">
-      <AiTakeBanner label="AI take" title="What you can comfortably afford">
+      <AiTakeBanner
+        label="AI take"
+        watch={`${monthlyIncome}:${annualRate}:${tenureMonths}:${ratio}`}
+        title="What you can comfortably afford"
+      >
         On <strong>{fmt(monthlyIncome)}/mo</strong> gross income at{' '}
         {annualRate}% over {formatMonths(tenureMonths)}, you can comfortably
         borrow up to <strong>{fmt(result.maxLoanAmount)}</strong> — keeping your

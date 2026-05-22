@@ -99,6 +99,7 @@ export default function LoanRestructure({ initialParams }: Props) {
 
       <AiTakeBanner
         label="AI verdict"
+        watch={`${Math.round(result.netSaving)}:${Math.round(result.emiDifference)}`}
         title={
           result.isWorthIt
             ? 'Refinancing looks worth it'
