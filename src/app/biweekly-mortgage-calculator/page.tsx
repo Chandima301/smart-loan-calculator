@@ -4,7 +4,6 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import AnswerBlock from '@/components/seo/AnswerBlock';
 import BiweeklyMortgageGuide, { meta as biweeklyGuideMeta } from '@/content/guides/biweekly-mortgage';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
@@ -146,9 +145,7 @@ export default function BiweeklyMortgageCalculatorPage() {
             See exactly how many years and how much interest you save by paying your mortgage biweekly instead of monthly.
           </p>
           <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">
-            Paying half your mortgage every 14 days adds up to 26 payments per year — the equivalent of 13 monthly payments,
-            or one extra full payment annually. On a typical 30-year mortgage that single extra payment shaves 4–6 years off
-            the loan and saves tens of thousands in interest.
+            Paying <strong>half your monthly mortgage payment every two weeks</strong> adds up to 26 biweekly payments per year — equal to <strong>13 monthly payments instead of 12</strong>. That single extra payment annually typically pays off a 30-year mortgage <strong>4–6 years early</strong> and saves tens of thousands in interest. On a $300,000 mortgage at 7%, biweekly payments save approximately <strong>$76,000</strong> in interest and finish the loan about 5.5 years sooner.
           </p>
         </div>
       </div>
@@ -161,10 +158,6 @@ export default function BiweeklyMortgageCalculatorPage() {
           { label: 'Biweekly Mortgage Calculator' },
         ]}
       />
-
-      <AnswerBlock>
-        Paying <strong>half your monthly mortgage payment every two weeks</strong> adds up to 26 biweekly payments per year — equal to <strong>13 monthly payments instead of 12</strong>. That single extra payment annually typically pays off a 30-year mortgage <strong>4-6 years early</strong> and saves tens of thousands in interest. On a $300,000 mortgage at 7%, biweekly payments save approximately <strong>$76,000</strong> in interest and finish the loan ~5.5 years sooner.
-      </AnswerBlock>
 
       {/* Calculator */}
       <BiweeklyMortgageCalculator />

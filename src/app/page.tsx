@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
-import AnswerBlock from '@/components/seo/AnswerBlock';
 import { buildSoftwareAppSchema, STANDARD_CALCULATOR_FEATURES } from '@/lib/seo/softwareAppSchema';
 import { SITE_URL } from '@/lib/constants';
 
@@ -126,14 +125,10 @@ export default function HomePage() {
             Calculate monthly payments, total interest, and full amortization for any loan — home, mortgage, auto, student, or personal.
           </p>
           <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">
-            Compare up to three offers side by side, simulate prepayments, check affordability, and model refinancing — all in one free tool, no signup required. Works with any currency.
+            Smart Loan Analyzer is a <strong>free, no-signup loan calculator</strong> with 11 specialized tools — mortgage, refinance, biweekly, student loans, PSLF, auto, personal. Any amortizing loan&apos;s monthly payment follows <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong>, where P is principal, r is the monthly rate (annual / 12), and n is the number of months. Multi-currency, mobile-first, all math runs locally in your browser.
           </p>
         </div>
       </div>
-
-      <AnswerBlock>
-        Smart Loan Analyzer is a <strong>free, no-signup loan calculator</strong> with 11 specialized tools — mortgage, refinance, biweekly, student loans, PSLF, auto, personal. Any amortizing loan&apos;s monthly payment follows <strong>M = P * r * (1+r)^n / ((1+r)^n - 1)</strong>, where P is principal, r is the monthly rate (annual / 12), and n is the number of months. Multi-currency, mobile-first, all math runs locally in your browser.
-      </AnswerBlock>
 
       {/* Generic calculator — placed first so it's above the fold on landing */}
       <LoanCalculatorShell pdfTitle="Loan / EMI Calculator" pdfSlug="loan-emi" />

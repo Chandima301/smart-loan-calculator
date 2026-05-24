@@ -5,7 +5,6 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import AnswerBlock from '@/components/seo/AnswerBlock';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
 import {
@@ -150,7 +149,7 @@ export default function LoanLandingPage({
         <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-7">
           <h1 className="text-xl font-bold tracking-tight sm:text-3xl">{title}</h1>
           <p className="mt-1 text-sm text-muted-foreground max-w-2xl sm:mt-2 sm:text-base">{subtitle}</p>
-          <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">{intro}</p>
+          <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">{answer ?? intro}</p>
         </div>
       </div>
 
@@ -162,9 +161,6 @@ export default function LoanLandingPage({
           { label: title },
         ]}
       />
-
-      {/* Quick-answer block — SSR'd TL;DR for AI Overview / LLM search citations */}
-      {answer && <AnswerBlock>{answer}</AnswerBlock>}
 
       {/* Calculator */}
       <LoanCalculatorShell
