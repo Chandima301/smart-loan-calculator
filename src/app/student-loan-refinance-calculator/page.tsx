@@ -8,6 +8,7 @@ import AnswerBlock from '@/components/seo/AnswerBlock';
 import StudentLoanRefinanceGuide, { meta as guideMeta } from '@/content/guides/student-loan-refinance';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
+import { buildSoftwareAppSchema } from '@/lib/seo/softwareAppSchema';
 
 const PATH = '/student-loan-refinance-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
@@ -99,10 +100,28 @@ export default function StudentLoanRefinanceCalculatorPage() {
     dateModified: guideMeta.dateModified,
   });
 
+  const softwareJsonLd = buildSoftwareAppSchema({
+    name: 'Student Loan Refinance Calculator',
+    url: CANONICAL,
+    description:
+      'Free federal-to-private student loan refinance comparison. Computes interest savings against the full list of federal protections permanently forfeited (income-driven repayment, PSLF, deferment/forbearance, death/disability discharge).',
+    featureList: [
+      'Federal-vs-private refinance side-by-side comparison',
+      'Lifetime interest delta',
+      'Monthly payment delta',
+      'Refinance fee handling (rolled into principal)',
+      'Permanent-forfeiture list (IDR / PSLF / deferment / discharge)',
+      'Multi-currency support',
+      'Downloadable PDF summary',
+      'Mobile-first, no signup, all math runs in the browser',
+    ],
+  });
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
 
       {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">

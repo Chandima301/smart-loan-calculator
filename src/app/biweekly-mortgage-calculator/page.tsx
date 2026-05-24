@@ -8,6 +8,7 @@ import AnswerBlock from '@/components/seo/AnswerBlock';
 import BiweeklyMortgageGuide, { meta as biweeklyGuideMeta } from '@/content/guides/biweekly-mortgage';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
+import { buildSoftwareAppSchema } from '@/lib/seo/softwareAppSchema';
 
 const PATH = '/biweekly-mortgage-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
@@ -114,10 +115,26 @@ export default function BiweeklyMortgageCalculatorPage() {
     dateModified: biweeklyGuideMeta.dateModified,
   });
 
+  const softwareJsonLd = buildSoftwareAppSchema({
+    name: 'Biweekly Mortgage Calculator',
+    url: CANONICAL,
+    description:
+      'Free biweekly mortgage calculator. True 26-payments-per-year simulation showing the exact interest saved and new payoff date versus standard monthly payments. One extra payment annually typically pays off a 30-year mortgage 4-6 years early.',
+    featureList: [
+      'True 26-payments-per-year biweekly mortgage simulation',
+      'Standard monthly vs biweekly side-by-side comparison',
+      'Exact interest saved and new payoff date',
+      'Multi-currency support (17+ currencies)',
+      'Downloadable PDF summary',
+      'Mobile-first, no signup, all math runs in the browser',
+    ],
+  });
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
 
       {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">

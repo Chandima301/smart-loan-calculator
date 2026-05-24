@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
 import AnswerBlock from '@/components/seo/AnswerBlock';
+import { buildSoftwareAppSchema, STANDARD_CALCULATOR_FEATURES } from '@/lib/seo/softwareAppSchema';
 import { SITE_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
@@ -47,6 +48,18 @@ const jsonLd = {
     'Amortization Schedule',
   ],
 };
+
+const softwareJsonLd = buildSoftwareAppSchema({
+  name: 'Smart Loan Analyzer',
+  url: SITE_URL,
+  description:
+    'Free, no-signup loan and EMI calculator suite with 11 specialized tools (mortgage, refinance, biweekly, student loans, PSLF, auto, personal) and AI-enhanced insights. Monthly payment follows M = P * r * (1+r)^n / ((1+r)^n - 1). Multi-currency, mobile-first, all math on-device.',
+  featureList: [
+    ...STANDARD_CALCULATOR_FEATURES,
+    'Dedicated student-loan suite (general / payoff / PSLF / refinance)',
+    'Biweekly mortgage simulation (true 26 payments per year)',
+  ],
+});
 
 const faqJsonLd = {
   '@context': 'https://schema.org',
@@ -93,6 +106,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
       />
       <script
         type="application/ld+json"

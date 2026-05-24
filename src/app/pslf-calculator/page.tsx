@@ -8,6 +8,7 @@ import AnswerBlock from '@/components/seo/AnswerBlock';
 import PslfGuide, { meta as pslfGuideMeta } from '@/content/guides/pslf';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
+import { buildSoftwareAppSchema } from '@/lib/seo/softwareAppSchema';
 
 const PATH = '/pslf-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
@@ -109,10 +110,27 @@ export default function PslfCalculatorPage() {
     dateModified: pslfGuideMeta.dateModified,
   });
 
+  const softwareJsonLd = buildSoftwareAppSchema({
+    name: 'PSLF Calculator',
+    url: CANONICAL,
+    description:
+      'Free Public Service Loan Forgiveness estimator. Computes the Income-Driven Repayment monthly payment (about 10% of discretionary income = AGI - 1.5 * Federal Poverty Guideline) and projects the tax-free balance forgiven after 120 qualifying payments.',
+    featureList: [
+      'Income-Driven Repayment (IDR) monthly payment estimator',
+      'Federal Poverty Guideline by region (48 states / Alaska / Hawaii) and family size',
+      'Projected tax-free PSLF forgiveness amount',
+      '120-qualifying-payment timeline',
+      'Net PSLF benefit vs Standard 10-year plan',
+      'Income-growth modeling',
+      'Mobile-first, no signup, all math runs in the browser',
+    ],
+  });
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
 
       {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">

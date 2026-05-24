@@ -8,6 +8,10 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import AnswerBlock from '@/components/seo/AnswerBlock';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
+import {
+  buildSoftwareAppSchema,
+  STANDARD_CALCULATOR_FEATURES,
+} from '@/lib/seo/softwareAppSchema';
 import type { LoanParams } from '@/types/loan';
 
 export interface FAQItem {
@@ -123,12 +127,23 @@ export default function LoanLandingPage({
         })
       : null;
 
+  const softwareAppJsonLd = buildSoftwareAppSchema({
+    name: title,
+    url: pageUrl,
+    description: subtitle,
+    featureList: STANDARD_CALCULATOR_FEATURES,
+  });
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       {articleJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
+      />
 
       {/* Hero banner — compact on mobile so the calculator is above the fold */}
       <div className="border-b bg-muted/40">
