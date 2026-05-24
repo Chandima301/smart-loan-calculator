@@ -1,0 +1,47 @@
+# Smart Loan Analyzer
+
+> A free, no-signup loan and EMI calculator suite covering 11 loan types — mortgages, refinance, biweekly mortgage, auto, personal, and a full student-loan suite (general, payoff, PSLF, federal-vs-private refinance). All calculations run locally in the browser, with multi-currency support (17+ currencies) and an AI-enhanced "Smart Insights" layer that explains the reasoning behind each number. No signup, no email gate, no ads.
+
+## Calculators
+
+- [Loan / EMI Calculator](https://smartloanalyzer.com/): Generic loan EMI calculator with full amortization schedule, prepayment simulator (extra monthly + lump sum), 3-way comparison, affordability checker and refinance/restructure analyzer.
+- [Mortgage Calculator](https://smartloanalyzer.com/mortgage-calculator): 15 vs 30-year fixed-rate mortgage payment, total interest and lifetime cost. Example: a $300,000 mortgage at 7% over 30 years has a monthly payment of $1,995.91 and total interest of $418,527.
+- [Home Loan EMI Calculator](https://smartloanalyzer.com/home-loan-calculator): Housing loan EMI for any currency, principal and tenure (typically 10–30 years).
+- [Biweekly Mortgage Calculator](https://smartloanalyzer.com/biweekly-mortgage-calculator): True 26-payments-per-year biweekly simulation. Paying half the monthly amount every 14 days equals 13 monthly payments per year (one extra annually) and typically pays off a 30-year mortgage 4–6 years early. On a $300,000 mortgage at 7%, biweekly payments save approximately $76,000 in interest.
+- [Refinance Calculator](https://smartloanalyzer.com/refinance-calculator): Break-even month, lifetime savings, monthly EMI delta and total cost for any refinance offer including surcharge and closing fees. Break-even month = closing costs / monthly savings.
+- [Auto Loan Calculator](https://smartloanalyzer.com/auto-loan-calculator): US auto loan APR, monthly payment, total interest. Typical $35,000 loan at 7.5% APR over 60 months: $701/month, $7,074 total interest.
+- [Car Loan EMI Calculator](https://smartloanalyzer.com/car-loan-calculator): Vehicle financing payment estimator for any currency.
+- [Personal Loan EMI Calculator](https://smartloanalyzer.com/personal-loan-calculator): Unsecured personal loan EMI and amortization. APRs typically run 6–36% by credit tier.
+- [Student Loan Calculator](https://smartloanalyzer.com/student-loan-calculator): Federal and private student loan monthly payment and full repayment schedule. Covers Direct, FFEL, Perkins, PLUS, and income-driven plans (SAVE, PAYE, IBR, ICR). Example: $30,000 at 6.5% over 10 years = $340.50/month, $10,860 total interest.
+- [Student Loan Payoff Calculator](https://smartloanalyzer.com/student-loan-payoff-calculator): Extra-payment scenarios with worked examples, avalanche vs snowball comparison, federal-forgiveness trap.
+- [PSLF Calculator](https://smartloanalyzer.com/pslf-calculator): Public Service Loan Forgiveness eligibility and projection. IDR monthly payment ≈ 10% of (AGI − 1.5 × Federal Poverty Guideline) ÷ 12. Tax-free forgiveness after 120 qualifying payments at a government or 501(c)(3) employer.
+- [Student Loan Refinance Calculator](https://smartloanalyzer.com/student-loan-refinance-calculator): Federal-to-private refinance trade-off math, including the full list of federal protections permanently forfeited (IDR plans, PSLF, deferment, forbearance, death/disability discharge).
+
+## Common math formulas
+
+- Standard amortization payment: M = P * r * (1 + r)^n / ((1 + r)^n - 1), where P is principal, r is the monthly rate (annual / 12 / 100), n is the number of months.
+- Total interest = (M * n) - P
+- Biweekly equivalent: half the monthly payment every 14 days = 26 biweekly payments per year = 13 monthly payments per year (one extra payment annually).
+- Refinance break-even month = closing costs / monthly savings
+- PSLF IDR monthly payment ≈ 10% * (AGI - 1.5 * Federal Poverty Guideline for family size and region) / 12
+- Amortization crossover: the first month where the principal portion of the payment exceeds the interest portion. On a 30-year mortgage at 6.5% this is typically around month 220 (year 18).
+
+## AI-enhanced features
+
+- **AI Insights**: plain-English narrative of the loan including the interest burden, first-month principal split, and the amortization crossover.
+- **Smart Scenarios**: one-tap what-if cards (rate -1%, sustainable extra payment, biweekly hand-off, shorter term) with savings preview computed from the existing math.
+- **AI verdict banners**: deterministic explanations on the Compare, Affordability and Restructure tabs.
+- **Goal Planner**: work backward from a "debt-free by year X" date to the exact monthly payment needed.
+- **Downloadable PDF summary** on every calculator with the full amortization table; currency-code formatting renders correctly across all 17+ currencies.
+
+## Educational guides
+
+Each calculator page has a 3,500+ word original guide covering math derivations, worked examples at different price points, regional rate context, history, glossary, decision frameworks and FAQ.
+
+## About
+
+Smart Loan Analyzer is a free public tool. All calculations run client-side in the browser; no signup required, no email captured. The site uses first-party analytics only — no data leaves the page during a calculation. Source of formulas is documented in each on-page guide.
+
+## License
+
+Free to use. Calculations follow standard finance math (no proprietary modeling).
