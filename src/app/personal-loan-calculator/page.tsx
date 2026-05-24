@@ -39,6 +39,11 @@ export default function PersonalLoanCalculatorPage() {
       intro="Personal loans are typically unsecured and carry higher interest rates than secured loans. Even a 1–2% rate difference between lenders adds up significantly over a 3–5 year term. Use the Compare tab to put multiple offers side by side before committing."
       defaultParams={{ principal: 20_000, annualRate: 12, tenureMonths: 60 }}
       canonicalPath={PATH}
+      answer={
+        <>
+          A <strong>$10,000 personal loan at 12% over 3 years</strong> has a monthly payment of approximately <strong>$332.14</strong>, with about <strong>$1,957</strong> in total interest. Personal-loan APRs typically run 6-36% depending on credit tier and lender. Use the calculator below to model your exact offer and see the full amortization.
+        </>
+      }
       tabs={{
         calculator: {
           title: 'Calculate Personal Loan EMI',

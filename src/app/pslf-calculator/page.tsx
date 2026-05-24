@@ -4,6 +4,7 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
+import AnswerBlock from '@/components/seo/AnswerBlock';
 import PslfGuide, { meta as pslfGuideMeta } from '@/content/guides/pslf';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
@@ -136,6 +137,10 @@ export default function PslfCalculatorPage() {
           { label: 'PSLF Calculator' },
         ]}
       />
+
+      <AnswerBlock>
+        Public Service Loan Forgiveness (PSLF) cancels the remaining federal Direct Loan balance — <strong>tax-free</strong> — after <strong>120 qualifying monthly payments</strong> made under an income-driven repayment plan while working full-time for a government or 501(c)(3) employer. Your IDR payment is about <strong>10% of discretionary income</strong>, where discretionary income = AGI - 1.5 * the Federal Poverty Guideline for your family size, divided by 12. The estimator below projects your tax-free forgiveness amount and net PSLF benefit.
+      </AnswerBlock>
 
       {/* Calculator */}
       <PslfCalculator />

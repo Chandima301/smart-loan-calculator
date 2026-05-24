@@ -39,6 +39,11 @@ export default function HomeLoanCalculatorPage() {
       intro="Home loans typically span 10–30 years. Even a 0.5% difference in interest rate can save or cost lakhs over the full tenure. Use the Prepayment simulator to see how an extra monthly contribution cuts your total interest bill significantly."
       defaultParams={{ principal: 350_000, annualRate: 7, tenureMonths: 360 }}
       canonicalPath={PATH}
+      answer={
+        <>
+          A <strong>$200,000 home loan at 7.5% over 25 years</strong> has a monthly payment of approximately <strong>$1,478</strong>, with about <strong>$243,400</strong> in total interest. Home-loan payments follow the standard amortization formula <strong>M = P * r * (1+r)^n / ((1+r)^n - 1)</strong>. Use the calculator below for any currency, principal and tenure.
+        </>
+      }
       tabs={{
         calculator: {
           title: 'Calculate Home Loan EMI',

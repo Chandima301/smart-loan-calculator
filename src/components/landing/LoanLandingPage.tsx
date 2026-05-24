@@ -5,6 +5,7 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
+import AnswerBlock from '@/components/seo/AnswerBlock';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
 import type { LoanParams } from '@/types/loan';
@@ -60,6 +61,14 @@ export interface LoanLandingPageProps {
    * PDF (with before/after labels). Opt-in — payoff-focused pages.
    */
   prepaymentDrivenResults?: boolean;
+  /**
+   * Short, factual TL;DR answer rendered as an SSR'd "Quick answer"
+   * block right under the breadcrumb — optimized for AI Overview /
+   * answer-engine citations (LLM search picks pages that answer the
+   * question in the first paragraph). Should include the concrete
+   * number and the formula where applicable.
+   */
+  answer?: ReactNode;
 }
 
 const TAB_META = [
@@ -84,6 +93,7 @@ export default function LoanLandingPage({
   prepaymentDefaultOpen,
   tabLabels,
   prepaymentDrivenResults,
+  answer,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   // "/mortgage-calculator" → "mortgage"; "/" → "loan"
@@ -137,6 +147,9 @@ export default function LoanLandingPage({
           { label: title },
         ]}
       />
+
+      {/* Quick-answer block — SSR'd TL;DR for AI Overview / LLM search citations */}
+      {answer && <AnswerBlock>{answer}</AnswerBlock>}
 
       {/* Calculator */}
       <LoanCalculatorShell

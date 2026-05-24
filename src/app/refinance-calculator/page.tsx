@@ -40,6 +40,11 @@ export default function RefinanceCalculatorPage() {
       intro="Refinancing replaces your existing loan with a new one at a lower rate or different term. Whether it pays off depends on three things: how much lower the new rate is, how long you plan to keep the loan, and how much you'll pay in closing costs or prepayment penalties. This calculator does the full math so you can make the decision with confidence."
       defaultParams={{ principal: 300_000, annualRate: 5.5, tenureMonths: 360 }}
       canonicalPath={PATH}
+      answer={
+        <>
+          Refinancing pays off when the new monthly savings recover the closing costs before you sell or move. <strong>Break-even month = closing costs / monthly savings</strong>. Example: dropping a $300,000 mortgage from 7% to 5.5% saves about $283/month; with $4,000 in closing costs you break even at month 14. Use the calculator below to model break-even and lifetime savings for your specific offer.
+        </>
+      }
       primaryTab="restructure"
       tabs={{
         calculator: {

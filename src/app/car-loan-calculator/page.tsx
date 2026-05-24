@@ -39,6 +39,11 @@ export default function CarLoanCalculatorPage() {
       intro="Car loans are typically 3–7 years. Choosing a 3-year term over a 5-year term significantly reduces total interest paid, though your monthly EMI will be higher. Use the Compare tab to see the exact cost difference, and the Restructure tab to evaluate early settlement options."
       defaultParams={{ principal: 30_000, annualRate: 9, tenureMonths: 60 }}
       canonicalPath={PATH}
+      answer={
+        <>
+          A <strong>$30,000 car loan at 7% over 5 years</strong> has a monthly payment of approximately <strong>$594</strong>, with about <strong>$5,640</strong> in total interest. Vehicle loans use the standard amortization formula M = P * r * (1+r)^n / ((1+r)^n - 1). Use the calculator below for any loan amount, APR and term.
+        </>
+      }
       tabs={{
         calculator: {
           title: 'Calculate Car Loan EMI',

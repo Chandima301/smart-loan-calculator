@@ -4,6 +4,7 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
+import AnswerBlock from '@/components/seo/AnswerBlock';
 import StudentLoanRefinanceGuide, { meta as guideMeta } from '@/content/guides/student-loan-refinance';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
@@ -126,6 +127,10 @@ export default function StudentLoanRefinanceCalculatorPage() {
           { label: 'Student Loan Refinance Calculator' },
         ]}
       />
+
+      <AnswerBlock>
+        Refinancing federal student loans into a private loan can lower the interest rate, but it <strong>permanently forfeits</strong> income-driven repayment plans, PSLF, federal deferment/forbearance, and death/disability discharge. The trade-off is rarely worth it unless you have a high stable income, no public-service path, and a substantially lower fixed rate. Use the calculator below to model the dollar savings against the full list of protections you would give up.
+      </AnswerBlock>
 
       {/* Calculator */}
       <StudentRefinanceCalculator />

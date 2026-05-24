@@ -4,6 +4,7 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
+import AnswerBlock from '@/components/seo/AnswerBlock';
 import BiweeklyMortgageGuide, { meta as biweeklyGuideMeta } from '@/content/guides/biweekly-mortgage';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
@@ -143,6 +144,10 @@ export default function BiweeklyMortgageCalculatorPage() {
           { label: 'Biweekly Mortgage Calculator' },
         ]}
       />
+
+      <AnswerBlock>
+        Paying <strong>half your monthly mortgage payment every two weeks</strong> adds up to 26 biweekly payments per year — equal to <strong>13 monthly payments instead of 12</strong>. That single extra payment annually typically pays off a 30-year mortgage <strong>4-6 years early</strong> and saves tens of thousands in interest. On a $300,000 mortgage at 7%, biweekly payments save approximately <strong>$76,000</strong> in interest and finish the loan ~5.5 years sooner.
+      </AnswerBlock>
 
       {/* Calculator */}
       <BiweeklyMortgageCalculator />

@@ -40,6 +40,11 @@ export default function AutoLoanCalculatorPage() {
       intro="Auto loans typically run 36–84 months at rates between 5–12% depending on credit score, lender, and whether the car is new or used. A bigger down payment, shorter term, or stronger credit all reduce total interest paid. Compare multiple offers side by side before you sign at the dealer."
       defaultParams={{ principal: 25_000, annualRate: 7.5, tenureMonths: 60 }}
       canonicalPath={PATH}
+      answer={
+        <>
+          A <strong>$35,000 US auto loan at 7.5% APR over 60 months</strong> has a monthly payment of approximately <strong>$701</strong>, with about <strong>$7,074</strong> in total interest. Auto-loan APRs depend on credit tier (typically 5-15%) and term (36-84 months). Use the calculator below for your exact offer - no email signup required.
+        </>
+      }
       tabs={{
         calculator: {
           title: 'Calculate Auto Loan Payment',
