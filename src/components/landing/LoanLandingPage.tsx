@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell, { type TabValue } from '@/components/calculator/LoanCalculatorShell';
-import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
@@ -154,13 +154,7 @@ export default function LoanLandingPage({
       </div>
 
       {/* Breadcrumb — visible trail + emits BreadcrumbList JSON-LD */}
-      <Breadcrumb
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Loan Calculators', href: '/' },
-          { label: title },
-        ]}
-      />
+      <Breadcrumb items={calculatorBreadcrumb(canonicalPath, title)} />
 
       {/* Calculator */}
       <LoanCalculatorShell

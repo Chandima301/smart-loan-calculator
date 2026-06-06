@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import BiweeklyMortgageCalculator from '@/components/biweekly/BiweeklyMortgageCalculator';
-import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
@@ -151,13 +151,7 @@ export default function BiweeklyMortgageCalculatorPage() {
       </div>
 
       {/* Breadcrumb — visible trail + emits BreadcrumbList JSON-LD */}
-      <Breadcrumb
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Loan Calculators', href: '/' },
-          { label: 'Biweekly Mortgage Calculator' },
-        ]}
-      />
+      <Breadcrumb items={calculatorBreadcrumb(PATH, 'Biweekly Mortgage Calculator')} />
 
       {/* Calculator */}
       <BiweeklyMortgageCalculator />

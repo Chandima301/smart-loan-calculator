@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import PslfCalculator from '@/components/pslf/PslfCalculator';
-import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
@@ -147,13 +147,7 @@ export default function PslfCalculatorPage() {
       </div>
 
       {/* Breadcrumb — visible trail + emits BreadcrumbList JSON-LD */}
-      <Breadcrumb
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Loan Calculators', href: '/' },
-          { label: 'PSLF Calculator' },
-        ]}
-      />
+      <Breadcrumb items={calculatorBreadcrumb(PATH, 'PSLF Calculator')} />
 
       {/* Calculator */}
       <PslfCalculator />

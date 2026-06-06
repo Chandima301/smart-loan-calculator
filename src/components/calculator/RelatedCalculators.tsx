@@ -158,6 +158,83 @@ export const RELATIONS: Record<string, string[]> = {
   ],
 };
 
+/**
+ * Category taxonomy — the single source of truth for how calculators are
+ * grouped in the homepage discovery section and in breadcrumbs. Each
+ * `paths` entry must exist as a key in `ALL` above.
+ */
+export interface CalcCategory {
+  id: string;
+  label: string;
+  /** Homepage section anchor id (breadcrumb links to `/#${anchor}`). */
+  anchor: string;
+  paths: string[];
+}
+
+export const CATEGORIES: CalcCategory[] = [
+  {
+    id: 'general',
+    label: 'General',
+    anchor: 'general-calculators',
+    paths: ['/'],
+  },
+  {
+    id: 'home-mortgage',
+    label: 'Home & Mortgage',
+    anchor: 'home-mortgage-calculators',
+    paths: [
+      '/home-loan-calculator',
+      '/mortgage-calculator',
+      '/biweekly-mortgage-calculator',
+      '/refinance-calculator',
+    ],
+  },
+  {
+    id: 'vehicle-personal',
+    label: 'Vehicle & Personal',
+    anchor: 'vehicle-personal-calculators',
+    paths: ['/auto-loan-calculator', '/personal-loan-calculator'],
+  },
+  {
+    id: 'student',
+    label: 'Student Loans',
+    anchor: 'student-loan-calculators',
+    paths: [
+      '/student-loan-calculator',
+      '/student-loan-payoff-calculator',
+      '/pslf-calculator',
+      '/student-loan-refinance-calculator',
+    ],
+  },
+];
+
+/** Reverse map: calculator path → its category. */
+export const CATEGORY_OF: Record<string, CalcCategory> = Object.fromEntries(
+  CATEGORIES.flatMap((cat) => cat.paths.map((p) => [p, cat])),
+);
+
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+/**
+ * Build the breadcrumb trail for a calculator page:
+ * `Home › <Category> › <Title>`, where the category links to its group
+ * anchor on the homepage. Falls back to a generic "Loan Calculators"
+ * middle segment if the path has no category mapping.
+ */
+export function calculatorBreadcrumb(
+  canonicalPath: string,
+  title: string,
+): BreadcrumbItem[] {
+  const cat = CATEGORY_OF[canonicalPath];
+  const middle: BreadcrumbItem = cat
+    ? { label: cat.label, href: `/#${cat.anchor}` }
+    : { label: 'Loan Calculators', href: '/' };
+  return [{ label: 'Home', href: '/' }, middle, { label: title }];
+}
+
 interface Props {
   /** Canonical path of the current page, e.g. "/home-loan-calculator" */
   currentPath: string;

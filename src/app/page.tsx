@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Calculator, BarChart2, Wallet, RefreshCw } from 'lucide-react';
 import LoanCalculatorShell from '@/components/calculator/LoanCalculatorShell';
+import { CATEGORIES, ALL } from '@/components/calculator/RelatedCalculators';
 import { buildSoftwareAppSchema, STANDARD_CALCULATOR_FEATURES } from '@/lib/seo/softwareAppSchema';
 import { SITE_URL } from '@/lib/constants';
 
@@ -11,16 +12,6 @@ export const metadata: Metadata = {
     'Calculate monthly payments, total interest, and full amortization for any loan. Compare offers, simulate prepayments, and check affordability — free, no signup.',
   alternates: { canonical: SITE_URL },
 };
-
-const CALCULATOR_LINKS = [
-  { href: '/home-loan-calculator',     label: 'Home Loan',     desc: 'Monthly payment & mortgage estimator' },
-  { href: '/mortgage-calculator',      label: 'Mortgage',      desc: '15 vs 30-year fixed-rate payments' },
-  { href: '/biweekly-mortgage-calculator', label: 'Biweekly Mortgage', desc: 'Save years & interest with biweekly payments' },
-  { href: '/personal-loan-calculator', label: 'Personal Loan', desc: 'Unsecured loan EMI calculator' },
-  { href: '/auto-loan-calculator',     label: 'Auto / Car Loan', desc: 'Car & auto finance interest & amortization' },
-  { href: '/student-loan-calculator',  label: 'Student Loan',  desc: 'Monthly payment & payoff timeline' },
-  { href: '/refinance-calculator',     label: 'Refinance',     desc: 'Break-even & lifetime savings' },
-];
 
 const FEATURES = [
   { Icon: Calculator,  label: 'Calculator',    desc: 'Instant EMI, total interest, and full amortization schedule.' },
@@ -132,24 +123,42 @@ export default function HomePage() {
       {/* Generic calculator — placed first so it's above the fold on landing */}
       <LoanCalculatorShell pdfTitle="Loan / EMI Calculator" pdfSlug="loan-emi" />
 
-      {/* Specialized calculators — funnel routing to per-loan-type pages */}
+      {/* All calculators, grouped by category — full discovery menu */}
       <div className="container mx-auto max-w-5xl px-4 pt-8 pb-2">
-        <div className="flex items-baseline justify-between mb-4">
-          <h2 className="text-lg font-semibold">Pick a calculator for your loan type</h2>
+        <div className="flex items-baseline justify-between mb-5">
+          <h2 className="text-lg font-semibold">All loan calculators</h2>
           <span className="text-xs text-muted-foreground hidden sm:inline">
-            More tuned for your specific loan
+            Pick the tool tuned for your loan type
           </span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {CALCULATOR_LINKS.map(({ href, label, desc }) => (
-            <Link
-              key={href}
-              href={href}
-              className="rounded-lg border p-3 hover:border-primary hover:bg-muted/50 transition-colors"
-            >
-              <p className="font-semibold text-sm">{label}</p>
-              <p className="text-xs text-muted-foreground mt-1 leading-snug">{desc}</p>
-            </Link>
+
+        <div className="space-y-7">
+          {CATEGORIES.map((cat) => (
+            <section key={cat.id} id={cat.anchor} className="scroll-mt-20">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+                {cat.label}
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {cat.paths.map((path) => {
+                  const meta = ALL[path];
+                  if (!meta) return null;
+                  const { label, desc, Icon } = meta;
+                  return (
+                    <Link
+                      key={path}
+                      href={path}
+                      className="rounded-lg border p-3 hover:border-primary hover:bg-muted/50 transition-colors flex flex-col gap-1.5"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Icon className="h-4 w-4 text-primary shrink-0" />
+                        <p className="font-semibold text-sm leading-tight">{label}</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-snug">{desc}</p>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
           ))}
         </div>
       </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import StudentRefinanceCalculator from '@/components/studentRefinance/StudentRefinanceCalculator';
-import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
 import Breadcrumb from '@/components/layout/Breadcrumb';
@@ -138,13 +138,7 @@ export default function StudentLoanRefinanceCalculatorPage() {
       </div>
 
       {/* Breadcrumb — visible trail + emits BreadcrumbList JSON-LD */}
-      <Breadcrumb
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Loan Calculators', href: '/' },
-          { label: 'Student Loan Refinance Calculator' },
-        ]}
-      />
+      <Breadcrumb items={calculatorBreadcrumb(PATH, 'Student Loan Refinance Calculator')} />
 
       {/* Calculator */}
       <StudentRefinanceCalculator />

@@ -4,12 +4,15 @@ import FeaturedOn from './FeaturedOn';
 const CALCULATOR_LINKS = [
   { href: '/',                          label: 'EMI Calculator'      },
   { href: '/home-loan-calculator',      label: 'Home Loan'           },
-  { href: '/personal-loan-calculator',  label: 'Personal Loan'       },
   { href: '/mortgage-calculator',       label: 'Mortgage'            },
   { href: '/biweekly-mortgage-calculator', label: 'Biweekly Mortgage' },
-  { href: '/student-loan-calculator',   label: 'Student Loan'        },
-  { href: '/auto-loan-calculator',      label: 'Auto / Car Loan'     },
   { href: '/refinance-calculator',      label: 'Refinance'           },
+  { href: '/auto-loan-calculator',      label: 'Auto / Car Loan'     },
+  { href: '/personal-loan-calculator',  label: 'Personal Loan'       },
+  { href: '/student-loan-calculator',   label: 'Student Loan'        },
+  { href: '/student-loan-payoff-calculator', label: 'Student Loan Payoff' },
+  { href: '/pslf-calculator',           label: 'PSLF Calculator'     },
+  { href: '/student-loan-refinance-calculator', label: 'Student Loan Refinance' },
 ];
 
 const COMPANY_LINKS = [
