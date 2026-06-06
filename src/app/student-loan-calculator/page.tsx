@@ -42,7 +42,7 @@ export default function StudentLoanCalculatorPage() {
       canonicalPath={PATH}
       answer={
         <>
-          A <strong>$30,000 student loan at 6.5% over 10 years</strong> has a monthly payment of approximately <strong>$340.50</strong>, with about <strong>$10,860</strong> in total interest. Federal income-driven plans (SAVE, PAYE, IBR) cap your payment at <strong>about 10% of discretionary income</strong>, where discretionary income = AGI - 1.5 * the federal poverty guideline for your family size. Use the calculator below, or pick a dedicated tool: payoff accelerator, PSLF estimator, or refinance comparison.
+          A <strong>$30,000 student loan at 6.5% over 10 years</strong> has a monthly payment of approximately <strong>$340.50</strong>, with about <strong>$10,860</strong> in total interest. The standard monthly payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = number of months). Federal income-driven plans (SAVE, PAYE, IBR) instead cap your payment at <strong>about 10% of discretionary income</strong> (AGI − 1.5 × the federal poverty guideline for your family size). Use the calculator below, or a dedicated tool: payoff accelerator, PSLF estimator, or refinance comparison.
         </>
       }
       tabs={{

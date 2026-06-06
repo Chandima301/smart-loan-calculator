@@ -41,7 +41,7 @@ export default function StudentLoanPayoffCalculatorPage() {
       canonicalPath={PATH}
       answer={
         <>
-          Adding <strong>$50/month extra to a $30,000 student loan at 6.5% over 10 years</strong> saves roughly <strong>$2,500</strong> in interest and pays the loan off about <strong>14 months early</strong>. Every extra dollar applied early dodges the most compounded interest — prepayment in the first half of the loan is the highest-impact lever you have. Use the simulator below to model your exact extra-payment plan.
+          Adding <strong>$50/month extra to a $30,000 student loan at 6.5% over 10 years</strong> saves roughly <strong>$2,500</strong> in interest and pays the loan off about <strong>14 months early</strong>. The base payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months); any extra goes straight to principal. Every extra dollar applied early dodges the most compounded interest — prepayment in the first half of the loan is the highest-impact lever you have. Use the simulator below to model your exact extra-payment plan.
         </>
       }
       primaryTab="calculator"

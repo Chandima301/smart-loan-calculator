@@ -44,7 +44,7 @@ export default function AutoLoanCalculatorPage() {
       canonicalPath={PATH}
       answer={
         <>
-          A <strong>$35,000 car loan at 7.5% APR over 60 months</strong> has a monthly payment of approximately <strong>$701</strong>, with about <strong>$7,074</strong> in total interest. Auto and car loan APRs depend on credit tier (typically 5-15%) and term (36-84 months). Use the calculator below for your exact offer - no email signup required.
+          A <strong>$35,000 car loan at 7.5% APR over 60 months</strong> has a monthly payment of approximately <strong>$701</strong>, with about <strong>$7,074</strong> in total interest. The monthly payment uses the standard amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = number of months). Auto and car loan APRs depend on credit tier (typically 5-15%) and term (36-84 months). Use the calculator below for your exact offer - no email signup required.
         </>
       }
       tabs={{

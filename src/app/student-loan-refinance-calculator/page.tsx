@@ -132,7 +132,7 @@ export default function StudentLoanRefinanceCalculatorPage() {
             Compare keeping your federal student loans against refinancing into a private loan — the interest math and what you permanently forfeit.
           </p>
           <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">
-            Refinancing federal student loans into a private loan can lower the interest rate, but it <strong>permanently forfeits</strong> income-driven repayment plans, PSLF, federal deferment/forbearance, and death/disability discharge. The trade-off is rarely worth it unless you have a high stable income, no public-service path, and a substantially lower fixed rate. Use the calculator below to model the dollar savings against the full list of protections you would give up.
+            Refinancing federal student loans into a private loan can lower the interest rate, but it <strong>permanently forfeits</strong> income-driven repayment plans, PSLF, federal deferment/forbearance, and death/disability discharge. Each loan&apos;s monthly payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months). The trade-off is rarely worth it unless you have a high stable income, no public-service path, and a substantially lower fixed rate. Use the calculator below to model the dollar savings against the full list of protections you would give up.
           </p>
         </div>
       </div>

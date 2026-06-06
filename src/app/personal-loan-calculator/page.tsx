@@ -41,7 +41,7 @@ export default function PersonalLoanCalculatorPage() {
       canonicalPath={PATH}
       answer={
         <>
-          A <strong>$10,000 personal loan at 12% over 3 years</strong> has a monthly payment of approximately <strong>$332.14</strong>, with about <strong>$1,957</strong> in total interest. Personal-loan APRs typically run 6-36% depending on credit tier and lender. Use the calculator below to model your exact offer and see the full amortization.
+          A <strong>$10,000 personal loan at 12% over 3 years</strong> has a monthly payment of approximately <strong>$332.14</strong>, with about <strong>$1,957</strong> in total interest. The monthly payment uses the standard amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = number of months). Personal-loan APRs typically run 6-36% depending on credit tier and lender. Use the calculator below to model your exact offer.
         </>
       }
       tabs={{

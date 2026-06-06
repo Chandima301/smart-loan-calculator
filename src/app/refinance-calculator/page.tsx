@@ -42,7 +42,7 @@ export default function RefinanceCalculatorPage() {
       canonicalPath={PATH}
       answer={
         <>
-          Refinancing pays off when the new monthly savings recover the closing costs before you sell or move. <strong>Break-even month = closing costs / monthly savings</strong>. Example: dropping a $300,000 mortgage from 7% to 5.5% saves about $283/month; with $4,000 in closing costs you break even at month 14. Use the calculator below to model break-even and lifetime savings for your specific offer.
+          Refinancing pays off when the new monthly savings recover the closing costs before you sell or move. <strong>Break-even month = closing costs / monthly savings</strong>, and each loan&apos;s payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months). Example: dropping a $300,000 mortgage from 7% to 5.5% saves about $283/month; with $4,000 in closing costs you break even at month 14. Use the calculator below to model break-even and lifetime savings for your specific offer.
         </>
       }
       primaryTab="restructure"
