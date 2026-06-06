@@ -17,8 +17,7 @@ const CALCULATOR_LINKS = [
   { href: '/mortgage-calculator',      label: 'Mortgage',      desc: '15 vs 30-year fixed-rate payments' },
   { href: '/biweekly-mortgage-calculator', label: 'Biweekly Mortgage', desc: 'Save years & interest with biweekly payments' },
   { href: '/personal-loan-calculator', label: 'Personal Loan', desc: 'Unsecured loan EMI calculator' },
-  { href: '/car-loan-calculator',      label: 'Car Loan',      desc: 'Auto finance payment estimator' },
-  { href: '/auto-loan-calculator',     label: 'Auto Loan',     desc: 'US auto loan interest & amortization' },
+  { href: '/auto-loan-calculator',     label: 'Auto / Car Loan', desc: 'Car & auto finance interest & amortization' },
   { href: '/student-loan-calculator',  label: 'Student Loan',  desc: 'Monthly payment & payoff timeline' },
   { href: '/refinance-calculator',     label: 'Refinance',     desc: 'Break-even & lifetime savings' },
 ];

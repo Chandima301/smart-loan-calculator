@@ -5,11 +5,10 @@ const CALCULATOR_LINKS = [
   { href: '/',                          label: 'EMI Calculator'      },
   { href: '/home-loan-calculator',      label: 'Home Loan'           },
   { href: '/personal-loan-calculator',  label: 'Personal Loan'       },
-  { href: '/car-loan-calculator',       label: 'Car Loan'            },
   { href: '/mortgage-calculator',       label: 'Mortgage'            },
   { href: '/biweekly-mortgage-calculator', label: 'Biweekly Mortgage' },
   { href: '/student-loan-calculator',   label: 'Student Loan'        },
-  { href: '/auto-loan-calculator',      label: 'Auto Loan'           },
+  { href: '/auto-loan-calculator',      label: 'Auto / Car Loan'     },
   { href: '/refinance-calculator',      label: 'Refinance'           },
 ];
 

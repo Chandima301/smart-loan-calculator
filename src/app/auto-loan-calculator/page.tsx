@@ -7,12 +7,14 @@ const PATH = '/auto-loan-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Auto Loan Calculator — Free APR & Payment Calculator, No Email',
+  title: 'Auto & Car Loan Calculator — Free APR & Payment Calculator',
   description:
-    'Calculate your auto loan APR, monthly payment, and total interest in seconds. See credit-tier rate ranges and how down payment changes total cost. Free, no signup, no email gating.',
+    'Calculate your auto or car loan APR, monthly payment, and total interest in seconds. See credit-tier rate ranges and how down payment changes total cost. Free, no signup, no email gating.',
   keywords: [
     'auto loan calculator',
+    'car loan calculator',
     'auto loan payment calculator',
+    'car loan EMI calculator',
     'car finance calculator',
     'vehicle loan calculator',
     'auto loan interest calculator',
@@ -23,9 +25,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Auto Loan Calculator — Free APR & Payment Calculator, No Email',
+    title: 'Auto & Car Loan Calculator — Free APR & Payment Calculator',
     description:
-      'Calculate auto loan APR, monthly payment, and total interest. Compare dealer vs bank financing. Free, no signup.',
+      'Calculate auto or car loan APR, monthly payment, and total interest. Compare dealer vs bank financing. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },
@@ -35,14 +37,14 @@ export const metadata: Metadata = {
 export default function AutoLoanCalculatorPage() {
   return (
     <LoanLandingPage
-      title="Auto Loan Calculator"
-      subtitle="Estimate your monthly auto loan payment, total interest, and full amortization across any financing term."
-      intro="Auto loans typically run 36–84 months at rates between 5–12% depending on credit score, lender, and whether the car is new or used. A bigger down payment, shorter term, or stronger credit all reduce total interest paid. Compare multiple offers side by side before you sign at the dealer."
+      title="Auto & Car Loan Calculator"
+      subtitle="Estimate your monthly car or auto loan payment, total interest, and full amortization across any financing term — in any currency."
+      intro="Auto loans (also called car loans) typically run 36–84 months at rates between 5–12% depending on credit score, lender, and whether the car is new or used. A bigger down payment, shorter term, or stronger credit all reduce total interest paid. Compare multiple offers side by side before you sign at the dealer."
       defaultParams={{ principal: 25_000, annualRate: 7.5, tenureMonths: 60 }}
       canonicalPath={PATH}
       answer={
         <>
-          A <strong>$35,000 US auto loan at 7.5% APR over 60 months</strong> has a monthly payment of approximately <strong>$701</strong>, with about <strong>$7,074</strong> in total interest. Auto-loan APRs depend on credit tier (typically 5-15%) and term (36-84 months). Use the calculator below for your exact offer - no email signup required.
+          A <strong>$35,000 car loan at 7.5% APR over 60 months</strong> has a monthly payment of approximately <strong>$701</strong>, with about <strong>$7,074</strong> in total interest. Auto and car loan APRs depend on credit tier (typically 5-15%) and term (36-84 months). Use the calculator below for your exact offer - no email signup required.
         </>
       }
       tabs={{

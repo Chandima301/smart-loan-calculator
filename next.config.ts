@@ -1,6 +1,17 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        // Consolidated into /auto-loan-calculator (same calculator,
+        // "car loan" vs "auto loan" is just regional naming).
+        source: '/car-loan-calculator',
+        destination: '/auto-loan-calculator',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

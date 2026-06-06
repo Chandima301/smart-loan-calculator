@@ -5,7 +5,6 @@ import {
   CalendarRange,
   CreditCard,
   Car,
-  Truck,
   GraduationCap,
   RefreshCw,
   Calculator,
@@ -52,15 +51,10 @@ export const ALL: Record<string, CalcMeta> = {
     desc: 'Unsecured loan EMI, total interest, and amortization.',
     Icon: CreditCard,
   },
-  '/car-loan-calculator': {
-    label: 'Car Loan Calculator',
-    desc: 'Vehicle financing payment estimator with full schedule.',
-    Icon: Car,
-  },
   '/auto-loan-calculator': {
-    label: 'Auto Loan Calculator',
-    desc: 'US auto loan APR, monthly payment, and lifetime interest.',
-    Icon: Truck,
+    label: 'Auto / Car Loan Calculator',
+    desc: 'Car & auto loan APR, monthly payment, and lifetime interest.',
+    Icon: Car,
   },
   '/student-loan-calculator': {
     label: 'Student Loan Calculator',
@@ -120,22 +114,16 @@ export const RELATIONS: Record<string, string[]> = {
     '/',
   ],
   '/personal-loan-calculator': [
-    '/car-loan-calculator',
+    '/auto-loan-calculator',
     '/student-loan-calculator',
-    '/auto-loan-calculator',
+    '/home-loan-calculator',
     '/refinance-calculator',
-  ],
-  '/car-loan-calculator': [
-    '/auto-loan-calculator',
-    '/personal-loan-calculator',
-    '/refinance-calculator',
-    '/',
   ],
   '/auto-loan-calculator': [
-    '/car-loan-calculator',
     '/personal-loan-calculator',
     '/refinance-calculator',
     '/mortgage-calculator',
+    '/home-loan-calculator',
   ],
   // Student-loan topic cluster — hub links to all 3 spokes + a related general tool.
   '/student-loan-calculator': [
