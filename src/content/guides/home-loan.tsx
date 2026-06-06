@@ -3,8 +3,9 @@ import type { GuideMeta } from '@/components/landing/LoanLandingPage';
 export const meta: GuideMeta = {
   headline: 'Understanding Home Loan EMI: How It Works and What Drives the Cost',
   description:
-    'A practical, globally relevant guide to home loan EMI — the reducing-balance formula, fixed vs floating rates, tenure trade-offs, and the prepayment math that can save lakhs or tens of thousands in interest.',
+    'A practical, globally relevant guide to home loan EMI — the reducing-balance formula, fixed vs floating rates, regional rate ranges (US/UK/AU/IN), tenure trade-offs, types of home loan, the full cost stack, a glossary, FAQ, and the prepayment math that can save lakhs or tens of thousands in interest.',
   datePublished: '2026-04-27',
+  dateModified: '2026-06-06',
 };
 
 export default function HomeLoanGuide() {
@@ -255,6 +256,233 @@ export default function HomeLoanGuide() {
           term policy of the same coverage.
         </li>
       </ul>
+
+      <h2>Home Loan vs Mortgage — Same Thing, Different Word</h2>
+      <p>
+        A &quot;home loan&quot; and a &quot;mortgage&quot; are the same
+        financial product: money borrowed to buy property, secured
+        against that property. &quot;Home loan&quot; is the everyday term
+        in India, Sri Lanka, and much of Asia and the Middle East;
+        &quot;mortgage&quot; is standard in the US, UK, Canada, and
+        Australia. The one nuance worth knowing is framing: in the US,
+        loans are usually quoted by a fixed term (the 30-year or 15-year
+        fixed-rate mortgage), while in EMI-driven markets the same loan is
+        discussed in terms of the monthly EMI and a flexible tenure. The
+        math underneath — reducing-balance amortization — is identical.
+        If you are comparing a US-style fixed mortgage specifically, the
+        dedicated mortgage calculator on this site frames the 15-vs-30-year
+        decision directly; for everything else, this EMI calculator
+        covers it in any currency.
+      </p>
+
+      <h2>Typical Home Loan Rates by Region</h2>
+      <p>
+        Home loan rates are driven by each country&apos;s central-bank
+        policy rate, so they move over time and differ widely between
+        markets. The ranges below are broad orientation figures, not live
+        quotes — always check current rates with local lenders. What
+        stays constant is the <em>structure</em> of the decision, which
+        is why this calculator works in every market.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Common structure</th>
+            <th>Typical tenure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>United States</td>
+            <td>Fixed-rate (30 or 15 year) dominant</td>
+            <td>15–30 years</td>
+          </tr>
+          <tr>
+            <td>United Kingdom</td>
+            <td>Fixed 2–5 yr then reverts to variable (SVR)</td>
+            <td>25–35 years</td>
+          </tr>
+          <tr>
+            <td>Australia</td>
+            <td>Variable common; fixed 1–5 yr available</td>
+            <td>25–30 years</td>
+          </tr>
+          <tr>
+            <td>India / Sri Lanka</td>
+            <td>Floating (benchmark-linked) dominant</td>
+            <td>15–30 years</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The practical takeaway: in fixed-rate markets your EMI is locked
+        and predictable, so the main levers are the rate you negotiate
+        and the term you choose. In floating-rate markets your EMI will
+        change over the life of the loan, so you should stress-test your
+        budget against a rate two or three percentage points above
+        today&apos;s — run that higher rate through the calculator and
+        confirm the EMI is still comfortable before committing.
+      </p>
+
+      <h2>Types of Home Loan</h2>
+      <p>
+        &quot;Home loan&quot; is an umbrella term. The most common
+        variants you will encounter:
+      </p>
+      <ul>
+        <li>
+          <strong>Purchase loan</strong> — the standard loan to buy a
+          completed, ready-to-occupy home. The simplest case, and what
+          this calculator models directly.
+        </li>
+        <li>
+          <strong>Construction loan</strong> — for building on land you
+          own. Funds are released in stages as construction reaches
+          milestones, and you often pay interest only on the amount
+          disbursed so far until the home is complete.
+        </li>
+        <li>
+          <strong>Plot / land loan</strong> — to buy a building plot.
+          These usually carry a slightly higher rate and a lower maximum
+          LTV than a loan on a built home.
+        </li>
+        <li>
+          <strong>Home improvement / renovation loan</strong> — secured
+          against the existing property to fund repairs or upgrades.
+        </li>
+        <li>
+          <strong>Top-up loan</strong> — additional borrowing on top of an
+          existing home loan, typically at the home-loan rate (much
+          cheaper than a personal loan) once you have a repayment track
+          record.
+        </li>
+        <li>
+          <strong>Balance transfer</strong> — moving your outstanding loan
+          to another lender offering a lower rate. Worth it when the rate
+          saving over the remaining tenure clearly exceeds the processing
+          and legal costs of switching — model both the old and new rate
+          in the calculator and compare total interest before moving.
+        </li>
+      </ul>
+
+      <h2>The Full Cost of Buying — Beyond the EMI</h2>
+      <p>
+        The loan EMI is the largest recurring cost of owning a home, but
+        it is not the whole picture, and budgeting only for the EMI is one
+        of the most common first-time-buyer mistakes. Plan for:
+      </p>
+      <ul>
+        <li>
+          <strong>Upfront transaction costs</strong> — down payment, stamp
+          duty/transfer tax, registration, legal fees, and loan processing
+          fees. Together these frequently add 7%–12% on top of the
+          property price and must be paid from your own funds, not the
+          loan.
+        </li>
+        <li>
+          <strong>Ongoing ownership costs</strong> — property tax, building
+          and contents insurance, maintenance or society/HOA charges, and
+          a sinking fund for big repairs. A common planning figure is
+          roughly 1% of the property value per year for maintenance alone.
+        </li>
+        <li>
+          <strong>Rate-rise buffer</strong> — on a floating-rate loan,
+          headroom for the EMI to climb if the benchmark rate rises.
+        </li>
+      </ul>
+      <p>
+        This is why the affordability section above insists on checking
+        the EMI against income <em>plus</em> taxes, insurance, and
+        maintenance — the bank approves you against the EMI alone, but
+        your household lives with the full stack.
+      </p>
+
+      <h2>Joint Home Loans and Co-Borrowers</h2>
+      <p>
+        Many home loans are taken jointly — most often by spouses, but
+        also by parent and child or siblings. Adding a co-borrower
+        combines both incomes for the affordability assessment, which can
+        substantially raise the loan amount you qualify for and is
+        frequently the only way to afford property in expensive markets.
+        It also splits the legal responsibility: every co-borrower is
+        fully liable for the EMI, and a missed payment damages both
+        parties&apos; credit.
+      </p>
+      <p>
+        Two practical points are worth planning for upfront. First, in
+        several countries each co-borrower who is also a co-owner can
+        independently claim the available tax deductions on interest and
+        principal, which can make a joint loan meaningfully more tax
+        efficient than a single-borrower loan — check the specific rules
+        in your country. Second, decide the ownership share and the
+        EMI-contribution split in writing before you borrow; it prevents
+        disputes later if circumstances change. When you run the
+        affordability check in the calculator, base it on the combined
+        net income of all co-borrowers, not the headline gross, so the
+        EMI you target is one the household can actually sustain.
+      </p>
+
+      <h2>Glossary of Home Loan Terms</h2>
+      <ul>
+        <li><strong>EMI</strong> — Equated Monthly Installment; the fixed monthly payment covering interest plus principal.</li>
+        <li><strong>Principal</strong> — the amount borrowed, before interest.</li>
+        <li><strong>Reducing balance</strong> — interest charged each period on the outstanding balance only, so it falls as you repay.</li>
+        <li><strong>LTV (loan-to-value)</strong> — loan amount as a percentage of property value; lower LTV usually means a better rate.</li>
+        <li><strong>Tenure</strong> — the loan term, i.e. the number of months/years to full repayment.</li>
+        <li><strong>Fixed rate</strong> — interest rate locked for the term (or an initial period); predictable EMI.</li>
+        <li><strong>Floating / variable rate</strong> — rate linked to a benchmark that resets periodically; EMI can rise or fall.</li>
+        <li><strong>Prepayment / part-payment</strong> — paying extra above the EMI, applied directly to principal.</li>
+        <li><strong>Foreclosure</strong> — paying off the entire outstanding balance early.</li>
+        <li><strong>Balance transfer</strong> — refinancing the loan with a different lender for a lower rate.</li>
+        <li><strong>Sanction letter</strong> — the lender&apos;s formal approval document stating amount, rate, tenure, and fees.</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+      <h3>Is a home loan the same as a mortgage?</h3>
+      <p>
+        Yes — both mean a loan to buy property, secured against that
+        property. &quot;Home loan&quot; is the common term in Asia and the
+        Middle East; &quot;mortgage&quot; in the US, UK, and Australia. The
+        amortization math is identical.
+      </p>
+      <h3>Should I choose a fixed or floating rate?</h3>
+      <p>
+        Fixed gives certainty at a slightly higher starting rate; floating
+        is usually cheaper on average but exposes you to rate rises. If a
+        2–3 percentage-point rise in the rate would strain your budget,
+        the certainty of fixed (or a hybrid that fixes the early years) is
+        worth the premium. Stress-test both in the calculator.
+      </p>
+      <h3>How much down payment do I need for a home loan?</h3>
+      <p>
+        Most lenders cap the loan at 75%–85% of the property value, so you
+        provide 15%–25% as a down payment, plus transaction costs. A
+        larger down payment lowers your EMI, your lifetime interest, and
+        sometimes your interest rate.
+      </p>
+      <h3>Does prepaying a home loan early really help?</h3>
+      <p>
+        Significantly — and the earlier the better. On a 20-year loan, a
+        lump-sum prepayment in year 2 can save several times what the same
+        amount saves in year 12, because the reduced principal avoids
+        interest across the whole remaining schedule. Check your loan&apos;s
+        foreclosure/part-payment terms first.
+      </p>
+      <h3>What tenure should I pick?</h3>
+      <p>
+        The shortest tenure whose EMI you can comfortably afford. Extending
+        the term lowers the EMI only modestly but raises total interest
+        sharply — going from 20 to 30 years on the example loan cuts the
+        EMI ~11% but adds ~63% in lifetime interest.
+      </p>
+      <h3>Can I switch lenders to get a lower rate later?</h3>
+      <p>
+        Yes — a balance transfer moves your outstanding loan to a lender
+        with a lower rate. It is worth it when the interest saved over the
+        remaining tenure clearly exceeds the switching costs. Compare the
+        old and new rate in the calculator before deciding.
+      </p>
 
       <h2>When This Calculator Is Not the Whole Answer</h2>
       <p>
