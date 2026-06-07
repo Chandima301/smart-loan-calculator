@@ -1,6 +1,37 @@
 {
   "lastRunDate": "2026-06-07",
-  "lastCommitSha": "52146633702b73f8a8d51055384d47dfeb8e6e01",
-  "nextId": 1,
-  "lastShortlist": []
+  "lastCommitSha": "4584a53e3a074df75be6e2bdaab25ad045a031c7",
+  "nextId": 6,
+  "lastShortlist": [
+    {
+      "id": "SLA-001",
+      "title": "Direct Subsidized/Unsubsidized breakdown on student-loan-calculator",
+      "effort": "M",
+      "firstSeen": "2026-06-07"
+    },
+    {
+      "id": "SLA-002",
+      "title": "EMI mode/terminology on car-loan-calculator",
+      "effort": "M",
+      "firstSeen": "2026-06-07"
+    },
+    {
+      "id": "SLA-003",
+      "title": "\"26 biweekly = 13 monthly payments\" explainer on biweekly-mortgage-calculator",
+      "effort": "S",
+      "firstSeen": "2026-06-07"
+    },
+    {
+      "id": "SLA-004",
+      "title": "Refinance break-even point section on refinance-calculator",
+      "effort": "S",
+      "firstSeen": "2026-06-07"
+    },
+    {
+      "id": "SLA-005",
+      "title": "Discretionary-income / IDR repayment plans for student loan tooling",
+      "effort": "M",
+      "firstSeen": "2026-06-07"
+    }
+  ]
 }
