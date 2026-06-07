@@ -25,7 +25,7 @@ Each run, do exactly the following.
    - Effort: S / M / L for a small React app
    - Expected impact
 
-5. Post to the dev Slack channel "#CHANGE-ME-dev" using the Slack connector:
+5. Post to the dev Slack channel "#development" using the Slack connector:
    - 2-3 line summary of the week's signal (traffic direction + the single biggest opportunity)
    - The ranked shortlist, scannable. No raw data dumps — tie every suggestion to a number.
 
