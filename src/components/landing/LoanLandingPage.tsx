@@ -72,6 +72,13 @@ export interface LoanLandingPageProps {
    * number and the formula where applicable.
    */
   answer?: ReactNode;
+  /**
+   * Optional page-specific bonus section (e.g. a bespoke tool) rendered
+   * after the tab feature cards but before the guide. The component should
+   * include its own `border-t bg-muted/30` wrapper for visual separation.
+   * SSR'd, so its content is crawlable.
+   */
+  extraSection?: ReactNode;
 }
 
 const TAB_META = [
@@ -97,6 +104,7 @@ export default function LoanLandingPage({
   tabLabels,
   prepaymentDrivenResults,
   answer,
+  extraSection,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   // "/mortgage-calculator" → "mortgage"; "/" → "loan"
@@ -191,6 +199,10 @@ export default function LoanLandingPage({
           })}
         </div>
       </div>
+
+      {/* Optional page-specific bonus section (e.g. a bespoke tool) — renders
+          after tab cards but before the guide, with its own border-t divider. */}
+      {extraSection}
 
       {/* In-depth educational guide (per-page original content) */}
       {guide && <GuideSection>{guide}</GuideSection>}

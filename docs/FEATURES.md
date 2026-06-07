@@ -40,6 +40,9 @@ Info pages: `/about`, `/contact`, `/disclaimer`, `/privacy-policy`, `/terms` (vi
 - **Multi-currency** — 16 currencies (`src/lib/currencies.ts`), global selector in `Header`, `Intl.NumberFormat` formatting.
 - **Navigation/SEO** — category breadcrumbs, related-calculator cross-links, per-page long-form guides (`src/content/guides/`), JSON-LD (FAQ / Article / SoftwareApplication).
 
+## Page-specific sections
+- **Direct Subsidized vs Unsubsidized breakdown** — on `/student-loan-calculator`, an interactive section (`DirectLoanBreakdown`) below the calculator that shows how in-school interest accrues differently on the two federal Direct Loan types: subsidized (govt pays the in-school interest, nothing capitalizes) vs unsubsidized (interest accrues from disbursement and capitalizes at repayment). Reports each plan's monthly payment, balance at repayment, total interest/cost, and the extra lifetime interest + higher monthly payment of going unsubsidized. Math: `calculateDirectLoanBreakdown` (`src/lib/studentLoanCalculations.ts`). Rendered via the new `LoanLandingPage` `extraSection` prop (SSR'd for crawlability).
+
 ## Specialized math (bespoke calculators)
 - **Biweekly mortgage** (`calculateBiweekly`) — 26 payments/yr ≈ 13 monthly equivalents; reports interest & years saved vs monthly.
 - **PSLF** (`calculatePslf`) — IDR payment ≈ 10% of discretionary income (AGI − 1.5 × Federal Poverty Guideline), projects balance to payment 120, reports tax-free amount forgiven and net benefit vs standard 10-year.
