@@ -73,9 +73,10 @@ export interface LoanLandingPageProps {
    */
   answer?: ReactNode;
   /**
-   * Optional page-specific section (e.g. a bespoke breakdown widget)
-   * rendered directly below the calculator and inline related links,
-   * above the tab feature cards. SSR'd, so its content is crawlable.
+   * Optional page-specific bonus section (e.g. a bespoke tool) rendered
+   * after the tab feature cards but before the guide. The component should
+   * include its own `border-t bg-muted/30` wrapper for visual separation.
+   * SSR'd, so its content is crawlable.
    */
   extraSection?: ReactNode;
 }
@@ -178,9 +179,6 @@ export default function LoanLandingPage({
       {/* Inline related calculators — quick cross-links right after the tool */}
       <InlineRelatedCalculators currentPath={canonicalPath} />
 
-      {/* Optional page-specific section (e.g. a bespoke breakdown widget) */}
-      {extraSection}
-
       {/* Tab feature cards — moved below calculator so the tool is above the fold */}
       <div className="container mx-auto max-w-5xl px-4 py-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -201,6 +199,10 @@ export default function LoanLandingPage({
           })}
         </div>
       </div>
+
+      {/* Optional page-specific bonus section (e.g. a bespoke tool) — renders
+          after tab cards but before the guide, with its own border-t divider. */}
+      {extraSection}
 
       {/* In-depth educational guide (per-page original content) */}
       {guide && <GuideSection>{guide}</GuideSection>}

@@ -8,13 +8,11 @@ import { NumericField } from '@/components/ui/numeric-field';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import { calculateDirectLoanBreakdown } from '@/lib/studentLoanCalculations';
 import { LOAN_LIMITS } from '@/lib/constants';
-import { ShieldCheck, TrendingUp, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck, TrendingUp, ArrowUpRight, GraduationCap } from 'lucide-react';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
 
-// Student-loan-appropriate amount bounds (federal Direct Loans are far smaller
-// than the generic LOAN_LIMITS.principal range used by mortgage tools).
 const AMOUNT = { min: 1_000, max: 200_000, step: 500 };
 
 function StatRow({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
@@ -50,21 +48,27 @@ export default function DirectLoanBreakdown() {
   const { subsidized, unsubsidized } = result;
 
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-5">
-        <h2 className="text-xl font-semibold sm:text-2xl">
-          Direct Subsidized vs Direct Unsubsidized Loan Calculator
-        </h2>
-        <p className="mt-1 max-w-3xl text-sm text-muted-foreground leading-relaxed">
-          The only mechanical difference between the two federal Direct Loan types is who pays the
-          interest that builds up <em>before</em> repayment begins. On a{' '}
-          <strong>Direct Subsidized</strong> loan the government covers that interest while you&apos;re
-          in school and during the grace period, so you start repayment owing exactly what you
-          borrowed. On a <strong>Direct Unsubsidized</strong> loan that interest accrues from day one
-          and <strong>capitalizes</strong> (gets added to your principal) when repayment starts — so
-          you then pay interest on the interest.
-        </p>
-      </div>
+    <section className="border-t bg-muted/30">
+      <div className="container mx-auto max-w-5xl px-4 py-10">
+        {/* Section header with badge */}
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <GraduationCap className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-1">
+              Bonus Tool
+            </p>
+            <h2 className="text-lg font-semibold sm:text-xl">
+              Direct Subsidized vs Unsubsidized Comparison
+            </h2>
+            <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground leading-relaxed">
+              The key difference: on a <strong>Direct Subsidized</strong> loan the government
+              covers interest while you&apos;re in school. On <strong>Direct Unsubsidized</strong>,
+              interest accrues from day one and capitalizes at repayment — you pay interest on interest.
+            </p>
+          </div>
+        </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
         {/* Inputs */}
@@ -247,6 +251,7 @@ export default function DirectLoanBreakdown() {
           </Card>
         </div>
       </div>
-    </div>
+      </div>
+    </section>
   );
 }
