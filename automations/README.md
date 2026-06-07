@@ -1,8 +1,18 @@
-# SmartLoanalyzer — daily GA + GSC insights routine (OAuth auth)
+# SmartLoanalyzer — GA + GSC insights + feature builder routines
 
-A daily Claude Code cloud routine that pulls Google Analytics 4 + Search Console data,
-turns it into ranked feature/UX suggestions, and posts them to your dev Slack channel.
-Analysis only — it never changes the app.
+Two Claude Code cloud routines that turn analytics into shipped features:
+
+- **Analyst** (daily): pulls Google Analytics 4 + Search Console data, produces a ranked,
+  ID'd feature/UX shortlist, posts it to Slack `#sla-dev`, and maintains a durable log +
+  backlog under `automations/insights/`. **Read-only on app code** (only writes `insights/`).
+- **Builder** (polls `#sla-dev` ~every 15 min): when you confirm an item with `build SLA-###`
+  (or a 🔨 reaction), it implements that backlog item on a branch and opens a **PR** for review.
+  It never merges — you do.
+
+The two share `automations/insights/BACKLOG.md` (stable IDs + status), which is how a Slack
+confirmation maps to a specific build, and how shipped items get marked (the Analyst detects
+the merge commit). End-to-end loop: Analyst suggests `SLA-007` → you reply `build SLA-007`
+→ Builder opens a PR → you merge → next Analyst run marks `SLA-007` shipped.
 
 Auth note: this uses **OAuth as your own Google account** instead of a service account,
 to sidestep Google's April-2026 bug that blocks adding new service accounts to GA4/GSC.
@@ -16,12 +26,18 @@ automations/
   generate-token.mjs   # ONE-TIME, run locally to mint a refresh token
   fetch-ga.mjs         # GA4 Data API  -> out/ga.json
   fetch-gsc.mjs        # Search Console API -> out/gsc.json
-  ROUTINE_PROMPT.md    # paste this into the routine
-  out/                 # generated each run (gitignore it)
+  ROUTINE_PROMPT.md    # paste into the ANALYST routine
+  BUILDER_PROMPT.md    # paste into the BUILDER routine
+  insights/            # committed, routine-maintained state:
+    LOG.md             #   daily human-readable log (newest on top)
+    BACKLOG.md         #   stable-ID suggestion list + status (the build queue)
+    state.json         #   machine state: lastRunDate, lastCommitSha, nextId, lastShortlist
+  out/                 # generated each run (gitignored)
 ```
 
-This `automations/` folder lives in your SmartLoanalyzer repo and is committed.
-Add `automations/out/`, `automations/oauth-client.json`, and `automations/.env` to `.gitignore`.
+This `automations/` folder lives in your SmartLoanalyzer repo and is committed — **including
+`insights/`** (the routines read/update it across runs). Only `automations/out/`,
+`automations/oauth-client.json`, and `automations/.env` are gitignored.
 
 ## One-time Google setup (you do this)
 
@@ -50,9 +66,11 @@ Add `automations/out/`, `automations/oauth-client.json`, and `automations/.env` 
    `sc-domain:smartloanalyzer.com` (not the `https://` URL-prefix form — that property
    doesn't exist and returns 403). Confirm with `sites.list()` if unsure.
 
-## Create the routine (claude.ai/code/routines -> New routine)
+## Routine 1 — Analyst (claude.ai/code/routines -> New routine)
 
-- **Repository**: your SmartLoanalyzer repo.
+- **Repository**: your SmartLoanalyzer repo (`Chandima301/smart-loan-calculator`).
+- **Prompt**: paste `ROUTINE_PROMPT.md`.
+- **Trigger**: Scheduled -> Daily -> pick a time (e.g. 08:07).
 - **Environment variables / secrets** (5):
   - `GOOGLE_CLIENT_ID`     = from oauth-client.json
   - `GOOGLE_CLIENT_SECRET` = from oauth-client.json
@@ -65,24 +83,45 @@ Add `automations/out/`, `automations/oauth-client.json`, and `automations/.env` 
   - oauth2.googleapis.com
   - www.googleapis.com
   - registry.npmjs.org
-- **Connectors**: Slack (set the channel name in ROUTINE_PROMPT.md).
-- **Prompt**: paste ROUTINE_PROMPT.md (replace `#CHANGE-ME-dev`).
-- **Trigger**: Scheduled -> Daily -> pick a time (e.g. 08:00).
+  - **github.com**  (the Analyst commits its log/backlog to main)
+- **Connectors**: Slack (posts to `#sla-dev`).
+- **GitHub**: the Claude GitHub App must allow **push** to the repo (Analyst pushes to `main`).
+  If push is blocked, it can fall back to opening a PR for the `insights/` change.
+
+## Routine 2 — Builder (claude.ai/code/routines -> New routine)
+
+- **Repository**: same repo.
+- **Prompt**: paste `BUILDER_PROMPT.md`.
+- **Trigger**: Scheduled -> every ~15 min (off-minute, e.g. `*/15`). Cheap when idle — it exits
+  immediately if there's no `open` confirmation.
+- **Secrets**: none of the GA/GSC ones.
+- **Network access (outbound allowlist)**:
+  - registry.npmjs.org  (installs + builds the Next.js app)
+  - github.com           (pushes branches, opens PRs)
+- **Connectors**: Slack (reads `#sla-dev` for `build SLA-###` / 🔨, posts PR links).
+- **GitHub**: the Claude GitHub App must allow **push + pull request** on the repo.
+
+Both routines need the Slack connector's bot to be a **member of `#sla-dev`** (`/invite` it).
 
 ## First run
 
-Click **Run now**, watch the session: it should `npm install`, run both fetch scripts,
-write the two JSON files, then post the shortlist to your dev channel.
+- **Analyst**: click **Run now** — it should `npm install`, run both fetch scripts, post the
+  shortlist (with `SLA-###` IDs) to `#sla-dev`, and commit an `insights/` update to `main`.
+- **Builder**: reply `build SLA-###` on an `open` item in `#sla-dev`, then **Run now** (or wait
+  for the next poll) — it should ack in-thread, open a PR, and reply the PR link.
 
-## Local test before the routine
+## Local test before the routines
 
+PowerShell (bash `export` is ignored on Windows). Put the 5 secrets in a gitignored
+`automations/.env` and run:
 ```
-cd automation && npm install
-export GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=... GOOGLE_REFRESH_TOKEN=...
-export GA4_PROPERTY_ID=... GSC_SITE_URL=...
-npm run fetch:ga && npm run fetch:gsc
+cd automations
+npm install
+node --env-file=.env fetch-ga.mjs
+node --env-file=.env fetch-gsc.mjs
 ```
-Open out/ga.json and out/gsc.json and confirm real data.
+Open `out/ga.json` and `out/gsc.json` and confirm real data. (Don't bake `--env-file` into the
+npm scripts — the cloud routine supplies its own secrets and runs plain `node fetch-ga.mjs`.)
 
 ## Notes
 
