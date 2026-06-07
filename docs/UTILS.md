@@ -14,6 +14,7 @@ Pure functions, no React. Types are in `src/types/loan.ts`.
 
 ## Specialized math
 - `src/lib/biweeklyCalculations.ts` — `calculateBiweekly(params: BiweeklyParams): BiweeklyResult` (interest/years saved vs monthly; payoff dates).
+- `src/lib/studentLoanCalculations.ts` — `calculateDirectLoanBreakdown(params: DirectLoanBreakdownParams): DirectLoanBreakdownResult`. Direct Subsidized vs Unsubsidized comparison: simple in-school interest accrual (capitalizes once at repayment for unsubsidized), then amortizes via `calculateEMI`. Exports `DirectLoanPlan` (per-type figures) and the extra interest/monthly deltas. Used by the `DirectLoanBreakdown` component on `/student-loan-calculator`.
 - `src/lib/pslfCalculations.ts` — `calculatePslf(params: PslfParams): PslfResult`; exports `StateGroup` (`'contiguous' | 'alaska' | 'hawaii'`). IDR = 10% discretionary income; 2024 HHS poverty guidelines baked in.
 - `src/lib/studentRefinanceCalculations.ts` — `calculateStudentRefinance(params: StudentRefinanceParams): StudentRefinanceResult` (federal vs private, fee rolled into private principal).
 

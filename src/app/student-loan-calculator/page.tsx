@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanLandingPage from '@/components/landing/LoanLandingPage';
+import DirectLoanBreakdown from '@/components/studentLoan/DirectLoanBreakdown';
 import StudentLoanGuide, { meta as studentLoanGuideMeta } from '@/content/guides/student-loan';
 import { SITE_URL } from '@/lib/constants';
 
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
     'student loan payment calculator',
     'student loan payoff calculator',
     'federal student loan calculator',
+    'direct subsidized loan calculator',
+    'direct unsubsidized loan calculator',
+    'subsidized vs unsubsidized loan calculator',
     'private student loan calculator',
     'education loan calculator',
     'college loan calculator',
@@ -45,6 +49,7 @@ export default function StudentLoanCalculatorPage() {
           A <strong>$30,000 student loan at 6.5% over 10 years</strong> has a monthly payment of approximately <strong>$340.50</strong>, with about <strong>$10,860</strong> in total interest. The standard monthly payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = number of months). Federal income-driven plans (SAVE, PAYE, IBR) instead cap your payment at <strong>about 10% of discretionary income</strong> (AGI − 1.5 × the federal poverty guideline for your family size). Use the calculator below, or a dedicated tool: payoff accelerator, PSLF estimator, or refinance comparison.
         </>
       }
+      extraSection={<DirectLoanBreakdown />}
       tabs={{
         calculator: {
           title: 'Calculate Student Loan Payment',

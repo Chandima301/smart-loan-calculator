@@ -72,6 +72,12 @@ export interface LoanLandingPageProps {
    * number and the formula where applicable.
    */
   answer?: ReactNode;
+  /**
+   * Optional page-specific section (e.g. a bespoke breakdown widget)
+   * rendered directly below the calculator and inline related links,
+   * above the tab feature cards. SSR'd, so its content is crawlable.
+   */
+  extraSection?: ReactNode;
 }
 
 const TAB_META = [
@@ -97,6 +103,7 @@ export default function LoanLandingPage({
   tabLabels,
   prepaymentDrivenResults,
   answer,
+  extraSection,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   // "/mortgage-calculator" → "mortgage"; "/" → "loan"
@@ -170,6 +177,9 @@ export default function LoanLandingPage({
 
       {/* Inline related calculators — quick cross-links right after the tool */}
       <InlineRelatedCalculators currentPath={canonicalPath} />
+
+      {/* Optional page-specific section (e.g. a bespoke breakdown widget) */}
+      {extraSection}
 
       {/* Tab feature cards — moved below calculator so the tool is above the fold */}
       <div className="container mx-auto max-w-5xl px-4 py-6">
