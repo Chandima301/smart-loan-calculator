@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# automations (GA/GSC insights routine)
+automations/node_modules/
+automations/out/
+automations/oauth-client.json
+automations/.env

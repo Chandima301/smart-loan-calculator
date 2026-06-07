@@ -1,0 +1,16 @@
+{
+  "name": "smartloan-automation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "token": "node generate-token.mjs",
+    "fetch:ga": "node fetch-ga.mjs",
+    "fetch:gsc": "node fetch-gsc.mjs"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  },
+  "devDependencies": {
+    "@google-cloud/local-auth": "^3.0.1"
+  }
+}
