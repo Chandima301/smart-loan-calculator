@@ -1,11 +1,11 @@
 {
-  "lastRunDate": "2026-06-07",
-  "lastCommitSha": "4584a53e3a074df75be6e2bdaab25ad045a031c7",
-  "nextId": 6,
+  "lastRunDate": "2026-06-09",
+  "lastCommitSha": "a5dfa8b7d115852e57d978bbe4962debd1c1b878",
+  "nextId": 7,
   "lastShortlist": [
     {
-      "id": "SLA-001",
-      "title": "Direct Subsidized/Unsubsidized breakdown on student-loan-calculator",
+      "id": "SLA-005",
+      "title": "Discretionary-income / IDR repayment plans for student loan tooling",
       "effort": "M",
       "firstSeen": "2026-06-07"
     },
@@ -22,15 +22,15 @@
       "firstSeen": "2026-06-07"
     },
     {
+      "id": "SLA-006",
+      "title": "Improve personal-loan-calculator (EMI mode + intent match)",
+      "effort": "M",
+      "firstSeen": "2026-06-09"
+    },
+    {
       "id": "SLA-004",
       "title": "Refinance break-even point section on refinance-calculator",
       "effort": "S",
-      "firstSeen": "2026-06-07"
-    },
-    {
-      "id": "SLA-005",
-      "title": "Discretionary-income / IDR repayment plans for student loan tooling",
-      "effort": "M",
       "firstSeen": "2026-06-07"
     }
   ]
