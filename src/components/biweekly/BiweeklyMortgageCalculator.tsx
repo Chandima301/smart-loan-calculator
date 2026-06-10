@@ -36,6 +36,7 @@ export default function BiweeklyMortgageCalculator() {
   const [principal, setPrincipal] = useState(300_000);
   const [annualRate, setAnnualRate] = useState(6.5);
   const [years, setYears] = useState(30);
+  const [extraPerPayment, setExtraPerPayment] = useState(0);
 
   // Pre-fill from ?p=&r=&t= when arriving from another calculator
   // (e.g. the "Switch to biweekly" Smart Scenario). Client-only, runs once.
@@ -71,8 +72,9 @@ export default function BiweeklyMortgageCalculator() {
         principal,
         annualRate,
         tenureMonths: years * 12,
+        extraPerPayment,
       }),
-    [principal, annualRate, years],
+    [principal, annualRate, years, extraPerPayment],
   );
 
   const getPdfInput = useCallback((): LoanSummaryPdfInput => {
@@ -106,6 +108,9 @@ export default function BiweeklyMortgageCalculator() {
           heading: 'Biweekly Plan',
           rows: [
             { label: 'Biweekly payment (every 14 days)', value: money(result.biweeklyPayment) },
+            ...(extraPerPayment > 0
+              ? [{ label: 'Extra per biweekly payment', value: money(extraPerPayment) }]
+              : []),
             { label: 'Total interest', value: money(result.biweeklyTotalInterest) },
             { label: 'Total paid', value: money(result.biweeklyTotalPaid) },
             { label: 'Paid off in', value: pdfMonths(result.biweeklyMonths) },
@@ -122,7 +127,7 @@ export default function BiweeklyMortgageCalculator() {
       ],
       fileSlug: 'biweekly-mortgage',
     };
-  }, [currencyCode, principal, annualRate, years, result]);
+  }, [currencyCode, principal, annualRate, years, extraPerPayment, result]);
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-8">
@@ -205,6 +210,31 @@ export default function BiweeklyMortgageCalculator() {
               />
             </div>
 
+            {/* Extra per biweekly payment (optional) */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-medium">Extra per Biweekly Payment <span className="text-muted-foreground font-normal">(optional)</span></Label>
+                <span className="text-sm font-semibold text-primary">{fmt(extraPerPayment)}</span>
+              </div>
+              <Slider
+                min={LOAN_LIMITS.extraPayment.min}
+                max={LOAN_LIMITS.extraPayment.max}
+                step={LOAN_LIMITS.extraPayment.step}
+                value={[extraPerPayment]}
+                onValueChange={(v) => setExtraPerPayment(sv(v))}
+              />
+              <NumericField
+                value={extraPerPayment}
+                inputMode="numeric"
+                min={LOAN_LIMITS.extraPayment.min}
+                max={LOAN_LIMITS.extraPayment.max}
+                onCommit={setExtraPerPayment}
+              />
+              <p className="text-xs text-muted-foreground">
+                Extra principal added to each of the 26 biweekly payments, on top of the built-in 13th payment.
+              </p>
+            </div>
+
           </CardContent>
         </Card>
 
@@ -250,9 +280,10 @@ export default function BiweeklyMortgageCalculator() {
               <CardContent className="space-y-3">
                 <div>
                   <p className="text-xs text-muted-foreground">Biweekly payment</p>
-                  <p className="text-2xl font-bold">{fmt(result.biweeklyPayment)}</p>
+                  <p className="text-2xl font-bold">{fmt(result.biweeklyPayment + extraPerPayment)}</p>
                   <p className="text-[11px] text-muted-foreground mt-0.5">
                     every 14 days · 26 payments / yr
+                    {extraPerPayment > 0 && <> · incl. {fmt(extraPerPayment)} extra</>}
                   </p>
                 </div>
                 <div className="text-xs space-y-1 text-muted-foreground">
@@ -321,6 +352,10 @@ export default function BiweeklyMortgageCalculator() {
                 Paying half your monthly payment every 14 days adds up to <strong>26 biweekly payments per year</strong>,
                 or the equivalent of 13 monthly payments — one extra payment annually. That single extra payment
                 shortens a typical 30-year mortgage by roughly 4–6 years and saves tens of thousands in interest.
+                {extraPerPayment > 0 && (
+                  <> Your extra {fmt(extraPerPayment)} on each biweekly payment goes straight to principal,
+                  accelerating the payoff even further.</>
+                )}
               </p>
             </CardContent>
           </Card>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ShareButton() {
   const [copied, setCopied] = useState(false);
@@ -10,6 +11,7 @@ export default function ShareButton() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
+      trackEvent('share_link_copy', { page_path: window.location.pathname });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {

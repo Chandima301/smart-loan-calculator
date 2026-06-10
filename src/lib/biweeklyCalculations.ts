@@ -10,12 +10,16 @@
  * payment is the standard monthly payment multiplied by 13/12. The
  * difference (1/12) is treated as extra principal each month — exactly
  * equivalent to making one extra full monthly payment per year.
+ *
+ * An optional extra amount per biweekly payment (26/year) is folded in
+ * as additional principal: extraPerPayment * 26/12 per simulated month.
  */
 
 export interface BiweeklyParams {
   principal: number;
-  annualRate: number;     // percent, e.g. 6.5
-  tenureMonths: number;   // standard schedule term, e.g. 360
+  annualRate: number;       // percent, e.g. 6.5
+  tenureMonths: number;     // standard schedule term, e.g. 360
+  extraPerPayment?: number; // optional extra principal per biweekly payment
 }
 
 export interface BiweeklyResult {
@@ -85,7 +89,7 @@ function simulateAmortization(
 }
 
 export function calculateBiweekly(params: BiweeklyParams): BiweeklyResult {
-  const { principal, annualRate, tenureMonths } = params;
+  const { principal, annualRate, tenureMonths, extraPerPayment = 0 } = params;
   const monthlyRate = annualRate / 100 / 12;
 
   // Standard monthly payment & totals
@@ -93,9 +97,10 @@ export function calculateBiweekly(params: BiweeklyParams): BiweeklyResult {
   const monthlyTotalPaid = monthlyPayment * tenureMonths;
   const monthlyTotalInterest = monthlyTotalPaid - principal;
 
-  // Biweekly: half of monthly, every 14 days = 26/year = 13 monthly equivalents/year
+  // Biweekly: half of monthly, every 14 days = 26/year = 13 monthly equivalents/year.
+  // Optional extra principal per biweekly payment adds 26/12 of itself per month.
   const biweeklyPayment = monthlyPayment / 2;
-  const monthlyEquivalent = monthlyPayment * (13 / 12);
+  const monthlyEquivalent = monthlyPayment * (13 / 12) + extraPerPayment * (26 / 12);
 
   // Simulate biweekly schedule to find actual payoff
   const safetyMax = tenureMonths + 24; // never longer than original

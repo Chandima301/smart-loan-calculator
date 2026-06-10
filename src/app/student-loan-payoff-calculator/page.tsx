@@ -39,6 +39,7 @@ export default function StudentLoanPayoffCalculatorPage() {
       intro="An extra dollar of principal paid early is worth far more than a dollar, because it removes the interest that dollar would have generated for the rest of the loan. The Payoff Simulator below opens with the extra-payment controls already expanded — set a monthly extra or a one-time lump sum and watch the payoff date and total interest drop. Then read the guide for the avalanche-vs-snowball strategy and the one situation — federal loans headed for forgiveness — where prepaying is a costly mistake."
       defaultParams={{ principal: 35_000, annualRate: 6.5, tenureMonths: 120 }}
       canonicalPath={PATH}
+      relatedGuideSlugs={['pslf-vs-income-driven-repayment', 'biweekly-vs-extra-monthly-payments']}
       answer={
         <>
           Adding <strong>$50/month extra to a $30,000 student loan at 6.5% over 10 years</strong> saves roughly <strong>$2,500</strong> in interest and pays the loan off about <strong>14 months early</strong>. The base payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months); any extra goes straight to principal. Every extra dollar applied early dodges the most compounded interest — prepayment in the first half of the loan is the highest-impact lever you have. Use the simulator below to model your exact extra-payment plan.

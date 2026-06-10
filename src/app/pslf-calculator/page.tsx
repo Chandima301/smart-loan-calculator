@@ -3,6 +3,7 @@ import PslfCalculator from '@/components/pslf/PslfCalculator';
 import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
+import RelatedReading from '@/components/landing/RelatedReading';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import PslfGuide, { meta as pslfGuideMeta } from '@/content/guides/pslf';
 import { SITE_URL } from '@/lib/constants';
@@ -162,6 +163,9 @@ export default function PslfCalculatorPage() {
 
       {/* Related calculators — internal linking for SEO + UX */}
       <RelatedCalculators currentPath={PATH} />
+
+      {/* Related reading — standalone /guides articles */}
+      <RelatedReading slugs={['pslf-vs-income-driven-repayment']} />
 
       {/* FAQ */}
       <div className="container mx-auto max-w-5xl px-4 py-12">

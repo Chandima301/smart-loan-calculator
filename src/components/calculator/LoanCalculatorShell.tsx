@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
@@ -30,6 +30,7 @@ const AffordabilityChecker = dynamic(() => import('@/components/affordability/Af
 const LoanRestructure    = dynamic(() => import('./LoanRestructure'),    { ssr: false });
 import { calculateEMI, generateAmortizationSchedule, simulatePrepayment } from '@/lib/loanCalculations';
 import { LOAN_DEFAULTS } from '@/lib/constants';
+import { trackEvent } from '@/lib/analytics';
 import type { LoanParams, PrepaymentParams } from '@/types/loan';
 
 export type TabValue = 'calculator' | 'compare' | 'affordability' | 'restructure';
@@ -148,7 +149,15 @@ export default function LoanCalculatorShell({
       : (orderedTabs[0]?.value ?? 'calculator');
   const [activeTab, setActiveTab] = useState<string>(initialTab);
 
+  // GA4: fire once per pageview on the first user-driven input change.
+  // The tool is reactive (no Calculate button), so this is the "calculate" proxy.
+  // URL-prefill (handleUrlParams) intentionally does NOT count as engagement.
+  const engagedRef = useRef(false);
   const handleLoanChange = (params: LoanParams) => {
+    if (!engagedRef.current) {
+      engagedRef.current = true;
+      trackEvent('calculator_engaged');
+    }
     setLoanParams(params);
   };
 

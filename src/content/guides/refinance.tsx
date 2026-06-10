@@ -101,7 +101,7 @@ export default function RefinanceGuide() {
         could otherwise have been paid off.
       </p>
 
-      <h2>Three Worked Examples</h2>
+      <h2>How to Calculate a Realistic Break-Even Point</h2>
       <p>
         The break-even formula is abstract until you run real numbers.
         Here are the three situations you are most likely to face, each

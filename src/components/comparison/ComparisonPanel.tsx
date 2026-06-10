@@ -9,6 +9,7 @@ import AiTakeBanner from '@/components/ai/AiTakeBanner';
 import { useLoanComparisonStore } from '@/store/loanComparisonStore';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
 import { LOAN_DEFAULTS, MAX_SCENARIOS } from '@/lib/constants';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ComparisonPanel() {
   const { scenarios, addScenario, updateScenario, updateLabel, removeScenario, clearAll } =
@@ -142,7 +143,10 @@ export default function ComparisonPanel() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => addScenario(LOAN_DEFAULTS)}
+            onClick={() => {
+              addScenario(LOAN_DEFAULTS);
+              trackEvent('comparison_scenario_add');
+            }}
             disabled={scenarios.length >= MAX_SCENARIOS}
           >
             <Plus className="h-4 w-4 mr-1" />

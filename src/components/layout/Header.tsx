@@ -16,6 +16,12 @@ export default function Header() {
           <span className="truncate">Smart Loan Analyzer</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-muted-foreground">
+          <Link
+            href="/guides"
+            className="hover:text-foreground transition-colors font-medium"
+          >
+            Guides
+          </Link>
           <select
             value={currencyCode}
             onChange={(e) => setCurrencyCode(e.target.value)}

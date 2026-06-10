@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Sparkles, Zap } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,7 @@ import {
 } from '@/lib/loanCalculations';
 import { formatMonths } from '@/lib/formatters';
 import { useCurrencyFormat } from '@/hooks/useCurrencyFormat';
+import { trackEvent } from '@/lib/analytics';
 
 const sv = (val: number | readonly number[]): number =>
   Array.isArray(val) ? (val as number[])[0] : (val as number);
@@ -35,6 +36,17 @@ export default function PrepaymentSimulator({ params, result, baseInterest, base
   };
 
   const hasImpact = result.interestSaved > 0 || result.monthsSaved > 0;
+
+  // GA4: fire once per mount the first time the user simulates a prepayment
+  // (extra payment or lump sum becomes nonzero) — never per keystroke.
+  const trackedRef = useRef(false);
+  useEffect(() => {
+    if (trackedRef.current) return;
+    if (params.extraMonthlyPayment > 0 || params.lumpSumPayment > 0) {
+      trackedRef.current = true;
+      trackEvent('prepayment_simulated');
+    }
+  }, [params.extraMonthlyPayment, params.lumpSumPayment]);
 
   // AI strategy — a realistic suggested extra payment, computed from the
   // base EMI and projected with the existing pure math (no LLM).

@@ -22,7 +22,7 @@ export default function BiweeklyMortgageGuide() {
         under which you can replicate the same effect for free.
       </p>
 
-      <h3>The 13th Payment Trick</h3>
+      <h3>Why 26 Biweekly Payments Equal 13 Monthly Payments</h3>
       <p>
         On a standard monthly mortgage you make 12 payments per year.
         Switching to biweekly — paying half your monthly amount every 14

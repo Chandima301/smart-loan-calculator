@@ -15,6 +15,13 @@ const CALCULATOR_LINKS = [
   { href: '/student-loan-refinance-calculator', label: 'Student Loan Refinance' },
 ];
 
+const GUIDE_LINKS = [
+  { href: '/guides',                                    label: 'All Guides'                  },
+  { href: '/guides/biweekly-vs-extra-monthly-payments', label: 'Biweekly vs Extra Payments'  },
+  { href: '/guides/pslf-vs-income-driven-repayment',    label: 'PSLF vs IDR'                 },
+  { href: '/guides/mortgage-recast-vs-refinance',       label: 'Recast vs Refinance'         },
+];
+
 const COMPANY_LINKS = [
   { href: '/about',           label: 'About'           },
   { href: '/contact',         label: 'Contact'         },
@@ -31,7 +38,7 @@ export default function Footer() {
     <footer className="border-t mt-16">
       <div className="container mx-auto max-w-5xl px-4 py-10 text-sm text-muted-foreground">
         {/* Multi-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Brand */}
           <div>
             <p className="font-semibold text-foreground mb-1">Smart Loan Analyzer</p>
@@ -46,6 +53,22 @@ export default function Footer() {
             <p className="font-semibold text-foreground mb-3">Calculators</p>
             <nav className="flex flex-col gap-2">
               {CALCULATOR_LINKS.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="text-xs hover:text-foreground transition-colors w-fit"
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Guides */}
+          <div>
+            <p className="font-semibold text-foreground mb-3">Guides</p>
+            <nav className="flex flex-col gap-2">
+              {GUIDE_LINKS.map(({ href, label }) => (
                 <Link
                   key={href}
                   href={href}

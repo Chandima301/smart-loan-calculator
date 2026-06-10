@@ -6,11 +6,7 @@ import { Cookie, X } from 'lucide-react';
 
 const STORAGE_KEY = 'cookie-consent';
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
+// window.gtag is globally typed in src/lib/analytics.ts
 
 /**
  * GDPR / CCPA / AdSense-compliant cookie consent banner.

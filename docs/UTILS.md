@@ -13,7 +13,7 @@ Pure functions, no React. Types are in `src/types/loan.ts`.
 - `planForPayoffTarget(params: LoanParams, targetMonths: number): PayoffTargetPlan` — goal planner: solves the monthly payment to clear the loan by a deadline; returns `requiredMonthlyPayment`, `extraVsCurrent`, `feasible`.
 
 ## Specialized math
-- `src/lib/biweeklyCalculations.ts` — `calculateBiweekly(params: BiweeklyParams): BiweeklyResult` (interest/years saved vs monthly; payoff dates).
+- `src/lib/biweeklyCalculations.ts` — `calculateBiweekly(params: BiweeklyParams): BiweeklyResult` (interest/years saved vs monthly; payoff dates). `BiweeklyParams` includes optional `extraPerPayment` (extra principal per biweekly payment, folded in as `extra × 26/12` per simulated month).
 - `src/lib/studentLoanCalculations.ts` — `calculateDirectLoanBreakdown(params: DirectLoanBreakdownParams): DirectLoanBreakdownResult`. Direct Subsidized vs Unsubsidized comparison: simple in-school interest accrual (capitalizes once at repayment for unsubsidized), then amortizes via `calculateEMI`. Exports `DirectLoanPlan` (per-type figures) and the extra interest/monthly deltas. Used by the `DirectLoanBreakdown` component on `/student-loan-calculator`.
 - `src/lib/pslfCalculations.ts` — `calculatePslf(params: PslfParams): PslfResult`; exports `StateGroup` (`'contiguous' | 'alaska' | 'hawaii'`). IDR = 10% discretionary income; 2024 HHS poverty guidelines baked in.
 - `src/lib/studentRefinanceCalculations.ts` — `calculateStudentRefinance(params: StudentRefinanceParams): StudentRefinanceResult` (federal vs private, fee rolled into private principal).
@@ -37,6 +37,16 @@ Pure functions, no React. Types are in `src/types/loan.ts`.
 
 ## Styling — `src/lib/utils.ts`
 - `cn(...inputs)` — clsx + tailwind-merge classname composer.
+
+## Analytics — `src/lib/analytics.ts`
+**Not pure math** (guarded browser access) — do not import from `src/lib` math modules.
+- `trackEvent(name, params?)` — fires a GA4 event via `window.gtag`; no-ops on the server or when gtag is absent. Consent Mode v2 gating happens in `CookieConsent.tsx`. Also hosts the global `window.gtag` type declaration.
+- Event names in use: `calculator_engaged`, `pdf_download`, `share_link_copy`, `comparison_scenario_add`, `prepayment_simulated`.
+
+## Content registry — `src/content/guides/index.ts`
+- `GUIDES` / `STANDALONE_GUIDES` / `EMBEDDED_GUIDES` / `GUIDE_BY_SLUG` — registry for the `/guides` hub. `EmbeddedGuideEntry` links to `/<calculator>#guide` anchors (the `id="guide"` lives on `GuideSection`); `StandaloneGuideEntry` carries `meta`, `faq`, `calculatorPaths`, and the article `Component` for `/guides/[slug]`.
+- **Separate from** `RelatedCalculators.tsx` (`ALL`/`RELATIONS`/`CATEGORIES`) — that registry is calculators only.
+- `src/components/landing/RelatedReading.tsx` — `<RelatedReading slugs={[...]} />` renders article cross-link cards; `LoanLandingPage` accepts `relatedGuideSlugs` to place it between RelatedCalculators and the FAQ.
 
 ## PDF & SEO
 - `src/lib/pdf/loanSummaryPdf.ts` — builds the amortization PDF (jsPDF + autotable); `pdfFormat.ts` has PDF money/month helpers.

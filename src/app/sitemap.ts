@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/constants';
+import { STANDALONE_GUIDES } from '@/content/guides';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -69,6 +70,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    // Guides hub + standalone comparison articles
+    {
+      url: `${SITE_URL}/guides`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...STANDALONE_GUIDES.map((g) => ({
+      url: `${SITE_URL}/guides/${g.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
     // Company / Legal pages — lower priority but indexed for AdSense + trust signals
     {
       url: `${SITE_URL}/about`,

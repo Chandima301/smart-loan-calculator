@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FileDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { trackEvent } from '@/lib/analytics';
 import type { LoanSummaryPdfInput } from '@/lib/pdf/loanSummaryPdf';
 
 interface Props {
@@ -22,7 +23,9 @@ export default function DownloadPdfButton({ getInput }: Props) {
     setBusy(true);
     try {
       const { downloadLoanSummaryPdf } = await import('@/lib/pdf/loanSummaryPdf');
-      await downloadLoanSummaryPdf(getInput());
+      const input = getInput();
+      await downloadLoanSummaryPdf(input);
+      trackEvent('pdf_download', { file_slug: input.fileSlug });
     } catch {
       // PDF generation failed (rare) — fail silently; user can retry.
     } finally {

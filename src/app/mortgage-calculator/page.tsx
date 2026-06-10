@@ -39,6 +39,7 @@ export default function MortgageCalculatorPage() {
       intro="A 30-year mortgage keeps monthly payments manageable but results in paying nearly as much in interest as the original loan amount. Switching to a 15-year term or making regular overpayments dramatically reduces total interest. Use the Compare tab to see the exact difference, and the Prepayment simulator to model overpayment strategies."
       defaultParams={{ principal: 400_000, annualRate: 6.5, tenureMonths: 360 }}
       canonicalPath={PATH}
+      relatedGuideSlugs={['biweekly-vs-extra-monthly-payments', 'mortgage-recast-vs-refinance']}
       answer={
         <>
           The monthly payment on a <strong>$300,000 mortgage at 7% over 30 years</strong> is approximately <strong>$1,995.91</strong>, with about <strong>$418,527</strong> in total interest. The amortization formula is <strong>M = P * r * (1+r)^n / ((1+r)^n - 1)</strong>, where P is principal, r is the monthly rate (annual / 12) and n is the number of months. Use the calculator below for your exact numbers, plus 15 vs 30-year comparison and full amortization.

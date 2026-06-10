@@ -14,8 +14,9 @@ interface Props {
 export default function GuideSection({ children }: Props) {
   return (
     <section
+      id="guide"
       aria-label="Guide"
-      className="container mx-auto max-w-3xl px-4 py-12 border-t"
+      className="container mx-auto max-w-3xl px-4 py-12 border-t scroll-mt-16"
     >
       <article
         className="

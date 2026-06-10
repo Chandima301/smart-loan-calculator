@@ -4,6 +4,7 @@ import LoanCalculatorShell, { type TabValue } from '@/components/calculator/Loan
 import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
+import RelatedReading from '@/components/landing/RelatedReading';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import { SITE_URL } from '@/lib/constants';
 import { buildArticleSchema } from '@/lib/seo/articleSchema';
@@ -79,6 +80,11 @@ export interface LoanLandingPageProps {
    * SSR'd, so its content is crawlable.
    */
   extraSection?: ReactNode;
+  /**
+   * Slugs of standalone /guides articles to feature as a "Related
+   * reading" block between Related calculators and the FAQ.
+   */
+  relatedGuideSlugs?: string[];
 }
 
 const TAB_META = [
@@ -105,6 +111,7 @@ export default function LoanLandingPage({
   prepaymentDrivenResults,
   answer,
   extraSection,
+  relatedGuideSlugs,
 }: LoanLandingPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   // "/mortgage-calculator" → "mortgage"; "/" → "loan"
@@ -209,6 +216,11 @@ export default function LoanLandingPage({
 
       {/* Related calculators — internal linking for SEO + UX */}
       <RelatedCalculators currentPath={canonicalPath} />
+
+      {/* Related reading — links to standalone /guides articles */}
+      {relatedGuideSlugs && relatedGuideSlugs.length > 0 && (
+        <RelatedReading slugs={relatedGuideSlugs} />
+      )}
 
       {/* FAQ */}
       <div className="container mx-auto max-w-5xl px-4 py-12">

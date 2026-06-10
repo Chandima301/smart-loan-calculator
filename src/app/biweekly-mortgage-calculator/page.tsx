@@ -3,6 +3,7 @@ import BiweeklyMortgageCalculator from '@/components/biweekly/BiweeklyMortgageCa
 import RelatedCalculators, { calculatorBreadcrumb } from '@/components/calculator/RelatedCalculators';
 import InlineRelatedCalculators from '@/components/calculator/InlineRelatedCalculators';
 import GuideSection from '@/components/landing/GuideSection';
+import RelatedReading from '@/components/landing/RelatedReading';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import BiweeklyMortgageGuide, { meta as biweeklyGuideMeta } from '@/content/guides/biweekly-mortgage';
 import { SITE_URL } from '@/lib/constants';
@@ -13,9 +14,9 @@ const PATH = '/biweekly-mortgage-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Biweekly Mortgage Calculator — Exact Interest Saved & Payoff Date',
+  title: 'Biweekly Mortgage Calculator with Extra Payments — Payoff Date & Savings',
   description:
-    'See exactly how much interest you save and the new payoff date when you switch to biweekly mortgage payments. Side-by-side comparison with monthly. Free, no signup.',
+    '26 biweekly payments per year equals 13 monthly payments — one extra payment annually. See exact interest saved, your new payoff date, and add extra payments on top. Free, no signup.',
   keywords: [
     'biweekly mortgage calculator',
     'bi-weekly mortgage calculator',
@@ -28,9 +29,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Biweekly Mortgage Calculator — Exact Interest Saved & Payoff Date',
+    title: 'Biweekly Mortgage Calculator with Extra Payments — Payoff Date & Savings',
     description:
-      'See exactly how much interest you save and the new payoff date with biweekly mortgage payments. Free, no signup.',
+      '26 biweekly payments per year = 13 monthly payments. See exact interest saved, your new payoff date, and add extra payments on top. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },
@@ -121,6 +122,7 @@ export default function BiweeklyMortgageCalculatorPage() {
       'Free biweekly mortgage calculator. True 26-payments-per-year simulation showing the exact interest saved and new payoff date versus standard monthly payments. One extra payment annually typically pays off a 30-year mortgage 4-6 years early.',
     featureList: [
       'True 26-payments-per-year biweekly mortgage simulation',
+      'Optional extra payment on top of the biweekly schedule',
       'Standard monthly vs biweekly side-by-side comparison',
       'Exact interest saved and new payoff date',
       'Multi-currency support (17+ currencies)',
@@ -139,10 +141,10 @@ export default function BiweeklyMortgageCalculatorPage() {
       <div className="border-b bg-muted/40">
         <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-7">
           <h1 className="text-xl font-bold tracking-tight sm:text-3xl">
-            Biweekly Mortgage Calculator
+            Biweekly Mortgage Calculator (with Extra Payments)
           </h1>
           <p className="mt-1 text-sm text-muted-foreground max-w-2xl sm:mt-2 sm:text-base">
-            See exactly how many years and how much interest you save by paying your mortgage biweekly instead of monthly.
+            See exactly how many years and how much interest you save by paying your mortgage biweekly instead of monthly — and add extra payments on top.
           </p>
           <p className="mt-2 hidden text-sm text-muted-foreground max-w-2xl md:block">
             Paying <strong>half your monthly mortgage payment every two weeks</strong> adds up to 26 biweekly payments per year — equal to <strong>13 monthly payments instead of 12</strong>. The monthly payment itself comes from the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months); the biweekly schedule simply applies one extra payment a year to principal. That single extra payment typically pays off a 30-year mortgage <strong>4–6 years early</strong> and saves tens of thousands in interest. On a $300,000 mortgage at 7%, biweekly payments save approximately <strong>$76,000</strong> in interest and finish the loan about 5.5 years sooner.
@@ -156,6 +158,25 @@ export default function BiweeklyMortgageCalculatorPage() {
       {/* Calculator */}
       <BiweeklyMortgageCalculator />
 
+      {/* Key concept — server-rendered, targets the "26 = 13" query cluster */}
+      <section className="container mx-auto max-w-5xl px-4 pb-4">
+        <div className="rounded-lg border bg-muted/30 p-5">
+          <h2 className="text-lg font-semibold mb-2">
+            26 Biweekly Payments = 13 Monthly Payments Per Year
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            There are 52 weeks in a year, so paying every two weeks means 52 ÷ 2 = <strong>26 biweekly
+            payments per year</strong>. Each one is half your monthly payment, so 26 × (monthly ÷ 2) =
+            <strong> 13 full monthly payments</strong> — one more than the 12 a standard schedule makes.
+            That 13th payment lands entirely on principal, because your regular payments already cover
+            each month&apos;s interest. The earlier principal drop means every following month accrues less
+            interest, which is why one extra payment a year shortens a typical 30-year mortgage by 4–6
+            years. Adding an <strong>extra amount to each biweekly payment</strong> compounds the effect:
+            even $50 extra per payment ($1,300 more per year) can cut several additional years off the loan.
+          </p>
+        </div>
+      </section>
+
       {/* Inline related calculators — quick cross-links right after the tool */}
       <InlineRelatedCalculators currentPath={PATH} />
 
@@ -166,6 +187,9 @@ export default function BiweeklyMortgageCalculatorPage() {
 
       {/* Related calculators — internal linking for SEO + UX */}
       <RelatedCalculators currentPath={PATH} />
+
+      {/* Related reading — standalone /guides articles */}
+      <RelatedReading slugs={['biweekly-vs-extra-monthly-payments', 'mortgage-recast-vs-refinance']} />
 
       {/* FAQ */}
       <div className="container mx-auto max-w-5xl px-4 py-12">

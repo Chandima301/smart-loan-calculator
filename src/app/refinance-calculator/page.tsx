@@ -7,9 +7,9 @@ const PATH = '/refinance-calculator';
 const CANONICAL = `${SITE_URL}${PATH}`;
 
 export const metadata: Metadata = {
-  title: 'Refinance Calculator — Break-Even Month & Lifetime Savings',
+  title: 'Refinance Calculator — Realistic Break-Even Point & Lifetime Savings',
   description:
-    'Find out exactly when refinancing pays off — break-even month, lifetime savings, and closing-cost amortization. Side-by-side comparison with keeping your current loan. Free, no signup.',
+    'Get a realistic break-even point calculation for your refinance — itemized closing costs, term-reset effect, and lifetime savings vs keeping your current loan. Free, no signup.',
   keywords: [
     'refinance calculator',
     'loan refinance calculator',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: CANONICAL },
   openGraph: {
-    title: 'Refinance Calculator — Break-Even Month & Lifetime Savings',
+    title: 'Refinance Calculator — Realistic Break-Even Point & Lifetime Savings',
     description:
-      'Find out exactly when refinancing pays off — break-even month, lifetime savings, true cost after fees. Free, no signup.',
+      'Realistic break-even point calculation for your refinance — itemized closing costs, term-reset effect, lifetime savings. Free, no signup.',
     url: CANONICAL,
     images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
   },
@@ -40,9 +40,10 @@ export default function RefinanceCalculatorPage() {
       intro="Refinancing replaces your existing loan with a new one at a lower rate or different term. Whether it pays off depends on three things: how much lower the new rate is, how long you plan to keep the loan, and how much you'll pay in closing costs or prepayment penalties. This calculator does the full math so you can make the decision with confidence."
       defaultParams={{ principal: 300_000, annualRate: 5.5, tenureMonths: 360 }}
       canonicalPath={PATH}
+      relatedGuideSlugs={['mortgage-recast-vs-refinance', 'biweekly-vs-extra-monthly-payments']}
       answer={
         <>
-          Refinancing pays off when the new monthly savings recover the closing costs before you sell or move. <strong>Break-even month = closing costs / monthly savings</strong>, and each loan&apos;s payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months). Example: dropping a $300,000 mortgage from 7% to 5.5% saves about $283/month; with $4,000 in closing costs you break even at month 14. Use the calculator below to model break-even and lifetime savings for your specific offer.
+          A <strong>realistic break-even point calculation</strong> divides your <em>itemized</em> closing costs (from the Loan Estimate, not the advertised figure) by your true monthly savings — and accounts for the term reset if the new loan restarts the clock. <strong>Break-even month = closing costs / monthly savings</strong>, and each loan&apos;s payment uses the amortization formula <strong>M = P × r × (1+r)^n / ((1+r)^n − 1)</strong> (P = principal, r = monthly rate = annual ÷ 12, n = months). Example: dropping a $300,000 mortgage from 7% to 5.5% saves about $283/month; with $4,000 in closing costs you break even at month 14. Use the calculator below to model break-even and lifetime savings for your specific offer.
         </>
       }
       primaryTab="restructure"
@@ -67,6 +68,11 @@ export default function RefinanceCalculatorPage() {
       guide={<RefinanceGuide />}
       guideMeta={refinanceGuideMeta}
       faq={[
+        {
+          question: 'How do I calculate a realistic break-even point on a refinance?',
+          answer:
+            'Divide your true, itemized closing costs by your true monthly savings: break-even month = closing costs / monthly savings. For a realistic result, use the itemized figures from each lender\'s Loan Estimate (origination, appraisal, title, recording, transfer tax, escrow setup) rather than an advertised "typical costs" number, and compute monthly savings net of any term extension — a fresh 30-year term lowers the payment even at the same rate, which inflates fake "savings." Then sanity-check the break-even month against how long you realistically expect to keep the home or loan. If you may sell or refinance again before break-even, the refinance loses money no matter how good the rate looks.',
+        },
         {
           question: 'Is refinancing worth it? What rate drop do I need?',
           answer:
