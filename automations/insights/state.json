@@ -1,14 +1,8 @@
 {
-  "lastRunDate": "2026-06-10",
-  "lastCommitSha": "28568e1150c90fb73566f807bec635e7ef03d8b8",
-  "nextId": 7,
+  "lastRunDate": "2026-06-12",
+  "lastCommitSha": "403baf223f36eab3cf62150cc4a9df3a443f8537",
+  "nextId": 8,
   "lastShortlist": [
-    {
-      "id": "SLA-005",
-      "title": "Discretionary-income / IDR repayment plans for student loan tooling",
-      "effort": "M",
-      "firstSeen": "2026-06-07"
-    },
     {
       "id": "SLA-002",
       "title": "EMI mode/terminology on car-loan-calculator",
@@ -16,9 +10,9 @@
       "firstSeen": "2026-06-07"
     },
     {
-      "id": "SLA-003",
-      "title": "\"26 biweekly = 13 monthly payments\" explainer on biweekly-mortgage-calculator",
-      "effort": "S",
+      "id": "SLA-005",
+      "title": "Discretionary-income / IDR repayment plans for student loan tooling",
+      "effort": "M",
       "firstSeen": "2026-06-07"
     },
     {
@@ -28,10 +22,10 @@
       "firstSeen": "2026-06-09"
     },
     {
-      "id": "SLA-004",
-      "title": "Refinance break-even point section on refinance-calculator",
+      "id": "SLA-007",
+      "title": "PSLF eligibility / \"does PAYE qualify\" FAQ on pslf-calculator",
       "effort": "S",
-      "firstSeen": "2026-06-07"
+      "firstSeen": "2026-06-12"
     }
   ]
 }
