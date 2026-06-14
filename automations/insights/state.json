@@ -1,7 +1,7 @@
 {
-  "lastRunDate": "2026-06-10",
-  "lastCommitSha": "28568e1150c90fb73566f807bec635e7ef03d8b8",
-  "nextId": 7,
+  "lastRunDate": "2026-06-14",
+  "lastCommitSha": "403baf223f36eab3cf62150cc4a9df3a443f8537",
+  "nextId": 8,
   "lastShortlist": [
     {
       "id": "SLA-005",
@@ -16,22 +16,16 @@
       "firstSeen": "2026-06-07"
     },
     {
-      "id": "SLA-003",
-      "title": "\"26 biweekly = 13 monthly payments\" explainer on biweekly-mortgage-calculator",
-      "effort": "S",
-      "firstSeen": "2026-06-07"
+      "id": "SLA-007",
+      "title": "PSLF / IDR plan-qualification feature on pslf-calculator",
+      "effort": "M",
+      "firstSeen": "2026-06-14"
     },
     {
       "id": "SLA-006",
       "title": "Improve personal-loan-calculator (EMI mode + intent match)",
       "effort": "M",
       "firstSeen": "2026-06-09"
-    },
-    {
-      "id": "SLA-004",
-      "title": "Refinance break-even point section on refinance-calculator",
-      "effort": "S",
-      "firstSeen": "2026-06-07"
     }
   ]
 }
