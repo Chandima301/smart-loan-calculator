@@ -1,6 +1,6 @@
 {
-  "lastRunDate": "2026-06-23",
-  "lastCommitSha": "e025867aceb4b4dae8ea3b7308943d78a40c679a",
+  "lastRunDate": "2026-06-25",
+  "lastCommitSha": "61831078c83884e764e326b9167b6bb759dc433b",
   "nextId": 9,
   "lastShortlist": [
     {
@@ -10,14 +10,14 @@
       "firstSeen": "2026-06-18"
     },
     {
-      "id": "SLA-002",
-      "title": "Car EMI mode/terminology on car-loan-calculator",
+      "id": "SLA-005",
+      "title": "Discretionary-income / IDR + consolidation on student-loan-payoff-calculator",
       "effort": "M",
       "firstSeen": "2026-06-07"
     },
     {
-      "id": "SLA-005",
-      "title": "Discretionary-income / IDR + consolidation on student-loan-payoff-calculator",
+      "id": "SLA-002",
+      "title": "Car EMI mode/terminology on car-loan-calculator",
       "effort": "M",
       "firstSeen": "2026-06-07"
     },
