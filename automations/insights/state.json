@@ -1,19 +1,13 @@
 {
-  "lastRunDate": "2026-06-23",
-  "lastCommitSha": "e025867aceb4b4dae8ea3b7308943d78a40c679a",
+  "lastRunDate": "2026-08-17",
+  "lastCommitSha": "61831078c83884e764e326b9167b6bb759dc433b",
   "nextId": 9,
   "lastShortlist": [
     {
-      "id": "SLA-007",
-      "title": "Student-loan amortization / repayment-schedule intent on student-loan-calculator",
+      "id": "SLA-008",
+      "title": "PSLF forgiveness-timeline / 120-payment tracker on pslf-calculator",
       "effort": "M",
-      "firstSeen": "2026-06-18"
-    },
-    {
-      "id": "SLA-002",
-      "title": "Car EMI mode/terminology on car-loan-calculator",
-      "effort": "M",
-      "firstSeen": "2026-06-07"
+      "firstSeen": "2026-06-22"
     },
     {
       "id": "SLA-005",
@@ -22,14 +16,20 @@
       "firstSeen": "2026-06-07"
     },
     {
-      "id": "SLA-008",
-      "title": "PSLF forgiveness-timeline / 120-payment tracker on pslf-calculator",
+      "id": "SLA-007",
+      "title": "Student-loan amortization / repayment-schedule intent on student-loan-calculator",
       "effort": "M",
-      "firstSeen": "2026-06-22"
+      "firstSeen": "2026-06-18"
+    },
+    {
+      "id": "SLA-002",
+      "title": "Auto-loan APR / monthly-payment intent on auto-loan-calculator",
+      "effort": "M",
+      "firstSeen": "2026-06-07"
     },
     {
       "id": "SLA-006",
-      "title": "EMI mode + intent match on personal-loan-calculator",
+      "title": "EMI / specific-amount intent on personal-loan-calculator",
       "effort": "M",
       "firstSeen": "2026-06-09"
     }
